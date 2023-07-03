@@ -3,8 +3,8 @@ package com.android.speaker.server.okhttp;
 import android.content.Context;
 import android.content.Intent;
 
-import com.tencent.qcloud.tuikit.timcommon.R;
-import com.tencent.qcloud.tuikit.timcommon.util.TIMCommonConstants;
+import com.android.speaker.R;
+import com.android.speaker.base.Constants;
 
 import org.json.JSONObject;
 
@@ -39,7 +39,7 @@ public class CodeChecker {
 //                throw new RequestException(errorInfo, code);
             case 1004:
                 errorInfo = mContext.getString(R.string.expired_login_tip);
-                sendBroadcast(TIMCommonConstants.LOGIN_TIMEOUT_BROADCAST, code, errorInfo);
+                sendBroadcast(Constants.LOGIN_TIMEOUT_BROADCAST, code, errorInfo);
                 throw new RequestException(errorInfo, code);
             default:
                 throw new RequestException(message, code);

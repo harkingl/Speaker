@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/home_tab_bottom_item_width"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:clipToPadding="false"
+    android:clipChildren="false"
+    android:paddingTop="10dp"
+    android:paddingBottom="16dp"
+    android:background="@color/transparent">
+
+    <ImageView
+        android:id="@+id/tab_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/tab_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tab_icon"
+        android:layout_marginTop="5dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:textColor="@color/common_purple_color"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        tools:text="学习"/>
+
+    <TextView
+        android:id="@+id/unread_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="-17dp"
+        android:layout_marginTop="1dp"
+        android:layout_toEndOf="@id/tab_text"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:textColor="@color/white"
+        android:minWidth="18.4dp"
+        android:minHeight="18.4dp"
+        android:textSize="13.6sp"
+        android:visibility="gone" />
+
+</RelativeLayout>
