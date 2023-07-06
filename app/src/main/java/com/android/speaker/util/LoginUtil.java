@@ -72,10 +72,10 @@ public class LoginUtil {
         uiConfigBuilder.setLogBtnHeight(45);
         uiConfigBuilder.setAppPrivacyColor(context.getColor(R.color.text_color_2),context.getColor(R.color.common_purple_color));
 //        uiConfigBuilder.setPrivacyTopOffsetY(310);
-        uiConfigBuilder.setPrivacyText("我已阅读并同意排课宝","");
+        uiConfigBuilder.setPrivacyText("我已阅读并同意排课宝", "、", "、", "");
         uiConfigBuilder.setPrivacyCheckboxHidden(false);
         uiConfigBuilder.setAppPrivacyOne("用户协议", Constants.USER_AGREEMENT);
-//        uiConfigBuilder.setAppPrivacyTwo("隐私政策", Constants.PRIVACY_PROTECTION);
+        uiConfigBuilder.setAppPrivacyTwo("隐私政策", Constants.PRIVACY_PROTECTION);
         uiConfigBuilder.setPrivacyTextCenterGravity(true);
         uiConfigBuilder.setPrivacyTextSize(11);
 //        uiConfigBuilder.setPrivacyOffsetX(52-15);
