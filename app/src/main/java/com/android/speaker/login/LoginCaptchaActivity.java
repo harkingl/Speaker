@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -21,7 +22,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /***
- * 验证码登陆页面
+ * 验证码登录页面
  */
 public class LoginCaptchaActivity extends BaseActivity implements View.OnClickListener {
 
@@ -37,6 +38,9 @@ public class LoginCaptchaActivity extends BaseActivity implements View.OnClickLi
     private CheckBox mProtocolCb;
     private TextView mServiceProtocolTv;
     private TextView mPrivateProtocolTv;
+    private ImageView mOneKeyIv;
+    private ImageView mWxIv;
+    private TextView mProblemTv;
 
     private Timer mTimer;
     private SendCodeTimerTask mTimerTask;
@@ -60,12 +64,18 @@ public class LoginCaptchaActivity extends BaseActivity implements View.OnClickLi
         mProtocolCb = findViewById(R.id.login_captcha_protocol_cb);
         mServiceProtocolTv = findViewById(R.id.login_captcha_service_protocol_tv);
         mPrivateProtocolTv = findViewById(R.id.login_captcha_private_protocol_tv);
+        mOneKeyIv = findViewById(R.id.login_captcha_onekey_iv);
+        mWxIv = findViewById(R.id.login_captcha_wx_iv);
+        mProblemTv = findViewById(R.id.login_captcha_problem_tv);
 
         mCloseTv.setOnClickListener(this);
         mBtnCaptchaTv.setOnClickListener(this);
         mLoginTv.setOnClickListener(this);
         mServiceProtocolTv.setOnClickListener(this);
         mPrivateProtocolTv.setOnClickListener(this);
+        mOneKeyIv.setOnClickListener(this);
+        mWxIv.setOnClickListener(this);
+        mProblemTv.setOnClickListener(this);
 
         String phone = UserInfo.getInstance().getPhone();
         if(!TextUtils.isEmpty(phone)) {

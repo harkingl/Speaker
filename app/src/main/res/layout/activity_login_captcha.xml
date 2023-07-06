@@ -158,4 +158,36 @@
             android:text="隐私政策"/>
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/login_captcha_onekey_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_onekey"/>
+        <ImageView
+            android:id="@+id/login_captcha_wx_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="28dp"
+            android:src="@drawable/ic_wx"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/login_captcha_problem_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="27dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center_horizontal"
+        android:textSize="11sp"
+        android:textColor="@color/text_color_2"
+        android:text="登录遇到问题？"/>
 </LinearLayout>
