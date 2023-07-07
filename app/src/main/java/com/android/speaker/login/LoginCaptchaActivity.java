@@ -30,7 +30,7 @@ public class LoginCaptchaActivity extends BaseActivity implements View.OnClickLi
 
     private static final int DEFAULT_CAPTCHA_COUNT = 60;
 
-    private TextView mCloseTv;
+    private ImageView mCloseIv;
     private EditText mAccountEt;
     private EditText mCaptchaEt;
     private TextView mBtnCaptchaTv;
@@ -56,7 +56,7 @@ public class LoginCaptchaActivity extends BaseActivity implements View.OnClickLi
     private void initActivity() {
         setContentView(R.layout.activity_login_captcha);
 
-        mCloseTv = findViewById(R.id.login_captcha_close_tv);
+        mCloseIv = findViewById(R.id.login_captcha_close_iv);
         mAccountEt = findViewById(R.id.login_captcha_phone_et);
         mCaptchaEt = findViewById(R.id.login_captcha_et);
         mBtnCaptchaTv = findViewById(R.id.login_captcha_send_tv);
@@ -68,7 +68,7 @@ public class LoginCaptchaActivity extends BaseActivity implements View.OnClickLi
         mWxIv = findViewById(R.id.login_captcha_wx_iv);
         mProblemTv = findViewById(R.id.login_captcha_problem_tv);
 
-        mCloseTv.setOnClickListener(this);
+        mCloseIv.setOnClickListener(this);
         mBtnCaptchaTv.setOnClickListener(this);
         mLoginTv.setOnClickListener(this);
         mServiceProtocolTv.setOnClickListener(this);
@@ -87,7 +87,7 @@ public class LoginCaptchaActivity extends BaseActivity implements View.OnClickLi
     public void onClick(View view) {
         int id = view.getId();
         switch(id) {
-            case R.id.login_captcha_close_tv:
+            case R.id.login_captcha_close_iv:
                 finish();
                 break;
             case R.id.login_captcha_send_tv:

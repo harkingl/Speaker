@@ -13,6 +13,8 @@ import com.android.speaker.base.Constants;
 import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.login.LoginCaptchaActivity;
 
+import cn.jiguang.share.android.api.JShareInterface;
+import cn.jiguang.share.wechat.Wechat;
 import cn.jiguang.verifysdk.api.JVerificationInterface;
 import cn.jiguang.verifysdk.api.JVerifyUIClickCallback;
 import cn.jiguang.verifysdk.api.JVerifyUIConfig;
@@ -74,6 +76,7 @@ public class LoginUtil {
 //        uiConfigBuilder.setPrivacyTopOffsetY(310);
         uiConfigBuilder.setPrivacyText("我已阅读并同意排课宝", "、", "、", "");
         uiConfigBuilder.setPrivacyCheckboxHidden(false);
+//        uiConfigBuilder.setPrivacyCheckboxSize(ScreenUtil.dip2px(5));
         uiConfigBuilder.setAppPrivacyOne("用户协议", Constants.USER_AGREEMENT);
         uiConfigBuilder.setAppPrivacyTwo("隐私政策", Constants.PRIVACY_PROTECTION);
         uiConfigBuilder.setPrivacyTextCenterGravity(true);
@@ -123,7 +126,7 @@ public class LoginUtil {
         btnCaptcha.setImageResource(R.drawable.ic_captcha);
 
         LinearLayout.LayoutParams btnParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        btnParam.setMargins(25,0,25,0);
+        btnParam.setMargins(ScreenUtil.dip2px(14),0,ScreenUtil.dip2px(14),0);
 
         layoutLoginGroup.addView(btnCaptcha,btnParam);
         layoutLoginGroup.addView(btnWechat,btnParam);

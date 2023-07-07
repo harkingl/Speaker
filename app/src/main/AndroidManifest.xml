@@ -53,9 +53,6 @@
         <activity android:name="com.android.speaker.login.LoginCaptchaActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
-        <activity android:name="com.android.speaker.login.LoginOneKeyActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"/>
 
         <activity android:name="com.android.speaker.home.HomeActivity"
             android:launchMode="singleTask"

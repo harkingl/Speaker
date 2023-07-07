@@ -14,6 +14,7 @@ import com.android.speaker.R;
 import com.android.speaker.base.bean.UserInfo;
 import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.home.HomeActivity;
+import com.android.speaker.util.LoginUtil;
 
 public class SplashActivity extends BaseActivity {
 
@@ -40,8 +41,9 @@ public class SplashActivity extends BaseActivity {
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
 
-            startActivity(new Intent(SplashActivity.this, HomeActivity.class));
-            finish();
+//            startActivity(new Intent(SplashActivity.this, LoginOneKeyActivity.class));
+//            finish();
+            LoginUtil.gotoLogin(SplashActivity.this);
         }
     };
 

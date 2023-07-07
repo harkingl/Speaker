@@ -4,8 +4,12 @@ import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 
+import com.android.speaker.base.Constants;
+
 import java.util.List;
 
+import cn.jiguang.share.android.api.JShareInterface;
+import cn.jiguang.share.android.api.PlatformConfig;
 import cn.jiguang.verifysdk.api.JVerificationInterface;
 
 public class MainApplication extends Application {
@@ -28,6 +32,11 @@ public class MainApplication extends Application {
     private void initJiguang() {
         JVerificationInterface.init(this);
         JVerificationInterface.setDebugMode(BuildConfig.DEBUG);
+
+        JShareInterface.setDebugMode(true);
+        PlatformConfig platformConfig = new PlatformConfig()
+                .setWechat(Constants.WX_APP_ID, Constants.WX_APP_SECRET);
+        JShareInterface.init(this, platformConfig);
     }
 
     private boolean isMainProcess() {

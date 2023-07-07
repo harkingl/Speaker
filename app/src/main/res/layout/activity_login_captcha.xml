@@ -4,17 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white">
-    <TextView
-        android:id="@+id/login_captcha_close_tv"
+    <ImageView
+        android:id="@+id/login_captcha_close_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="22dp"
         android:layout_marginLeft="20dp"
         android:padding="4dp"
-        android:textColor="@color/text_color_1"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:text="X"/>
+        android:src="@drawable/ic_close"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
