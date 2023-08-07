@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:paddingVertical="3dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/transparent">
+
+    <TextView
+        android:id="@+id/course_scene_type_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:paddingVertical="5dp"
+        android:paddingHorizontal="8dp"
+        android:textSize="16sp"
+        android:textColor="@color/text_color_48496E"
+        android:textStyle="bold"
+        tools:text="求职面试"/>
+    <View
+        android:id="@+id/course_scene_type_slider"
+        android:layout_width="24dp"
+        android:layout_height="3dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/slider_bg_shape"/>
+
+</RelativeLayout>

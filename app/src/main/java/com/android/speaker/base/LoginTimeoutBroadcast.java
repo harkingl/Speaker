@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 
+import com.android.speaker.util.LogOutUtil;
+
 public class LoginTimeoutBroadcast {
 
 	private final LoginTimeoutReceiver
@@ -37,9 +39,7 @@ public class LoginTimeoutBroadcast {
 			if (intent.getAction().equals(Constants.LOGIN_TIMEOUT_BROADCAST)) {
 
 				if (!mActivity.isFinishing()) {
-//					LoginOutUtil.logout(mActivity);
-
-					mActivity.finish();
+					LogOutUtil.logout(mActivity);
 				}
 			}
 			

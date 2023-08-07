@@ -11,8 +11,8 @@ import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.speaker.R;
 import com.android.speaker.base.LoginTimeoutBroadcast;
+import com.chinsion.SpeakEnglish.R;
 
 
 public class BaseActivity extends AppCompatActivity {

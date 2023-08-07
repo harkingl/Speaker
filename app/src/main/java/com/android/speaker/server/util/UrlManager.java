@@ -1,8 +1,7 @@
 package com.android.speaker.server.util;
 
 public class UrlManager {
-//    private static final String BASE_URL = "http://47.98.226.152:8080";
-    private static final String BASE_URL = "https://www.dongbudong.top/jing_chat_api";
+    private static final String BASE_URL = "http://talkease.top/speakEnglish";
     public static String formatUrl(String url) {
         if(url == null || "".equals(url)) {
             return "";
@@ -11,106 +10,61 @@ public class UrlManager {
     }
 
     /**
-     * 修改密码
-     */
-    public static final String USER_MODIFY_PWD = "/api/v1/user/modify_pwd";
-
-    /**
-     * 注册
-     */
-    public static final String USER_REGISTER = "/api/v1/user/register";
-    /**
      * 登录
      */
-    public static final String USER_LOGIN = "/api/v1/user/login";
+    public static final String USER_LOGIN = "/speakEnglish-auth/oauth/token";
 
     /**
      * 获取验证码
      */
-    public static final String GET_CAPTCHA = "/api/v1/third_party/send_msg";
+    public static final String GET_CAPTCHA = "/speakEnglish-auth/sms-code";
 
     /**
      * 获取用户信息
      */
-    public static final String GET_USER_INFO = "/api/v1/user/user_info";
+    public static final String GET_USER_INFO = "/speakEnglish-ums/app-api/v1/user/userInfo";
 
     /**
-     * 最新公告
+     * 获取学习信息
      */
-    public static final String GET_NOTICE = "/api/v1/notice/latest";
+    public static final String GET_LEARN_INFO = "/speakEnglish-ums/app-api/v1/user/userLearnInfo";
 
     /**
-     * 账户余额
+     * 精品课程首页推荐
      */
-    public static final String GET_BALANCE = "/api/v1/user/balance";
+    public static final String GET_RECOMMEND_COURSE_LIST = "/speakEnglish-ums/app-api/v1/project/recommendList";
+    /**
+     * 开口说分页数据
+     */
+    public static final String GET_OPEN_SPEAKER_LIST = "/speakEnglish-ums/app-api/v1/project/listOpenSpeak";
 
     /**
-     * 账单记录
+     * 课程主类目录
      */
-    public static final String GET_BILLING_RECORD = "/api/v1/billing_record/record";
+    public static final String GET_CATEGORY_LIST = "/speakEnglish-ums/app-api/v1/project/listAllCategories";
 
     /**
-     * 订单充值
+     * 通过主类获取课堂信息
      */
-    public static final String ORDER_RECHARGE = "/api/v1/order/balance_recharge";
+    public static final String GET_COURSE_LIST_BY_MAIN = "/speakEnglish-ums/app-api/v1/project/listByMain";
 
     /**
-     * 实名认证
+     * 精品课程分页数据
      */
-    public static final String USER_AUTHENTICATION = "/api/v1/user/authentication";
+    public static final String GET_QUALITY_COURSE_LIST = "/speakEnglish-ums/app-api/v1/project/list";
 
     /**
-     * 修改-忘记 支付密码
+     * 专项课程分页数据
      */
-    public static final String RESET_PAY_PWD = "/api/v1/user/modify_pay_password";
+    public static final String GET_SPECIAL_COURSE_LIST = "/speakEnglish-ums/app-api/v1/course/specialization";
 
     /**
-     * 防重令牌获取
+     * 通过子类获取课堂信息
      */
-    public static final String GET_TRANSFER_TOKEN = "/api/v1/transfer/token";
+    public static final String GET_COURSE_LIST_BY_SUB = "/speakEnglish-ums/app-api/v1/project/listBySub";
 
     /**
-     * 转账
+     * 英语博客/推荐博客
      */
-    public static final String TRANSFER = "/api/v1/transfer/transfer";
-
-    /**
-     * 获取当前用户信息
-     */
-    public static final String GET_CURR_USER_INFO = "/api/v1/user/curr_user";
-
-    /**
-     * 确认转账
-     */
-    public static final String TRANSFER_CONFIRM = "/api/v1/transfer/confirm";
-
-    /**
-     * 绑定支付宝
-     */
-    public static final String ALIPAY_BIND = "/api/v1/user/aliPay_binding";
-
-    /**
-     * 解绑支付宝
-     */
-    public static final String ALIPAY_UNBIND = "/api/v1/user/aliPay_untie";
-
-    /**
-     * 获取转账信息
-     */
-    public static final String GET_TRANSFER_INFO = "/api/v1/transfer/transfer_info";
-
-    /**
-     * 转账-退回
-     */
-    public static final String TRANSFER_REFUND = "/api/v1/transfer/refund";
-
-    /**
-     * 修改用户信息
-     */
-    public static final String MODIFY_USER_INFO = "/api/v1/user/modify_base";
-
-    /**
-     * 提现
-     */
-    public static final String WITHDRAWAL = "/api/v1/withdrawal/withdrawal";
+    public static final String GET_BLOG_LIST = "/speakEnglish-ums/app-api/v1/blog/getBlogList";
 }

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/transparent">
+
+    <ImageView
+        android:id="@+id/course_item_img_iv"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_marginLeft="2dp"/>
+
+    <TextView
+        android:id="@+id/course_item_free_label_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/course_item_img_iv"
+        android:layout_alignTop="@+id/course_item_img_iv"
+        android:background="@drawable/free_label_bg_shape"
+        android:paddingVertical="3dp"
+        android:paddingHorizontal="6dp"
+        android:textSize="10sp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        tools:text="限时免费"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/course_item_img_iv"
+        android:layout_marginLeft="5dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/course_item_ai_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ai_bg_stroke_shape"
+                android:paddingVertical="1dp"
+                android:paddingHorizontal="5dp"
+                android:textSize="11sp"
+                android:textColor="@color/common_green_color"
+                android:textStyle="bold"
+                android:text="AI"/>
+            <TextView
+                android:id="@+id/course_item_title_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="3dp"
+                android:lines="1"
+                android:ellipsize="end"
+                android:textSize="14sp"
+                android:textColor="@color/text_color_1"
+                android:textStyle="bold"
+                tools:text="Running late"/>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/course_item_desc_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textSize="12sp"
+            android:textColor="@color/text_color_1"
+            tools:text="会议要迟到了怎么办？如何在途中向别人解释？"/>
+    </LinearLayout>
+
+</RelativeLayout>

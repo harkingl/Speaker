@@ -122,8 +122,9 @@
         android:orientation="horizontal">
         <CheckBox
             android:id="@+id/login_captcha_protocol_cb"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:padding="3dp"
             android:button="@drawable/checkbox_selector"/>
         <TextView
             android:layout_width="wrap_content"

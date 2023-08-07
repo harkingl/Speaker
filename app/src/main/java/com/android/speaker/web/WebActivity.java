@@ -9,8 +9,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.android.speaker.R;
 import com.android.speaker.base.component.BaseActivity;
+import com.chinsion.SpeakEnglish.R;
 
 public class WebActivity extends BaseActivity {
     private WebView mWebview;

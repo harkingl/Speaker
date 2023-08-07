@@ -1,5 +1,7 @@
 package com.android.speaker.util;
 
+import static com.android.speaker.util.ThreadUtils.runOnUiThread;
+
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
@@ -8,12 +10,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.android.speaker.R;
 import com.android.speaker.base.Constants;
+import com.android.speaker.base.bean.UserInfo;
 import com.android.speaker.base.component.BaseActivity;
+import com.android.speaker.home.HomeActivity;
 import com.android.speaker.login.LoginCaptchaActivity;
+import com.android.speaker.login.LoginTask;
+import com.android.speaker.server.okhttp.RequestListener;
+import com.chinsion.SpeakEnglish.R;
 
+import cn.jiguang.share.android.api.AuthListener;
 import cn.jiguang.share.android.api.JShareInterface;
+import cn.jiguang.share.android.api.Platform;
+import cn.jiguang.share.android.model.AccessTokenInfo;
+import cn.jiguang.share.android.model.BaseResponseInfo;
 import cn.jiguang.share.wechat.Wechat;
 import cn.jiguang.verifysdk.api.JVerificationInterface;
 import cn.jiguang.verifysdk.api.JVerifyUIClickCallback;
@@ -23,10 +33,29 @@ import cn.jiguang.verifysdk.api.VerifyListener;
 public class LoginUtil {
     private static final String TAG = "LoginUtil";
 
-    public static void gotoLogin(BaseActivity activity) {
+    private static LoginUtil mInstance;
+    private BaseActivity mContext;
+
+    private LoginUtil(BaseActivity context) {
+        this.mContext = context;
+    }
+
+    public static LoginUtil getInstance(BaseActivity context) {
+        if(mInstance == null) {
+            mInstance = new LoginUtil(context);
+        }
+
+        return mInstance;
+    }
+
+    /**
+     * 一键登录
+     * @param activity
+     */
+    public void oneKeyLogin(BaseActivity activity) {
         // 如果未初始化成功，跳到验证码登陆页面
         if (!JVerificationInterface.isInitSuccess() || !JVerificationInterface.checkVerifyEnable(activity)) {
-            activity.startActivity(new Intent(activity, LoginCaptchaActivity.class));
+            gotoCaptchaLoginPage();
             return;
         }
         JVerificationInterface.setCustomUIWithConfig(getCustomUIConfig(activity));
@@ -35,26 +64,50 @@ public class LoginUtil {
             public void onResult(final int code, final String token, String operator) {
                 LogUtil.d(TAG, "onResult: code=" + code + ",token=" + token + ",operator=" + operator);
                 final String errorMsg = "operator=" + operator + ",code=" + code + "\ncontent=" + token;
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        mProgressbar.setVisibility(View.GONE);
-//                        btnLoginDialog.setEnabled(true);
-//                        btnLogin.setEnabled(true);
-//                        if (code == Constants.CODE_LOGIN_SUCCESS) {
-//                            toSuccessActivity(Constants.ACTION_LOGIN_SUCCESS, token);
-//                            Log.e(TAG, "onResult: loginSuccess");
-//                        } else if (code != Constants.CODE_LOGIN_CANCELD) {
-//                            Log.e(TAG, "onResult: loginError");
-//                            toFailedActivigy(code, token);
-//                        }
-//                    }
-//                });
+                mContext.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (code == 6000) {
+                            doLogin(token, "666666", "", "mobile");
+                            LogUtil.d(TAG, "onResult: loginSuccess");
+                        } else {
+                            LogUtil.d(TAG, "onResult: loginError");
+                            gotoCaptchaLoginPage();
+                        }
+                    }
+                });
             }
         });
     }
 
-    private static JVerifyUIConfig getCustomUIConfig(Context context){
+    private void doLogin(String token, String extId, String openId, String grant_type) {
+        ThreadUtils.execute(new LoginTask(mContext, token, extId, openId, grant_type, mListener));
+    }
+
+    private RequestListener<UserInfo> mListener = new RequestListener<UserInfo>() {
+        @Override
+        public void onSuccess(UserInfo result) {
+            ToastUtil.toastLongMessage("登录成功");
+            gotoHomePage();
+            mContext.finish();
+        }
+
+        @Override
+        public void onFailed(Throwable e) {
+            ToastUtil.toastLongMessage(e.getMessage());
+            LogUtil.e(TAG, "Login failed：" + e.getMessage());
+        }
+    };
+
+    private void gotoHomePage() {
+        mContext.startActivity(new Intent(mContext, HomeActivity.class));
+    }
+
+    private void gotoCaptchaLoginPage() {
+        mContext.startActivity(new Intent(mContext, LoginCaptchaActivity.class));
+    }
+
+    private JVerifyUIConfig getCustomUIConfig(Context context){
         JVerifyUIConfig.Builder uiConfigBuilder = new JVerifyUIConfig.Builder();
         uiConfigBuilder.setSloganTextColor(0xFFD0D0D9);
         uiConfigBuilder.setLogoOffsetY(103);
@@ -112,7 +165,7 @@ public class LoginUtil {
         btnWechat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                JShareInterface.authorize(Wechat.Name, mAuthListener);
+                wxAuthLogin();
             }
         });
         btnCaptcha.setOnClickListener(new View.OnClickListener() {
@@ -175,4 +228,61 @@ public class LoginUtil {
 
         return uiConfigBuilder.build();
     }
+
+    /**
+     * 微信授权登录
+     */
+    public void wxAuthLogin() {
+        JShareInterface.authorize(Wechat.Name, mAuthListener);
+    }
+
+    private AuthListener mAuthListener = new AuthListener() {
+        @Override
+        public void onComplete(Platform platform, int action, BaseResponseInfo data) {
+            LogUtil.d(TAG, "onComplete:" + platform + ",action:" + action + ",data:" + data);
+            String toastMsg = null;
+            switch (action) {
+                case Platform.ACTION_AUTHORIZING:
+                    if (data instanceof AccessTokenInfo) {        //授权信息
+                        JVerificationInterface.dismissLoginAuthActivity();
+                        String token = ((AccessTokenInfo) data).getToken();//token
+                        long expiration = ((AccessTokenInfo) data).getExpiresIn();//token有效时间，时间戳
+                        String refresh_token = ((AccessTokenInfo) data).getRefeshToken();//refresh_token
+                        String openid = ((AccessTokenInfo) data).getOpenid();//openid
+                        //授权原始数据，开发者可自行处理
+                        String originData = data.getOriginData();
+                        toastMsg = "授权成功:" + data.toString();
+                        LogUtil.d(TAG, "openid:" + openid + ",token:" + token + ",expiration:" + expiration + ",refresh_token:" + refresh_token);
+                        LogUtil.d(TAG, "originData:" + originData);
+//                        toSuccessActivity(Constants.ACTION_THIRD_AUTHORIZED_SUCCESS, token);
+                        doLogin(token, "", openid, "wechat");
+                    }
+                    break;
+            }
+            JShareInterface.removeAuthorize(platform.getName(),null);
+        }
+
+        @Override
+        public void onError(Platform platform, int action, int errorCode, Throwable error) {
+            LogUtil.d(TAG, "onError:" + platform + ",action:" + action + ",error:" + error);
+            switch (action) {
+                case Platform.ACTION_AUTHORIZING:
+                    JVerificationInterface.dismissLoginAuthActivity();
+                    LogUtil.d(TAG, "onResult: loginError:"+errorCode);
+//                    toFailedActivityThird(errorCode, "授权失败" + (error != null ? error.getMessage() : "") + "---" + errorCode);
+                    break;
+            }
+        }
+
+        @Override
+        public void onCancel(Platform platform, int action) {
+            LogUtil.d(TAG, "onCancel:" + platform + ",action:" + action);
+            String toastMsg = null;
+            switch (action) {
+                case Platform.ACTION_AUTHORIZING:
+                    toastMsg = "取消授权";
+                    break;
+            }
+        }
+    };
 }

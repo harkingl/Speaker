@@ -11,12 +11,16 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.android.speaker.R;
 import com.android.speaker.base.Constants;
 import com.android.speaker.base.bean.UserInfo;
 import com.android.speaker.base.component.BaseActivity;
+import com.android.speaker.home.HomeActivity;
+import com.android.speaker.server.okhttp.RequestListener;
+import com.android.speaker.util.LogUtil;
+import com.android.speaker.util.ThreadUtils;
 import com.android.speaker.util.ToastUtil;
 import com.android.speaker.web.WebActivity;
+import com.chinsion.SpeakEnglish.R;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -81,6 +85,8 @@ public class LoginCaptchaActivity extends BaseActivity implements View.OnClickLi
         if(!TextUtils.isEmpty(phone)) {
             mAccountEt.setText(phone);
         }
+        mAccountEt.setText("13777874306");
+        mCaptchaEt.setText("666666");
     }
 
     @Override
@@ -115,18 +121,18 @@ public class LoginCaptchaActivity extends BaseActivity implements View.OnClickLi
             ToastUtil.toastLongMessage("手机号格式不正确");
             return;
         }
-//        new GetCaptchaRequest(this, phone, GetCaptchaRequest.TYPE_LOGIN).schedule(true, new RequestListener<Boolean>() {
-//            @Override
-//            public void onSuccess(Boolean result) {
-//                startTimer();
-//            }
-//
-//            @Override
-//            public void onFailed(Throwable e) {
-//                Log.e(TAG, "Get captcha failed：" + e.getMessage());
-//                ToastUtil.toastLongMessage(e.getMessage());
-//            }
-//        });
+        new GetCaptchaRequest(this, phone).schedule(true, new RequestListener<Boolean>() {
+            @Override
+            public void onSuccess(Boolean result) {
+                startTimer();
+            }
+
+            @Override
+            public void onFailed(Throwable e) {
+                LogUtil.e(TAG, "Get captcha failed：" + e.getMessage());
+                ToastUtil.toastLongMessage(e.getMessage());
+            }
+        });
     }
 
     private void doLogin() {
@@ -149,20 +155,26 @@ public class LoginCaptchaActivity extends BaseActivity implements View.OnClickLi
             return;
         }
 
-//        ThreadUtils.execute(new LoginTask(this, captcha, phone, "", LoginRequest.TYPE_CAPTCHA, new RequestListener<UserInfo>() {
-//            @Override
-//            public void onSuccess(UserInfo result) {
-//                ToastUtil.toastLongMessage("登录成功");
-//                loginSuccess(result);
-//            }
-//
-//            @Override
-//            public void onFailed(Throwable e) {
-//                Log.e(TAG, "Login failed：" + e.getMessage());
-//                ToastUtil.toastLongMessage(e.getMessage());
-//
-//            }
-//        }));
+        ThreadUtils.execute(new LoginTask(this, captcha, phone, "sms_code", mListener));
+    }
+
+    private RequestListener<UserInfo> mListener = new RequestListener<UserInfo>() {
+        @Override
+        public void onSuccess(UserInfo result) {
+            ToastUtil.toastLongMessage("登录成功");
+            loginSuccess();
+            finish();
+        }
+
+        @Override
+        public void onFailed(Throwable e) {
+            ToastUtil.toastLongMessage(e.getMessage());
+            LogUtil.e(TAG, "Login failed：" + e.getMessage());
+        }
+    };
+
+    private void loginSuccess() {
+        startActivity(new Intent(this, HomeActivity.class));
     }
 
     private void gotoServiceProtocol() {

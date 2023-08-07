@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.android.speaker.base.bean.UserInfo;
 import com.android.speaker.server.util.UrlManager;
 import com.android.speaker.util.LogUtil;
+import com.bumptech.glide.load.model.stream.UrlLoader;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,8 +19,10 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -48,8 +51,36 @@ public abstract class BaseRequest<R> {
         return RequestBody.create(MediaType.parse("application/json; charset=utf-8"), body);
     }
 
+    protected RequestBody buildFormBody() throws Exception {
+        String body = body();
+        LogUtil.d(TAG, "Request params：" + body);
+        FormBody.Builder builder = new FormBody.Builder();
+
+        try {
+            JSONObject obj = new JSONObject(body());
+            if(obj.length() > 0) {
+                JSONArray names = obj.names();
+                for(int i = 0; i < names.length(); i++) {
+                    String key = names.getString(i);
+                    Object value = obj.get(key);
+                    builder.add(key, (String)value);
+                }
+
+            }
+        } catch (JSONException e) {
+
+        }
+
+        return builder.build();
+    }
+
     protected Request buildPost() throws Exception {
-        RequestBody body = buildBody();
+        RequestBody body = null;
+        if(url().contains(UrlManager.USER_LOGIN)) {
+            body = buildFormBody();
+        } else {
+            body = buildBody();
+        }
 
         return new Request.Builder()
                 .url(UrlManager.formatUrl(url()))
@@ -99,7 +130,12 @@ public abstract class BaseRequest<R> {
         Headers.Builder b = new Headers.Builder();
         String token = UserInfo.getInstance().getToken();
         if(!TextUtils.isEmpty(UserInfo.getInstance().getToken())) {
-            b.add("Authorization", token);
+            b.add("Authorization", "bearer " + token);
+        } else {
+            b.add("Authorization", "Basic c3BlYWtFbmdsaXNoLWFwcDoxMjM0NTY=");
+        }
+        if(url().contains(UrlManager.USER_LOGIN)) {
+            b.add("Content-Type", "application/x-www-form-urlencoded");
         }
 
         return b.build();
@@ -120,7 +156,6 @@ public abstract class BaseRequest<R> {
                         Request request = isPost ? buildPost() : buildGet();
                         LogUtil.d(TAG, "Request：" + request.toString());
                         Response response = mClient.newCall(request).execute();
-
                         return new JSONObject(response.body().string());
                     }
                 })

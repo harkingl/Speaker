@@ -6,15 +6,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import com.android.speaker.R;
 import com.android.speaker.base.bean.UserInfo;
 import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.home.HomeActivity;
 import com.android.speaker.util.LoginUtil;
+import com.chinsion.SpeakEnglish.R;
 
 public class SplashActivity extends BaseActivity {
 
@@ -28,11 +29,11 @@ public class SplashActivity extends BaseActivity {
             decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 //            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            getWindow().setStatusBarColor(getResources().getColor(R.color.text_color_FCFCFC));
             getWindow().setNavigationBarColor(getResources().getColor(R.color.text_color_FCFCFC));
         }
         setContentView(R.layout.activity_splash);
 
-        handleData();
         mHandler.sendEmptyMessageDelayed(1, 3000);
     }
 
@@ -41,20 +42,13 @@ public class SplashActivity extends BaseActivity {
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
 
-//            startActivity(new Intent(SplashActivity.this, LoginOneKeyActivity.class));
-//            finish();
-            LoginUtil.gotoLogin(SplashActivity.this);
+            if(TextUtils.isEmpty(UserInfo.getInstance().getToken())) {
+                LoginUtil.getInstance(SplashActivity.this).oneKeyLogin(SplashActivity.this);
+//                startActivity(new Intent(SplashActivity.this, LoginCaptchaActivity.class));
+            } else {
+                startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+            }
+            finish();
         }
     };
-
-    private void handleData() {
-        UserInfo userInfo = UserInfo.getInstance();
-//        if (userInfo != null && !TextUtils.isEmpty(userInfo.getToken())) {
-//            AppConfig.DEMO_SDK_APPID = GenerateTestUserSig.SDKAPPID;
-//            // 自动登录im sdk
-//            login();
-//        } else {
-//            startLogin();
-//        }
-    }
 }

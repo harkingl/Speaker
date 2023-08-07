@@ -16,13 +16,10 @@ public class UserInfo implements Serializable {
     private String phone;
     private String token;
     private String userId;
-    private String userSig;
     private String name;
     private String avatar;
     // 性别 0男 1女 2 未知
     private int gender = 0;
-    // 签名
-    private String slogan;
     // 是否实名认证 0否 1是
     private int authentication;
     // 身份证
@@ -30,7 +27,8 @@ public class UserInfo implements Serializable {
     // 真实姓名
     private String realName;
     private String birthday;
-    // 客服id
+    private boolean isVip;
+    private String level;
 
     public synchronized static UserInfo getInstance() {
         if (sUserInfo == null) {
@@ -53,14 +51,6 @@ public class UserInfo implements Serializable {
         SharedPreferences.Editor editor = shareInfo.edit();
         editor.putString(KEY_USER_MODEL, new Gson().toJson(this));
         editor.apply();
-    }
-
-    public String getUserSig() {
-        return this.userSig;
-    }
-
-    public void setUserSig(String userSig) {
-        this.userSig = userSig;
     }
 
     public String getName() {
@@ -111,14 +101,6 @@ public class UserInfo implements Serializable {
         this.gender = gender;
     }
 
-    public String getSlogan() {
-        return slogan;
-    }
-
-    public void setSlogan(String slogan) {
-        this.slogan = slogan;
-    }
-
     public int getAuthentication() {
         return authentication;
     }
@@ -151,10 +133,25 @@ public class UserInfo implements Serializable {
         this.birthday = birthday;
     }
 
+    public boolean isVip() {
+        return isVip;
+    }
+
+    public void setVip(boolean vip) {
+        isVip = vip;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
     public void cleanUserInfo() {
         token = "";
         userId = "";
-        userSig = "";
         name = "";
         avatar = "";
         gender = 0;
@@ -162,6 +159,8 @@ public class UserInfo implements Serializable {
         idCard = "";
         realName = "";
         birthday = "";
+        isVip = false;
+        level = "";
         storeUserInfo();
     }
 

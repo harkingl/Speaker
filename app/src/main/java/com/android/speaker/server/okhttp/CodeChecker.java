@@ -3,8 +3,8 @@ package com.android.speaker.server.okhttp;
 import android.content.Context;
 import android.content.Intent;
 
-import com.android.speaker.R;
 import com.android.speaker.base.Constants;
+import com.chinsion.SpeakEnglish.R;
 
 import org.json.JSONObject;
 
@@ -37,7 +37,7 @@ public class CodeChecker {
 //                errorInfo = mContext.getString(R.string.repeat_login_tip);
 //                sendBroadcast(TIMCommonConstants.LOGIN_TIMEOUT_BROADCAST, code, errorInfo);
 //                throw new RequestException(errorInfo, code);
-            case 1004:
+            case 401:
                 errorInfo = mContext.getString(R.string.expired_login_tip);
                 sendBroadcast(Constants.LOGIN_TIMEOUT_BROADCAST, code, errorInfo);
                 throw new RequestException(errorInfo, code);

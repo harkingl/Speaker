@@ -8,12 +8,10 @@ import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,18 +21,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.android.speaker.R;
 import com.android.speaker.base.bean.UserInfo;
 import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.base.component.BaseFragment;
 import com.android.speaker.course.CourseFragment;
-import com.android.speaker.listener.ListenerFragment;
-import com.android.speaker.login.LoginCaptchaActivity;
+import com.android.speaker.listen.ListenFragment;
 import com.android.speaker.me.MeFragment;
 import com.android.speaker.study.StudyFragment;
 import com.android.speaker.util.LogUtil;
 import com.android.speaker.util.ScreenUtil;
 import com.android.speaker.util.ToastUtil;
+import com.chinsion.SpeakEnglish.R;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,7 +40,7 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-public class HomeActivity extends BaseActivity {
+public class HomeActivity extends BaseActivity implements IHomeCallBack {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
 
@@ -121,6 +118,7 @@ public class HomeActivity extends BaseActivity {
         studyBean.selectedIcon = R.drawable.tab_study_selected;
         studyBean.text = R.string.tab_text_study;
         studyBean.fragment = new StudyFragment();
+        ((StudyFragment)studyBean.fragment).setCallback(this);
         studyBean.showUnread = true;
         studyBean.unreadClearEnable = true;
         tabBeanList.add(studyBean);
@@ -139,7 +137,7 @@ public class HomeActivity extends BaseActivity {
         listenerBean.normalIcon = R.drawable.tab_listener_default;
         listenerBean.selectedIcon = R.drawable.tab_listener_selected;
         listenerBean.text = R.string.tab_text_listener;
-        listenerBean.fragment = new ListenerFragment();
+        listenerBean.fragment = new ListenFragment();
         tabBeanList.add(listenerBean);
 
         // 我的
@@ -196,11 +194,22 @@ public class HomeActivity extends BaseActivity {
         preSelectedItem = selectedItem;
         selectedItem = tabBean;
         int prePosition = tabBeanList.indexOf(preSelectedItem);
-        if (prePosition == -1) {
-            return;
+        if (prePosition != -1) {
+            tabAdapter.notifyItemChanged(prePosition);
         }
-        tabAdapter.notifyItemChanged(prePosition);
 
+        // 修改actionbar颜色
+        switch (position) {
+            case TAB_STUDY:
+                setStudyStatusBar("down");
+                break;
+            case TAB_COURSE:
+                getWindow().setStatusBarColor(getResources().getColor(R.color.white));
+                break;
+            case TAB_ME:
+                getWindow().setStatusBarColor(getResources().getColor(R.color.text_color_FCFCFC));
+                break;
+        }
     }
 
     private long firstTime = 0;
@@ -282,6 +291,24 @@ public class HomeActivity extends BaseActivity {
         tabAdapter.notifyItemRangeChanged(0, tabBeanList.size());
         fragments.remove(tabBean.fragment);
         fragmentAdapter.notifyItemRemoved(index);
+    }
+
+    @Override
+    public void callback(int tabIndex, Object value) {
+        switch (tabIndex) {
+            case TAB_STUDY:
+                setStudyStatusBar((String)value);
+                break;
+        }
+    }
+
+    // 设置学习tab状态栏
+    private void setStudyStatusBar(String value) {
+        int colorRes = R.color.common_purple_color;
+        if("up".equals(value)) {
+            colorRes = R.color.white;
+        }
+        getWindow().setStatusBarColor(getResources().getColor(colorRes));
     }
 
     static class TabBean {

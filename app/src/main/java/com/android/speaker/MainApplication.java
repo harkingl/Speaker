@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.android.speaker.base.Constants;
+import com.chinsion.SpeakEnglish.BuildConfig;
 
 import java.util.List;
 
