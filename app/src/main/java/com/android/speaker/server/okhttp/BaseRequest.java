@@ -171,7 +171,7 @@ public abstract class BaseRequest<R> {
                     @Override
                     public void onNext(@NonNull JSONObject jsonObject) {
                         try {
-                            LogUtil.d(TAG, "Response data：" + jsonObject.toString());
+                            LogUtil.d(TAG, "Response data：" + url() + " " + jsonObject.toString());
                             CodeChecker.getInstance(mContext).checkCode(jsonObject);
                             if(mListener != null) {
                                 mListener.onSuccess(result(jsonObject));

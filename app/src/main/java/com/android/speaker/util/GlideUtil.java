@@ -30,6 +30,25 @@ public class GlideUtil {
                 .into(imageView);
     }
 
+    public static void loadCornerImage(ImageView imageView, String filePath, RequestListener listener, int radiusDp, int targetWidth, int targetHeight) {
+        CornerTransform transform = null;
+        if (radiusDp > 0) {
+            transform = new CornerTransform(MainApplication.getInstance(), ScreenUtil.dip2px(radiusDp));
+        }
+
+        RequestOptions options = new RequestOptions()
+                .centerCrop();
+        if (transform != null) {
+            options = options.transform(transform);
+        }
+        options.override(targetWidth, targetHeight);
+        Glide.with(MainApplication.getInstance())
+                .load(filePath)
+                .apply(options)
+                .listener(listener)
+                .into(imageView);
+    }
+
     public static void loadCornerImage(ImageView imageView, String filePath, RequestListener listener, int radius, boolean topLeftExcept, boolean topRightExcept, boolean bottomLeftExcept, boolean bottomRightExcept) {
         CornerTransform tran = new CornerTransform(MainApplication.getInstance(), ScreenUtil.dip2px(radius));
         tran.setExceptCorner(topLeftExcept, topRightExcept, bottomLeftExcept, bottomRightExcept);

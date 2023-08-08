@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <View android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_alignBottom="@+id/tag_name_tv"
+        android:layout_alignLeft="@+id/tag_name_tv"
+        android:layout_alignRight="@+id/tag_name_tv"
+        android:layout_marginHorizontal="1dp"
+        android:background="@drawable/home_title_bg_shape"/>
+    <TextView
+        android:id="@+id/tag_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/text_color_1"
+        android:textSize="21sp"
+        android:textStyle="bold"
+        tools:text="专项课程"/>
+</RelativeLayout>

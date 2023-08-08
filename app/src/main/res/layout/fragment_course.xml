@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:paddingLeft="20dp"
     android:orientation="vertical">
@@ -29,22 +30,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="20dp">
-                <FrameLayout
-                    android:layout_width="84dp"
+                <com.android.speaker.base.component.TitleTagView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true">
-                    <View android:layout_width="match_parent"
-                        android:layout_height="8dp"
-                        android:layout_gravity="bottom"
-                        android:background="@drawable/home_title_bg_shape"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/text_color_1"
-                        android:textSize="21sp"
-                        android:textStyle="bold"
-                        android:text="场景课程"/>
-                </FrameLayout>
+                    android:layout_centerVertical="true"
+                    app:name="场景课程"/>
                 <TextView
                     android:id="@+id/course_scene_more_tv"
                     android:layout_width="wrap_content"
@@ -101,22 +91,11 @@
                 android:layout_marginTop="24dp"
                 android:src="@drawable/ic_course_scene_streaming"/>
 
-            <FrameLayout
-                android:layout_width="84dp"
+            <com.android.speaker.base.component.TitleTagView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
-                <View android:layout_width="match_parent"
-                    android:layout_height="8dp"
-                    android:layout_gravity="bottom"
-                    android:background="@drawable/home_title_bg_shape"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/text_color_1"
-                    android:textSize="21sp"
-                    android:textStyle="bold"
-                    android:text="精品课程"/>
-            </FrameLayout>
+                android:layout_marginTop="24dp"
+                app:name="精品课程"/>
             <com.android.speaker.base.component.NoScrollListView
                 android:id="@+id/course_quality_lv"
                 android:layout_width="match_parent"
@@ -126,22 +105,12 @@
                 android:dividerHeight="20dp"
                 android:layout_marginTop="20dp"/>
 
-            <FrameLayout
-                android:layout_width="84dp"
+            <com.android.speaker.base.component.TitleTagView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
-                <View android:layout_width="match_parent"
-                    android:layout_height="8dp"
-                    android:layout_gravity="bottom"
-                    android:background="@drawable/home_title_bg_shape"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/text_color_1"
-                    android:textSize="21sp"
-                    android:textStyle="bold"
-                    android:text="专项课程"/>
-            </FrameLayout>
+                android:layout_marginTop="24dp"
+                app:name="专项课程"/>
+
             <com.android.speaker.base.component.NoScrollListView
                 android:id="@+id/course_special_lv"
                 android:layout_width="match_parent"

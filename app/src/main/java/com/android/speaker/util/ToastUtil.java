@@ -2,6 +2,7 @@ package com.android.speaker.util;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
@@ -23,6 +24,9 @@ public class ToastUtil {
     }
 
     private static void toastMessage(final String message, boolean isLong) {
+        if(TextUtils.isEmpty(message)) {
+            return;
+        }
         handler.post(new Runnable() {
             @Override
             public void run() {

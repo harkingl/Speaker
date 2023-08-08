@@ -67,4 +67,19 @@ public class UrlManager {
      * 英语博客/推荐博客
      */
     public static final String GET_BLOG_LIST = "/speakEnglish-ums/app-api/v1/blog/getBlogList";
+
+    /**
+     * 场景连播
+     */
+    public static final String GET_SCENE_PLAY_LIST = "/speakEnglish-ums/app-api/v1/project/scenePlaylPage";
+
+    /**
+     * 节目精选
+     */
+    public static final String GET_FEATURED_LIST = "/speakEnglish-ums/app-api/v1/blog/getFeaturedList";
+
+    /**
+     * 热门单集（根据收藏数和点赞数进行排序）
+     */
+    public static final String GET_HOT_BLOG_LIST = "/speakEnglish-ums/app-api/v1/blog/getHotBlogList";
 }

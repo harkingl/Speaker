@@ -4,11 +4,11 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.speaker.base.component.BaseListItemAdapter;
-import com.android.speaker.course.CourseItem;
 import com.android.speaker.util.GlideUtil;
 import com.android.speaker.util.ScreenUtil;
 import com.chinsion.SpeakEnglish.R;
@@ -16,11 +16,13 @@ import com.chinsion.SpeakEnglish.R;
 import java.util.List;
 
 /***
- * 场景连播
+ * 节目精选
  */
-public class ScenePlayAdapter extends BaseListItemAdapter<ScenePlayItem> {
-    public ScenePlayAdapter(Context context, List<ScenePlayItem> list) {
+public class ProgramListAdapter extends BaseListItemAdapter<ProgramItem> {
+    private int imgSize;
+    public ProgramListAdapter(Context context, List<ProgramItem> list, int imgSize) {
         super(context, list);
+        this.imgSize = imgSize;
     }
 
     @Override
@@ -28,22 +30,21 @@ public class ScenePlayAdapter extends BaseListItemAdapter<ScenePlayItem> {
         ViewHolder holder = null;
         if(convertView == null) {
             holder = new ViewHolder();
-            convertView = inflater.inflate(R.layout.scene_play_item, null);
-            holder.iv = convertView.findViewById(R.id.scene_play_item_img_iv);
-            holder.titleTv = convertView.findViewById(R.id.scene_play_item_title_tv);
-            holder.countTv = convertView.findViewById(R.id.scene_play_item_count_tv);
+            convertView = inflater.inflate(R.layout.program_list_item, null);
+            holder.iv = convertView.findViewById(R.id.program_iv);
+            holder.titleTv = convertView.findViewById(R.id.program_title_tv);
+            holder.typeTv = convertView.findViewById(R.id.program_type_tv);
 
-            int itemHeight = ScreenUtil.dip2px(108);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, itemHeight);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(imgSize, imgSize);
             holder.iv.setLayoutParams(params);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        ScenePlayItem info = items.get(position);
-        GlideUtil.loadCornerImage(holder.iv, info.iconUrl, null, 10);
-        holder.countTv.setText(context.getString(R.string.scene_play_count, info.count));
+        ProgramItem info = items.get(position);
+        GlideUtil.loadCornerImage(holder.iv, info.iconUrl, null, 10, imgSize, imgSize);
+        holder.typeTv.setText(info.des);
         holder.titleTv.setText(info.title);
 
         return convertView;
@@ -52,6 +53,6 @@ public class ScenePlayAdapter extends BaseListItemAdapter<ScenePlayItem> {
     class ViewHolder {
         public ImageView iv;
         public TextView titleTv;
-        public TextView countTv;
+        public TextView typeTv;
     }
 }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/transparent">
+
+    <ImageView
+        android:id="@+id/scene_play_item_img_iv"
+        android:layout_width="108dp"
+        android:layout_height="108dp"/>
+
+    <TextView
+        android:id="@+id/scene_play_item_count_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/scene_play_item_img_iv"
+        android:background="@drawable/free_label_bg_shape"
+        android:paddingVertical="5dp"
+        android:paddingHorizontal="8dp"
+        android:textSize="12sp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        tools:visibility="visible"
+        tools:text="共3节"/>
+
+        <TextView
+            android:id="@+id/scene_play_item_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/scene_play_item_img_iv"
+            android:layout_marginTop="5dp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textSize="12sp"
+            android:textColor="@color/text_color_1"
+            tools:text="日常生活｜出国就想买买买"/>
+
+</RelativeLayout>

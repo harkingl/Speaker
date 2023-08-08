@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:paddingLeft="20dp"
     android:orientation="vertical">
@@ -28,22 +29,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="20dp">
-                <FrameLayout
-                    android:layout_width="84dp"
+                <com.android.speaker.base.component.TitleTagView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true">
-                    <View android:layout_width="match_parent"
-                        android:layout_height="8dp"
-                        android:layout_gravity="bottom"
-                        android:background="@drawable/home_title_bg_shape"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/text_color_1"
-                        android:textSize="21sp"
-                        android:textStyle="bold"
-                        android:text="英语播客"/>
-                </FrameLayout>
+                    android:layout_centerVertical="true"
+                    app:name="英语播客"/>
                 <TextView
                     android:id="@+id/listen_podcast_more_tv"
                     android:layout_width="wrap_content"
@@ -72,22 +62,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:layout_marginRight="20dp">
-                <FrameLayout
-                    android:layout_width="84dp"
+                <com.android.speaker.base.component.TitleTagView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true">
-                    <View android:layout_width="match_parent"
-                        android:layout_height="8dp"
-                        android:layout_gravity="bottom"
-                        android:background="@drawable/home_title_bg_shape"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/text_color_1"
-                        android:textSize="21sp"
-                        android:textStyle="bold"
-                        android:text="场景连播"/>
-                </FrameLayout>
+                    android:layout_centerVertical="true"
+                    app:name="场景连播"/>
                 <TextView
                     android:id="@+id/listen_scene_more_tv"
                     android:layout_width="wrap_content"
