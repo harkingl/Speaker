@@ -124,7 +124,8 @@
             android:id="@+id/play_list_bottom_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/text_color_CCF7F7F7"
+            android:background="#F7F7F7"
+            android:alpha="0.8"
             android:padding="20dp"
             android:gravity="center_vertical"
             android:visibility="gone"
@@ -160,12 +161,11 @@
                     android:textSize="12sp"
                     tools:text="场景连播"/>
             </LinearLayout>
-            <ImageView
+            <com.android.speaker.listen.PlayProgressView
                 android:id="@+id/play_list_bottom_play_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:src="@drawable/ic_play"/>
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_marginLeft="20dp"/>
             <ImageView
                 android:id="@+id/play_list_bottom_menu_iv"
                 android:layout_width="wrap_content"

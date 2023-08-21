@@ -3,6 +3,9 @@ package com.android.speaker.listen;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,6 +15,8 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.base.component.NoScrollListView;
@@ -47,7 +52,7 @@ public class ScenePlayListActivity extends BaseActivity implements View.OnClickL
     private ImageView mBottomIv;
     private TextView mBottomTitleTv;
     private TextView mBottomTypeTv;
-    private ImageView mBottomPlayIv;
+    private PlayProgressView mBottomPlayIv;
     private ImageView mBottomMenuIv;
     private ExoPlayer mPlayer;
     private List<ScenePlayDataItem> mList;
@@ -135,7 +140,8 @@ public class ScenePlayListActivity extends BaseActivity implements View.OnClickL
                 Player.Listener.super.onPlaybackStateChanged(playbackState);
                 LogUtil.d(TAG, "onPlaybackStateChanged：" + playbackState);
                 if(playbackState == Player.STATE_ENDED) {
-                   mPlayer.stop();
+                    mBottomPlayIv.pause();
+                    stopPlayer();
                 }
             }
 
@@ -212,12 +218,33 @@ public class ScenePlayListActivity extends BaseActivity implements View.OnClickL
             GlideUtil.loadImage(mBottomIv, item.homePage, null);
             mBottomTitleTv.setText(item.title);
             mBottomTypeTv.setText(item.des);
-            mBottomPlayIv.setImageResource(R.drawable.ic_stop);
+            mBottomPlayIv.play();
             if(mBottomLayout.getVisibility() != View.VISIBLE) {
                 mBottomLayout.setVisibility(View.VISIBLE);
             }
+
+            mBottomPlayIv.updateProgress(0);
+            mHandler.sendEmptyMessageDelayed(WHAT_PROGRESS, 1000);
         }
     }
+
+    private static final int WHAT_PROGRESS = 1;
+    private Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+
+            switch (msg.what) {
+                case WHAT_PROGRESS:
+                    int progress = (int) ((mPlayer.getCurrentPosition()*100)/mPlayer.getDuration());
+                    mBottomPlayIv.updateProgress(progress);
+                    if(mPlayer.isPlaying()) {
+                        sendEmptyMessageDelayed(WHAT_PROGRESS, 1000);
+                    }
+                    break;
+            }
+        }
+    };
 
     @Override
     public void onClick(View v) {
@@ -241,10 +268,10 @@ public class ScenePlayListActivity extends BaseActivity implements View.OnClickL
             }
         } else if(v == mBottomPlayIv) {
             if(mPlayer.isPlaying()) {
-                mBottomPlayIv.setImageResource(R.drawable.ic_play);
+                mBottomPlayIv.pause();
                 mPlayer.pause();
             } else {
-                mBottomPlayIv.setImageResource(R.drawable.ic_stop);
+                mBottomPlayIv.play();
                 mPlayer.play();
             }
         } else if(v == mBottomMenuIv) {
@@ -254,11 +281,16 @@ public class ScenePlayListActivity extends BaseActivity implements View.OnClickL
 
     @Override
     protected void onStop() {
+        stopPlayer();
+        mHandler.removeMessages(WHAT_PROGRESS);
+        super.onStop();
+    }
+
+    private void stopPlayer() {
         if(mPlayer != null) {
             mPlayer.stop();
             mPlayer.release();
         }
-        super.onStop();
     }
 
     private DialogPlayListAdapter mDialogAdapter;

@@ -78,6 +78,7 @@
 
         <activity android:name="com.android.speaker.listen.ScenePlayListActivity"
             android:launchMode="singleTask"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait"/>
 
         <activity android:name="com.android.speaker.listen.AllScenePlayActivity"

@@ -26,6 +26,11 @@ public class HotBlogListAdapter extends BaseListItemAdapter<BlogItem> {
     }
 
     @Override
+    public int getCount() {
+        return items.size() % mRowCount == 1 ? items.size()+1 : items.size();
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         if(convertView == null) {
@@ -44,27 +49,18 @@ public class HotBlogListAdapter extends BaseListItemAdapter<BlogItem> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        int actualPos = position;
-        if(items.size() % mRowCount == 0 || items.size() % mRowCount == 2) {
-            actualPos = (position/mColumnCount) + (position%mColumnCount)*mRowCount;
-        } else if(items.size() % mRowCount == 1) {
-            if(position == mColumnCount*2-1) {
-                actualPos = 2;
-            } else if(position >= mColumnCount*2) {
-                actualPos = (position/mColumnCount) + ((position+1)%mColumnCount)*mRowCount;
-            } else {
-                actualPos = (position/mColumnCount) + (position%mColumnCount)*mRowCount;
-            }
-
+        if(items.size() % mRowCount == 1 && position == mColumnCount*2-1) {
+            convertView.setVisibility(View.INVISIBLE);
+        } else {
+            int actualPos = (position/mColumnCount) + (position%mColumnCount)*mRowCount;
+            BlogItem info = items.get(actualPos);
+            int itemSize = ScreenUtil.dip2px(60);
+            GlideUtil.loadCornerImage(holder.iv, info.iconUrl, null, 10, itemSize, itemSize);
+            holder.numTv.setText((actualPos+1) + "");
+            holder.titleTv.setText(info.titleZh);
+            holder.timeTv.setText(context.getString(R.string.blog_item_time, info.publishTime, info.audioDuration));
+            convertView.setVisibility(View.VISIBLE);
         }
-        System.out.println("##########position：" + position + " " + actualPos);
-
-        BlogItem info = items.get(actualPos);
-        int itemSize = ScreenUtil.dip2px(60);
-        GlideUtil.loadCornerImage(holder.iv, info.iconUrl, null, 10, itemSize, itemSize);
-        holder.numTv.setText((actualPos+1) + "");
-        holder.titleTv.setText(info.titleZh);
-        holder.timeTv.setText(context.getString(R.string.blog_item_time, info.publishTime, info.audioDuration));
 
         return convertView;
     }

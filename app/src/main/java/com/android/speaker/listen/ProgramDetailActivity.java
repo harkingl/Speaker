@@ -6,6 +6,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.speaker.base.ITitleBarLayout;
 import com.android.speaker.base.bean.PagedListEntity;
 import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.base.component.PagedItemListView;
@@ -44,6 +45,7 @@ public class ProgramDetailActivity extends BaseActivity implements View.OnClickL
         setContentView(R.layout.activity_program_detail);
 
         initView();
+        configTitleBar();
         initData();
     }
 
@@ -65,8 +67,14 @@ public class ProgramDetailActivity extends BaseActivity implements View.OnClickL
 
     }
 
+    private void configTitleBar() {
+        mTitleBarLayout.getRightIcon().setVisibility(View.GONE);
+//        mTitleBarLayout.setTitle("场景连播", ITitleBarLayout.Position.MIDDLE);
+        mTitleBarLayout.setOnLeftClickListener(this);
+    }
+
     private void initData() {
-        mItem = getIntent().getSerializableExtra("programItem", ProgramItem.class);
+        mItem = (ProgramItem) getIntent().getSerializableExtra("programItem");
         mList = new ArrayList<>();
 
         mAdapter = new ProgramSingleListAdapter(this, mList);
