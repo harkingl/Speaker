@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/transparent">
+
+    <TextView
+        android:id="@+id/program_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="46dp"
+        android:lines="1"
+        android:ellipsize="end"
+        android:textSize="16sp"
+        android:textColor="@color/text_color_1"
+        android:textStyle="bold"
+        tools:text="Don't You Skip this"/>
+    <TextView
+        android:id="@+id/program_des_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/program_title_tv"
+        android:layout_marginTop="6dp"
+        android:layout_marginRight="46dp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:textSize="12sp"
+        android:textColor="@color/text_color_2"
+        tools:text="Follow our Business English Podcast Learn more about your ad choices. Visit podcastchoices.com/adchoices"/>
+    <TextView
+        android:id="@+id/program_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/program_des_tv"
+        android:layout_marginTop="6dp"
+        android:textSize="12sp"
+        android:textColor="@color/hint_text_color"
+        tools:text="2023年8月9日 · 15分钟"/>
+    <ImageView
+        android:id="@+id/program_play_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/program_title_tv"
+        android:src="@drawable/ic_play_all"/>
+</RelativeLayout>

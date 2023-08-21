@@ -82,4 +82,19 @@ public class UrlManager {
      * 热门单集（根据收藏数和点赞数进行排序）
      */
     public static final String GET_HOT_BLOG_LIST = "/speakEnglish-ums/app-api/v1/blog/getHotBlogList";
+
+    /**
+     * 根据分类ID获取分类场景信息
+     */
+    public static final String GET_SCENE_PLAY_DATA_LIST = "/speakEnglish-ums/app-api/v1/project/scenePlayDatalistPage";
+
+    /**
+     * 节目精选(博客详细信息)
+     */
+    public static final String GET_BLOG_DETAIL = "/speakEnglish-ums/app-api/v1/blog/findOneFeatured";
+
+    /**
+     * 根据博客ID获取所有的单集
+     */
+    public static final String GET_BLOG_LIST_FOR_CATEGORY = "/speakEnglish-ums/app-api/v1/blog/getBlogListForCategory";
 }

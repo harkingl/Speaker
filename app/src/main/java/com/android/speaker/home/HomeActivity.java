@@ -204,6 +204,7 @@ public class HomeActivity extends BaseActivity implements IHomeCallBack {
                 setStudyStatusBar("down");
                 break;
             case TAB_COURSE:
+            case TAB_LISTEN:
                 getWindow().setStatusBarColor(getResources().getColor(R.color.white));
                 break;
             case TAB_ME:
@@ -421,7 +422,7 @@ public class HomeActivity extends BaseActivity implements IHomeCallBack {
         return version;
     }
     private String getChannelNameFromMETA() {
-        String channel = "jingchat";//默认“jingchat”
+        String channel = "speaker";//默认“speaker”
 
         final String start_flag = "META-INF/channel_";
         ApplicationInfo appInfo = getApplicationInfo();

@@ -2,6 +2,8 @@ package com.android.speaker.listen;
 
 import org.json.JSONObject;
 
+import java.util.Optional;
+
 /***
  * 博客
  */
@@ -14,6 +16,7 @@ public class BlogItem {
     public String titleZh;
     public String publishTime;
     public int audioDuration;
+    public String des;
 
     public BlogItem parse(JSONObject obj) {
         id = obj.optString("id");
@@ -24,6 +27,7 @@ public class BlogItem {
         titleZh = obj.optString("titleZh");
         publishTime = obj.optString("publishTime");
         audioDuration = obj.optInt("audioDuration");
+        des = obj.optString("des");
 
         return this;
     }

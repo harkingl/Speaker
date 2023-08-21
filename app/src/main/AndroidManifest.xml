@@ -75,6 +75,18 @@
         <activity android:name="com.android.speaker.listen.EnglishBlogActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
+
+        <activity android:name="com.android.speaker.listen.ScenePlayListActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name="com.android.speaker.listen.AllScenePlayActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name="com.android.speaker.listen.ProgramDetailActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

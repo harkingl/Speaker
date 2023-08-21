@@ -1,5 +1,6 @@
 package com.android.speaker.listen;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -151,7 +152,9 @@ public class EnglishBlogActivity extends BaseActivity implements View.OnClickLis
         mProgramGv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                Intent intent = new Intent(EnglishBlogActivity.this, ProgramDetailActivity.class);
+                intent.putExtra("programItem", ((ProgramItem)mProgramAdapter.getItem(position)));
+                startActivity(intent);
             }
         });
         mProgramGv.setLayoutParams(sceneParams);

@@ -44,7 +44,7 @@ public class ProgramListAdapter extends BaseListItemAdapter<ProgramItem> {
 
         ProgramItem info = items.get(position);
         GlideUtil.loadCornerImage(holder.iv, info.iconUrl, null, 10, imgSize, imgSize);
-        holder.typeTv.setText(info.des);
+        holder.typeTv.setText(info.category);
         holder.titleTv.setText(info.title);
 
         return convertView;

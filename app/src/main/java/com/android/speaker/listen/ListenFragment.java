@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -46,6 +47,15 @@ public class ListenFragment extends BaseFragment implements View.OnClickListener
 
         mPodcastMoreTv.setOnClickListener(this);
         mSceneMoreTv.setOnClickListener(this);
+        mSceneGv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                ScenePlayItem item = (ScenePlayItem) mSceneGv.getItemAtPosition(i);
+                if(item != null) {
+                    gotoPlayPage(item);
+                }
+            }
+        });
     }
 
     private void initData() {
@@ -90,6 +100,7 @@ public class ListenFragment extends BaseFragment implements View.OnClickListener
         int id = v.getId();
         switch (id) {
             case R.id.listen_scene_more_tv:
+                gotoAllScenePlayPage();
                 break;
             case R.id.listen_podcast_more_tv:
                 gotoBlogPage();
@@ -97,7 +108,17 @@ public class ListenFragment extends BaseFragment implements View.OnClickListener
         }
     }
 
+    private void gotoPlayPage(ScenePlayItem item) {
+        Intent i = new Intent(getActivity(), ScenePlayListActivity.class);
+        i.putExtra("scene_play_item", item);
+        startActivity(i);
+    }
     private void gotoBlogPage() {
         startActivity(new Intent(getActivity(), EnglishBlogActivity.class));
+    }
+
+    private void gotoAllScenePlayPage() {
+        Intent i = new Intent(getActivity(), AllScenePlayActivity.class);
+        startActivity(i);
     }
 }

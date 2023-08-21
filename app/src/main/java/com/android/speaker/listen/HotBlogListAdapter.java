@@ -44,7 +44,21 @@ public class HotBlogListAdapter extends BaseListItemAdapter<BlogItem> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        int actualPos = position / mColumnCount + (position%mColumnCount)*mRowCount;
+        int actualPos = position;
+        if(items.size() % mRowCount == 0 || items.size() % mRowCount == 2) {
+            actualPos = (position/mColumnCount) + (position%mColumnCount)*mRowCount;
+        } else if(items.size() % mRowCount == 1) {
+            if(position == mColumnCount*2-1) {
+                actualPos = 2;
+            } else if(position >= mColumnCount*2) {
+                actualPos = (position/mColumnCount) + ((position+1)%mColumnCount)*mRowCount;
+            } else {
+                actualPos = (position/mColumnCount) + (position%mColumnCount)*mRowCount;
+            }
+
+        }
+        System.out.println("##########position：" + position + " " + actualPos);
+
         BlogItem info = items.get(actualPos);
         int itemSize = ScreenUtil.dip2px(60);
         GlideUtil.loadCornerImage(holder.iv, info.iconUrl, null, 10, itemSize, itemSize);
