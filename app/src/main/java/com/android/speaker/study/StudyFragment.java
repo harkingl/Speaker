@@ -1,5 +1,6 @@
 package com.android.speaker.study;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -53,11 +54,13 @@ public class StudyFragment extends BaseFragment implements View.OnClickListener 
     private TextView mMoreCourseTv;
     private ScrollView mScrollView;
     private TextView mOpenTitleTv;
+    private TextView mOpenMoreTv;
     private TextView mOpenTip1Tv;
     private TextView mOpenTip2Tv;
     private TextView mOpenStartTv;
     private ImageView mOpenOssIv;
     private IHomeCallBack mCallback;
+    private OpenSpeakerInfo mInfo;
 
     @Nullable
     @Override
@@ -92,6 +95,7 @@ public class StudyFragment extends BaseFragment implements View.OnClickListener 
         mMoreCourseTv = view.findViewById(R.id.study_course_more_tv);
         mScrollView = view.findViewById(R.id.study_scrollview);
         mOpenTitleTv = view.findViewById(R.id.study_open_mouth_title_tv);
+        mOpenMoreTv = view.findViewById(R.id.study_open_mouth_more_tv);
         mOpenTip1Tv = view.findViewById(R.id.study_open_mouth_tip1_tv);
         mOpenTip2Tv = view.findViewById(R.id.study_open_mouth_tip2_tv);
         mOpenStartTv = view.findViewById(R.id.study_open_mouth_start_tv);
@@ -112,6 +116,7 @@ public class StudyFragment extends BaseFragment implements View.OnClickListener 
         mCalendarIv.setOnClickListener(this);
         mEditIv.setOnClickListener(this);
         mMoreCourseTv.setOnClickListener(this);
+        mOpenMoreTv.setOnClickListener(this);
         mOpenTip1Tv.setOnClickListener(this);
         mOpenTip2Tv.setOnClickListener(this);
         mOpenStartTv.setOnClickListener(this);
@@ -227,11 +232,23 @@ public class StudyFragment extends BaseFragment implements View.OnClickListener 
                 mOpenTip2Tv.setVisibility(View.VISIBLE);
             }
         }
+        this.mInfo = info;
     }
 
     @Override
     public void onClick(View v) {
-
+        int id = v.getId();
+        switch (id) {
+            case R.id.study_open_mouth_start_tv:
+                Intent i = new Intent(getActivity(), SpeakerDetailActivity.class);
+                i.putExtra("speaker_info", mInfo);
+                startActivity(i);
+                break;
+            case R.id.study_open_mouth_more_tv:
+                Intent intent = new Intent(getActivity(), AllSpeakerListActivity.class);
+                startActivity(intent);
+                break;
+        }
     }
 
     private void changeTitleBar(boolean flag) {

@@ -273,6 +273,7 @@ public class ScenePlayListActivity extends BaseActivity implements View.OnClickL
             } else {
                 mBottomPlayIv.play();
                 mPlayer.play();
+                mHandler.sendEmptyMessageDelayed(WHAT_PROGRESS, 1000);
             }
         } else if(v == mBottomMenuIv) {
             showPlayListDialog(this);

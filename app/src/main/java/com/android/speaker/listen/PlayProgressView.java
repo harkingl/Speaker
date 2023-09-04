@@ -68,7 +68,7 @@ public class PlayProgressView extends View {
         mProgressColor = ContextCompat.getColor(mContext, R.color.common_purple_color);
 
         int bmOffset = (int) (mSize*0.5*0.5);
-        mBitmapRect = new Rect(bmOffset, bmOffset, mSize-bmOffset, mSize-bmOffset);
+        mBitmapRect = new Rect(0, 0, mSize, mSize);
 
         mPlayBm = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_play);
         mPauseBm = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_stop);

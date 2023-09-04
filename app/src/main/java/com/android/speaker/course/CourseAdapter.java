@@ -1,6 +1,7 @@
 package com.android.speaker.course;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -46,6 +47,14 @@ public class CourseAdapter extends BaseListItemAdapter<CourseItem> {
         holder.titleTv.setText(info.title);
         holder.descTv.setText(info.des);
 
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(context, CoursePreviewActivity.class);
+                i.putExtra("course_item", info);
+                context.startActivity(i);
+            }
+        });
         return convertView;
     }
 

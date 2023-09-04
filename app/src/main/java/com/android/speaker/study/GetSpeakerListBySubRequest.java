@@ -1,7 +1,8 @@
-package com.android.speaker.listen;
+package com.android.speaker.study;
 
 import android.content.Context;
 
+import com.android.speaker.course.CourseItem;
 import com.android.speaker.server.okhttp.BaseRequest;
 import com.android.speaker.server.util.UrlManager;
 
@@ -13,19 +14,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 /***
- * 博客分页数据
+ * 通过子类获取开口说列表
  */
-public class GetBlogListRequest extends BaseRequest<List<BlogItem>> {
+public class GetSpeakerListBySubRequest extends BaseRequest<List<OpenSpeakerInfo>> {
     private int pageNum;
     private int pageSize;
-    public GetBlogListRequest(Context context, int pageNum, int pageSize) {
+    private int subId;
+    public GetSpeakerListBySubRequest(Context context, int pageNum, int pageSize, int subId) {
         super(context);
         this.pageNum = pageNum;
         this.pageSize = pageSize;
+        this.subId = subId;
     }
     @Override
     protected String url() {
-        return UrlManager.GET_BLOG_LIST;
+        return UrlManager.GET_OPEN_SPEAKER_LIST_BY_SUB;
     }
 
     @Override
@@ -33,18 +36,18 @@ public class GetBlogListRequest extends BaseRequest<List<BlogItem>> {
         JSONObject obj = new JSONObject();
         obj.put("pageNum", pageNum);
         obj.put("pageSize", pageSize);
+        obj.put("subId", subId);
         return obj.toString();
     }
 
     @Override
-    protected List<BlogItem> result(JSONObject json) throws Exception {
+    protected List<OpenSpeakerInfo> result(JSONObject json) throws Exception {
         JSONObject data = json.optJSONObject("data");
-        List<BlogItem> list = new ArrayList<>();
-
+        List<OpenSpeakerInfo> list = new ArrayList<>();
         JSONArray array = data.optJSONArray("list");
         if(array != null && array.length() > 0) {
             for(int i = 0; i < array.length(); i++) {
-                list.add(new BlogItem().parse(array.getJSONObject(i)));
+                list.add(new OpenSpeakerInfo().parse(array.getJSONObject(i)));
             }
         }
 

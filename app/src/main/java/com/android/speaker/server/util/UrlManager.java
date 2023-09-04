@@ -97,4 +97,18 @@ public class UrlManager {
      * 根据博客ID获取所有的单集
      */
     public static final String GET_BLOG_LIST_FOR_CATEGORY = "/speakEnglish-ums/app-api/v1/blog/getBlogListForCategory";
+
+    /**
+     * 获取开口说详情
+     */
+    public static final String GET_OPEN_SPEAKER_DETAIL = "/speakEnglish-ums/app-api/v1/project/openSpeakb/findOne";
+    public static final String GET_OPEN_SPEAKER_LIST_BY_SUB = "/speakEnglish-ums/app-api/v1/project/openSpeak/listBySub";
+    /**
+     * 精品课程/课程预览
+     */
+    public static final String COURSE_PREVIEW = "/speakEnglish-ums/app-api/v1/project/priviewHeader";
+    /**
+     * 词汇热身
+     */
+    public static final String GET_WORDS = "/speakEnglish-ums/app-api/v1/project/getWords";
 }

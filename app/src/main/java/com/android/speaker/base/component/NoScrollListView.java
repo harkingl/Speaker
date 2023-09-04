@@ -35,10 +35,6 @@ public class NoScrollListView extends ListView {
 
 	@Override
 	public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//		int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2,
-//				MeasureSpec.AT_MOST);
-//		super.onMeasure(widthMeasureSpec, height);
-
 		//获取lv本身高度
 		int specSize = MeasureSpec.getSize(heightMeasureSpec);
 		//限制高度小于lv高度,设置为限制高度
