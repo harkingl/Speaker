@@ -111,4 +111,8 @@ public class UrlManager {
      * 词汇热身
      */
     public static final String GET_WORDS = "/speakEnglish-ums/app-api/v1/project/getWords";
+    /**
+     * 课程精讲详情
+     */
+    public static final String GET_SCENE_PROJECT_DETAIL = "/speakEnglish-ums/app-api/v1/project/queryScenesProject";
 }

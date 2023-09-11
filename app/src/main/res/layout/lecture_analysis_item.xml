@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/transparent">
+
+    <TextView
+        android:id="@+id/analysis_item_title_en_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/text_color_1"
+        tools:text="Okay, let's go through the dialogue and show you some more casual and informal expressions that are commonly used in everyday conversations:"/>
+
+    <TextView
+        android:id="@+id/analysis_item_title_ch_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="13sp"
+        android:textColor="@color/text_color_2"
+        tools:text="好的，让我们浏览一下对话，并向你展示一些日常对话中常用的更随意和非正式的表达方式："/>
+</LinearLayout>

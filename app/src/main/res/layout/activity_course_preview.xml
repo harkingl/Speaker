@@ -120,6 +120,7 @@
                         android:background="@color/common_green_color"/>
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/preview_words_ll"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -202,6 +203,7 @@
                         android:background="@color/common_green_color"/>
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/preview_scenes_ll"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -285,6 +287,7 @@
                         android:background="@color/common_green_color"/>
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/preview_course_instruction_ll"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -362,6 +365,7 @@
                         android:src="@drawable/ic_circle_green"/>
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/preview_roleplay_ll"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

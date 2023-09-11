@@ -18,8 +18,6 @@ import com.chinsion.SpeakEnglish.R;
 
 import org.apmem.tools.layouts.FlowLayout;
 
-import java.util.List;
-
 /***
  * 课程预览
  */
@@ -35,6 +33,10 @@ public class CoursePreviewActivity extends BaseActivity implements View.OnClickL
     private TextView mCourseInstructionTv;
     private TextView mRolePlayTv;
     private TextView mStartTv;
+    private View mWordsLayout;
+    private View mSceneLayout;
+    private View mCourseInstructionLayout;
+    private View mRolePlayLayout;
     private CourseItem mInfo;
 
     @Override
@@ -57,9 +59,17 @@ public class CoursePreviewActivity extends BaseActivity implements View.OnClickL
         mCourseInstructionTv = findViewById(R.id.preview_course_instruction_tv);
         mRolePlayTv = findViewById(R.id.preview_roleplay_tv);
         mStartTv = findViewById(R.id.preview_btn_start_tv);
+        mWordsLayout = findViewById(R.id.preview_words_ll);
+        mSceneLayout = findViewById(R.id.preview_scenes_ll);
+        mCourseInstructionLayout = findViewById(R.id.preview_course_instruction_ll);
+        mRolePlayLayout = findViewById(R.id.preview_roleplay_ll);
 
         mBackIv.setOnClickListener(this);
         mStartTv.setOnClickListener(this);
+        mWordsLayout.setOnClickListener(this);
+        mSceneLayout.setOnClickListener(this);
+        mCourseInstructionLayout.setOnClickListener(this);
+        mRolePlayLayout.setOnClickListener(this);
     }
 
     private void initData() {
@@ -120,6 +130,14 @@ public class CoursePreviewActivity extends BaseActivity implements View.OnClickL
         } else if(id == R.id.preview_btn_start_tv) {
             Intent i = new Intent(this, WordPracticeActivity.class);
             i.putExtra("id", mInfo.id);
+            startActivity(i);
+        } else if(id == R.id.preview_words_ll) {
+            Intent i = new Intent(this, WordPracticeActivity.class);
+            i.putExtra("id", mInfo.id);
+            startActivity(i);
+        } else if(id == R.id.preview_course_instruction_ll) {
+            Intent i = new Intent(this, CourseLectureDetailActivity.class);
+            i.putExtra("course_item", mInfo);
             startActivity(i);
         }
     }

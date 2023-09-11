@@ -14,6 +14,8 @@ import java.util.List;
 public class WordInfo implements Serializable {
     public String id;
     public String word;
+    // 音标
+    public String mark;
     public String desc;
     public WordExplain wordExplain;
     public String audioUrl;
@@ -21,6 +23,7 @@ public class WordInfo implements Serializable {
     public WordInfo parse(JSONObject obj) throws JSONException {
         id = obj.optString("id");
         word = obj.optString("word");
+        mark = obj.optString("mark");
         desc = obj.optString("desc");
         audioUrl = obj.optString("audioUrl");
         JSONObject explainObj = obj.optJSONObject("wordExplain");
