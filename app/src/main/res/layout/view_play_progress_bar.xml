@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ProgressBar
+        android:id="@+id/view_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_marginTop="2dp"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:progressDrawable="@drawable/course_play_progress_bg"
+        android:max="100"
+        tools:progress="50"/>
+    <ImageView
+        android:id="@+id/view_slide_iv"
+        android:layout_width="7dp"
+        android:layout_height="7dp"
+        android:src="@drawable/purple_circle_bg_shape"/>
+    <TextView
+        android:id="@+id/view_left_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/view_progress_bar"
+        android:layout_below="@+id/view_progress_bar"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/hint_text_color"
+        android:textSize="10sp"
+        tools:text="0:15"/>
+    <TextView
+        android:id="@+id/view_right_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/view_progress_bar"
+        android:layout_below="@+id/view_progress_bar"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/hint_text_color"
+        android:textSize="10sp"
+        tools:text="2:02"/>
+</RelativeLayout>

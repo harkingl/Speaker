@@ -21,6 +21,16 @@
         android:requestLegacyExternalStorage="true"
         android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/SpeakerAppTheme" >
+        <provider
+            android:name="com.android.speaker.base.MyFileProvider"
+            android:authorities="com.android.speaker.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
         <activity
             android:name="com.cmic.sso.sdk.activity.OAuthActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

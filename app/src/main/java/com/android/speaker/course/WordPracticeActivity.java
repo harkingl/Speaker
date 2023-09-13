@@ -34,6 +34,7 @@ import com.google.android.exoplayer2.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 public class WordPracticeActivity extends BaseActivity implements View.OnClickListener {
@@ -171,8 +172,26 @@ public class WordPracticeActivity extends BaseActivity implements View.OnClickLi
         mCurrentTv.setText((position+1) + "/" + mList.size());
         mWordTv.setText(info.word);
         mPronunciationTv.setText(info.mark);
+        mExplainTv.setText(getExplain(info));
 
         mCurrInfo = info;
+    }
+
+    private String getExplain(WordInfo info) {
+        String content = "";
+        if(info.wordExplain != null) {
+            if(info.wordExplain.n != null) {
+                content = TextUtils.join(",", info.wordExplain.n);
+            } else if(info.wordExplain.adj != null) {
+                content = TextUtils.join(",", info.wordExplain.adj);
+            } else if(info.wordExplain.adv != null) {
+                content = TextUtils.join(",", info.wordExplain.adv);
+            } else if(info.wordExplain.v != null) {
+                content = TextUtils.join(",", info.wordExplain.v);
+            }
+        }
+
+        return content;
     }
 
     private void updateBottomView() {
@@ -200,14 +219,12 @@ public class WordPracticeActivity extends BaseActivity implements View.OnClickLi
             mLoadingBar.setVisibility(View.VISIBLE);
             mBottomView.setVisibility(View.GONE);
 
-            mHandler.sendEmptyMessageDelayed(2, 3000);
+            getScore();
         } else if(mCurrentStep == 4) {
-            mScoreTv.setText("90");
             mTipTv.setVisibility(View.GONE);
             mWaveView.setVisibility(View.GONE);
             mLoadingBar.setVisibility(View.GONE);
             mBottomView.setVisibility(View.VISIBLE);
-            //TODO
         }
     }
 
@@ -240,10 +257,6 @@ public class WordPracticeActivity extends BaseActivity implements View.OnClickLi
             switch (msg.what) {
                 case WHAT_UPDATE_MIC:
                     updateMic();
-                    break;
-                case 2:
-                    mCurrentStep = 4;
-                    updateBottomView();
                     break;
             }
         }
@@ -393,5 +406,23 @@ public class WordPracticeActivity extends BaseActivity implements View.OnClickLi
             mPlayer.stop();
             mPlayer.release();
         }
+    }
+
+    private void getScore() {
+        new GetScoreRequest(this, new File(mFilePath), mCurrInfo.word).schedule(true, new RequestListener<String>() {
+            @Override
+            public void onSuccess(String result) {
+                if(!TextUtils.isEmpty(result)) {
+                    mScoreTv.setText(result);
+                }
+                mCurrentStep = 4;
+                updateBottomView();
+            }
+
+            @Override
+            public void onFailed(Throwable e) {
+                ToastUtil.toastLongMessage(e.getMessage());
+            }
+        });
     }
 }

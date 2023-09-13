@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /***
- * 验证码登录页面
+ * 场景课程页面
  */
 public class SceneCourseActivity extends BaseActivity implements View.OnClickListener {
 

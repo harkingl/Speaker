@@ -13,6 +13,7 @@ import java.util.List;
 public class AnalysisListAdapter extends BaseListItemAdapter<CourseLectureDetail.AnalysisItem> {
     // 中文翻译是否打开
     private boolean mIsOpen;
+    private int selectIndex = -1;
 
     public AnalysisListAdapter(Context context, List<CourseLectureDetail.AnalysisItem> list, boolean isOpen) {
         super(context, list);
@@ -35,6 +36,11 @@ public class AnalysisListAdapter extends BaseListItemAdapter<CourseLectureDetail
         }
 
         CourseLectureDetail.AnalysisItem info = items.get(position);
+        if(selectIndex == position) {
+            holder.titleEnTv.setTextColor(context.getColor(R.color.common_green_color));
+        } else {
+            holder.titleEnTv.setTextColor(context.getColor(R.color.text_color_1));
+        }
         holder.titleEnTv.setText(info.sentence);
         if(mIsOpen) {
             holder.titleChTv.setText(info.translation);
@@ -43,17 +49,19 @@ public class AnalysisListAdapter extends BaseListItemAdapter<CourseLectureDetail
             holder.titleChTv.setVisibility(View.GONE);
         }
 
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
         return convertView;
     }
 
     public void setIsOpen(boolean isOpen) {
         this.mIsOpen = isOpen;
+    }
+
+    public void setSelectIndex(int index) {
+        this.selectIndex = index;
+    }
+
+    public int getSelectIndex() {
+        return selectIndex;
     }
 
     class ViewHolder {

@@ -117,7 +117,6 @@ public class PlayProgressView extends View {
 
     public void updateProgress(int progress) {
         mEndAngle = mStartAngle + progress*360/100;
-        LogUtil.d("test", "######updateProgress#######" + mStartAngle + " " + mEndAngle);
         invalidate();
     }
 }

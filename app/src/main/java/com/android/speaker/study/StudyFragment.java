@@ -23,14 +23,13 @@ import com.android.speaker.course.CourseItem;
 import com.android.speaker.course.GetRecommendCourseListRequest;
 import com.android.speaker.home.IHomeCallBack;
 import com.android.speaker.server.okhttp.RequestListener;
-import com.android.speaker.util.FormatUtils;
+import com.android.speaker.util.FormatUtil;
 import com.android.speaker.util.GlideUtil;
 import com.android.speaker.util.LogUtil;
 import com.android.speaker.util.ScreenUtil;
 import com.android.speaker.util.ToastUtil;
 import com.chinsion.SpeakEnglish.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class StudyFragment extends BaseFragment implements View.OnClickListener {
@@ -148,7 +147,7 @@ public class StudyFragment extends BaseFragment implements View.OnClickListener 
         if(!TextUtils.isEmpty(info.getName())) {
             name = info.getName();
         } else if(!TextUtils.isEmpty(info.getPhone())) {
-            name = FormatUtils.formatTelephone(info.getPhone());
+            name = FormatUtil.formatTelephone(info.getPhone());
         }
         mTitleLayout2.setVisibility(View.GONE);
         String welcomeTip = getString(R.string.welcome_user, name);

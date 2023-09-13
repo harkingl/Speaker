@@ -115,4 +115,9 @@ public class UrlManager {
      * 课程精讲详情
      */
     public static final String GET_SCENE_PROJECT_DETAIL = "/speakEnglish-ums/app-api/v1/project/queryScenesProject";
+
+    /**
+     * 获取单词评分
+     */
+    public static final String GET_SCORE = "/speakEnglish-ums/api/v1/files/getScore";
 }
