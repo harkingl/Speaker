@@ -9,6 +9,8 @@ public class UrlManager {
         return url.startsWith("http") ? url : BASE_URL + url;
     }
 
+    public static final String WEBSOCKET_URL = "ws://talkease.top/speakEnglish/speakEnglish-ums/webSocket/openSpeak";
+
     /**
      * 登录
      */
@@ -120,4 +122,9 @@ public class UrlManager {
      * 获取单词评分
      */
     public static final String GET_SCORE = "/speakEnglish-ums/api/v1/files/getScore";
+
+    /**
+     * 场景对话详情
+     */
+    public static final String GET_SCENE_SPEAK_DETAIL = "/speakEnglish-ums/app-api/v1/project/queryScenesSpeakProject";
 }

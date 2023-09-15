@@ -139,6 +139,10 @@ public class CoursePreviewActivity extends BaseActivity implements View.OnClickL
             Intent i = new Intent(this, CourseLectureDetailActivity.class);
             i.putExtra("course_item", mInfo);
             startActivity(i);
+        } else if(id == R.id.preview_scenes_ll) {
+            Intent i = new Intent(this, SceneSpeakActivity.class);
+            i.putExtra("course_item", mInfo);
+            startActivity(i);
         }
     }
 }

@@ -27,6 +27,8 @@ import com.android.speaker.base.component.BaseFragment;
 import com.android.speaker.course.CourseFragment;
 import com.android.speaker.listen.ListenFragment;
 import com.android.speaker.me.MeFragment;
+import com.android.speaker.server.okhttp.WebSocketUtil;
+import com.android.speaker.server.util.UrlManager;
 import com.android.speaker.study.StudyFragment;
 import com.android.speaker.util.LogUtil;
 import com.android.speaker.util.ScreenUtil;

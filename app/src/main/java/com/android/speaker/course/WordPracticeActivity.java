@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.media.MediaBrowserCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -396,6 +397,11 @@ public class WordPracticeActivity extends BaseActivity implements View.OnClickLi
         }
         if(!TextUtils.isEmpty(url)) {
             mPlayer.addMediaItem(MediaItem.fromUri(url));
+            if(!isMy) {
+                // 添加滴提示音
+                String alertVoiceUrl = "android.resource://" + getPackageName() + "/" + R.raw.alert_voice;
+                mPlayer.addMediaItem(MediaItem.fromUri(Uri.parse(alertVoiceUrl)));
+            }
             mPlayer.prepare();
             mPlayer.play();
         }
