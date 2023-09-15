@@ -155,23 +155,19 @@ public class CourseLectureDetailActivity extends BaseActivity implements View.On
     }
 
     private void setScrollDuration() {
-        int paddingTop = ScreenUtil.dip2px(30);
         View firstItem = mListView.getChildAt(0);
-        int scrollHeight = paddingTop - firstItem.getTop();
-        int firstVisiblePosition = mListView.getFirstVisiblePosition();
-        View firstVisibleView = mListView.getChildAt(firstVisiblePosition);
         int scrollSelectViewTop = mScrollSelectLayout.getTop();
         int position = -1;
-        if(firstVisibleView.getBottom()-scrollHeight >= scrollSelectViewTop) {
-            position = firstVisiblePosition;
+        if(firstItem.getBottom() > scrollSelectViewTop) {
+            position = ((AnalysisListAdapter.ViewHolder)firstItem.getTag()).position;
         } else {
-           for(int i = firstVisiblePosition + 1; i < mList.size(); i++) {
-               View itemView = mListView.getChildAt(i);
-               if(itemView.getBottom()-scrollHeight >= scrollSelectViewTop) {
-                   position = i;
-                   break;
-               }
-           }
+            for(int i = 1; i < mListView.getChildCount(); i++) {
+                View itemView = mListView.getChildAt(i);
+                if(itemView.getBottom() >= scrollSelectViewTop) {
+                    position = ((AnalysisListAdapter.ViewHolder)itemView.getTag()).position;
+                    break;
+                }
+            }
         }
         if(position != -1 && position != mCurrSelectPosition) {
             mCurrSelectPosition = position;
@@ -230,7 +226,7 @@ public class CourseLectureDetailActivity extends BaseActivity implements View.On
                 Player.Listener.super.onIsPlayingChanged(isPlaying);
 
                 if(isPlaying) {
-                    mHandler.sendEmptyMessageDelayed(WHAT_UPDATE_PROGRESS, 1000);
+                    mHandler.sendEmptyMessageDelayed(WHAT_UPDATE_PROGRESS, 200);
                 } else {
                     mHandler.removeMessages(WHAT_UPDATE_PROGRESS);
                 }
@@ -320,7 +316,7 @@ public class CourseLectureDetailActivity extends BaseActivity implements View.On
                 case WHAT_UPDATE_PROGRESS:
                     updateProgress();
                     if(mPlayer.isPlaying()) {
-                        sendEmptyMessageDelayed(WHAT_UPDATE_PROGRESS, 1000);
+                        sendEmptyMessageDelayed(WHAT_UPDATE_PROGRESS, 200);
                     }
                     break;
             }
@@ -333,7 +329,9 @@ public class CourseLectureDetailActivity extends BaseActivity implements View.On
         if(mList.get(index).endTime*1000 < currentPositionMs && index < mList.size()-1) {
             mAdapter.setSelectIndex(index+1);
             mAdapter.notifyDataSetChanged();
-            mListView.setSelection(index+1);
+            if(mScrollSelectLayout.getVisibility() != View.VISIBLE) {
+                mListView.setSelection(index);
+            }
         }
         mProgressBar.updateProgress(currentPositionMs);
     }
@@ -353,6 +351,7 @@ public class CourseLectureDetailActivity extends BaseActivity implements View.On
                 mPlayer.prepare();
                 mPlayer.play();
                 mAdapter.setSelectIndex(0);
+                mAdapter.notifyDataSetChanged();
 
                 mPlayIv.setImageResource(R.drawable.ic_course_stop);
                 mProgressBar.start((int) (mList.get(mList.size()-1).endTime*1000));
@@ -393,7 +392,9 @@ public class CourseLectureDetailActivity extends BaseActivity implements View.On
         mAdapter.setSelectIndex(position);
         mAdapter.notifyDataSetChanged();
         mPlayer.seekTo((int)(item.startTime*1000));
-        mListView.setSelection(position);
+        if(mPlayer.isPlaying() && position > 0 && mScrollSelectLayout.getVisibility() != View.VISIBLE) {
+            mListView.setSelection(position -1);
+        }
     }
 
     @Override

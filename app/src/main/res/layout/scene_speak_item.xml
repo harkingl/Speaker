@@ -29,8 +29,10 @@
             android:layout_marginLeft="7dp"
             android:textSize="12sp"
             android:textColor="@color/text_color_2"
+            android:textStyle="bold"
             tools:text="Monica"/>
         <LinearLayout
+            android:id="@+id/item_left_content_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/chat_item_left_bg_shape"
@@ -71,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="11dp"
                 android:padding="3dp"
-                android:src="@drawable/ic_voice_light_gray"/>
+                android:src="@drawable/chat_item_voice_default"/>
         </LinearLayout>
     </RelativeLayout>
 
@@ -100,8 +102,10 @@
             android:layout_marginRight="7dp"
             android:textSize="12sp"
             android:textColor="@color/text_color_2"
+            android:textStyle="bold"
             tools:text="James"/>
         <LinearLayout
+            android:id="@+id/item_right_content_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/chat_item_right_bg_shape"
@@ -142,7 +146,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="11dp"
                 android:padding="3dp"
-                android:src="@drawable/ic_voice_light_gray"/>
+                android:src="@drawable/chat_item_voice_default"/>
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

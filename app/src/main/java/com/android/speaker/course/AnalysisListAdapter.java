@@ -35,6 +35,8 @@ public class AnalysisListAdapter extends BaseListItemAdapter<CourseLectureDetail
             holder = (ViewHolder) convertView.getTag();
         }
 
+        holder.position = position;
+
         CourseLectureDetail.AnalysisItem info = items.get(position);
         if(selectIndex == position) {
             holder.titleEnTv.setTextColor(context.getColor(R.color.common_green_color));
@@ -67,5 +69,6 @@ public class AnalysisListAdapter extends BaseListItemAdapter<CourseLectureDetail
     class ViewHolder {
         public TextView titleEnTv;
         public TextView titleChTv;
+        public int position;
     }
 }
