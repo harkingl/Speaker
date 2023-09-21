@@ -315,9 +315,9 @@ public class CourseLectureDetailActivity extends BaseActivity implements View.On
                     break;
                 case WHAT_UPDATE_PROGRESS:
                     updateProgress();
-                    if(mPlayer.isPlaying()) {
-                        sendEmptyMessageDelayed(WHAT_UPDATE_PROGRESS, 200);
-                    }
+//                    if(mPlayer.isPlaying()) {
+//                        sendEmptyMessageDelayed(WHAT_UPDATE_PROGRESS, 200);
+//                    }
                     break;
             }
         }

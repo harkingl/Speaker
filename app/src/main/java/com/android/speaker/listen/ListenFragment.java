@@ -56,6 +56,15 @@ public class ListenFragment extends BaseFragment implements View.OnClickListener
                 }
             }
         });
+        mPodcastLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                BlogItem item = (BlogItem) mPodcastLv.getItemAtPosition(position);
+                if(item != null) {
+                    gotoBlogDetailPage(item);
+                }
+            }
+        });
     }
 
     private void initData() {
@@ -119,6 +128,12 @@ public class ListenFragment extends BaseFragment implements View.OnClickListener
 
     private void gotoAllScenePlayPage() {
         Intent i = new Intent(getActivity(), AllScenePlayActivity.class);
+        startActivity(i);
+    }
+
+    private void gotoBlogDetailPage(BlogItem item) {
+        Intent i = new Intent(getActivity(), BlogDetailActivity.class);
+        i.putExtra("blog_item", item);
         startActivity(i);
     }
 }

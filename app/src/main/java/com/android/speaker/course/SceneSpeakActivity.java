@@ -37,7 +37,7 @@ import java.util.List;
 /***
  * 场景对话
  */
-public class SceneSpeakActivity extends BaseActivity implements View.OnClickListener {
+public class SceneSpeakActivity extends BaseActivity implements View.OnClickListener, SceneSpeakAdapter.ICallBack {
 
     private static final String TAG = "SceneSpeakActivity";
 
@@ -65,6 +65,9 @@ public class SceneSpeakActivity extends BaseActivity implements View.OnClickList
     private int mCurrSelectPosition = -1;
     private ExoPlayer mPlayer;
     private SceneSpeakDetail mDetail;
+    // 用于播放某一个item
+    private ExoPlayer mSinglePlayer;
+    private long mEndTimeMs;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -268,6 +271,7 @@ public class SceneSpeakActivity extends BaseActivity implements View.OnClickList
         if(detail.speakItemList != null && detail.speakItemList.size() > 0) {
             mList = detail.speakItemList;
             mAdapter = new SceneSpeakAdapter(this, mList, true);
+            mAdapter.setCallback(this);
             mListView.setAdapter(mAdapter);
         }
 
@@ -299,6 +303,7 @@ public class SceneSpeakActivity extends BaseActivity implements View.OnClickList
     private static final int WHAT_UPDATE_DURATION = 1;
     private static final int WHAT_HIDE_DURATION = 2;
     private static final int WHAT_UPDATE_PROGRESS = 3;
+    private static final int WHAT_UPDATE_SINGLE_PROGRESS = 4;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -318,6 +323,10 @@ public class SceneSpeakActivity extends BaseActivity implements View.OnClickList
                         sendEmptyMessageDelayed(WHAT_UPDATE_PROGRESS, 200);
                     }
                     break;
+                case WHAT_UPDATE_SINGLE_PROGRESS:
+                    updateSingleProgress();
+//                    sendEmptyMessageDelayed(WHAT_UPDATE_SINGLE_PROGRESS, 100);
+                    break;
             }
         }
     };
@@ -335,6 +344,14 @@ public class SceneSpeakActivity extends BaseActivity implements View.OnClickList
         mProgressBar.updateProgress(currentPositionMs);
     }
 
+    private void updateSingleProgress() {
+        int currentPositionMs = (int) mSinglePlayer.getCurrentPosition();
+//        if(currentPositionMs >= mEndTimeMs) {
+            mSinglePlayer.pause();
+            mHandler.removeMessages(WHAT_UPDATE_SINGLE_PROGRESS);
+//        }
+    }
+
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -346,6 +363,9 @@ public class SceneSpeakActivity extends BaseActivity implements View.OnClickList
             mAdapter.setIsOpen(mIsOpen);
         } else if(id == R.id.scene_speak_btn_start_tv) {
             if(mDetail != null && !TextUtils.isEmpty(mDetail.audioSssKey)) {
+                if(mSinglePlayer != null && mSinglePlayer.isPlaying()) {
+                    mSinglePlayer.pause();
+                }
                 mPlayer.addMediaItem(MediaItem.fromUri(mDetail.audioSssKey));
                 mPlayer.prepare();
                 mPlayer.play();
@@ -365,6 +385,9 @@ public class SceneSpeakActivity extends BaseActivity implements View.OnClickList
             }
             jumpToPosition(currentIndex-1);
         } else if(id == R.id.scene_speak_play_iv) {
+            if(mSinglePlayer != null && mSinglePlayer.isPlaying()) {
+                mSinglePlayer.pause();
+            }
             if(mPlayer.isPlaying()) {
                 mPlayIv.setImageResource(R.drawable.ic_course_play);
                 mPlayer.pause();
@@ -407,5 +430,32 @@ public class SceneSpeakActivity extends BaseActivity implements View.OnClickList
             mPlayer.stop();
             mPlayer.release();
         }
+        if(mSinglePlayer != null) {
+            mSinglePlayer.stop();
+            mSinglePlayer.release();
+        }
+    }
+
+    @Override
+    public void doPlay(SceneSpeakDetail.SpeakItem item) {
+        if(item == null) {
+            return;
+        }
+        if(mPlayer.isPlaying()) {
+            mPlayer.pause();
+            mPlayIv.setImageResource(R.drawable.ic_course_play);
+        }
+        if(mSinglePlayer == null) {
+            mSinglePlayer = new ExoPlayer.Builder(this).build();
+            mSinglePlayer.addMediaItem(MediaItem.fromUri(mDetail.audioSssKey));
+            mSinglePlayer.prepare();
+        }
+
+        mEndTimeMs = (long) (item.endTime*1000);
+        mSinglePlayer.seekTo((long) (item.startTime*1000));
+        mSinglePlayer.play();
+
+        long periodTime = (long) ((item.endTime- item.startTime)*1000);
+        mHandler.sendEmptyMessageDelayed(WHAT_UPDATE_SINGLE_PROGRESS, periodTime);
     }
 }

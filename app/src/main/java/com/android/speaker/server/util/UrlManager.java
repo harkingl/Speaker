@@ -127,4 +127,6 @@ public class UrlManager {
      * 场景对话详情
      */
     public static final String GET_SCENE_SPEAK_DETAIL = "/speakEnglish-ums/app-api/v1/project/queryScenesSpeakProject";
+
+    public static final String GET_ONE_BLOG_ISSUE = "/speakEnglish-ums/app-api/v1/blog/findOneBlogIssue";
 }

@@ -16,6 +16,7 @@ public class SceneSpeakAdapter extends BaseListItemAdapter<SceneSpeakDetail.Spea
     private boolean mIsOpen;
     private int selectIndex = -1;
     private String mLeftName;
+    private ICallBack mCallback;
 
     public SceneSpeakAdapter(Context context, List<SceneSpeakDetail.SpeakItem> list, boolean isOpen) {
         super(context, list);
@@ -80,7 +81,9 @@ public class SceneSpeakAdapter extends BaseListItemAdapter<SceneSpeakDetail.Spea
             holder.leftVoiceIv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    
+                    if(mCallback != null) {
+                        mCallback.doPlay(info);
+                    }
                 }
             });
             holder.leftLayout.setVisibility(View.VISIBLE);
@@ -111,7 +114,9 @@ public class SceneSpeakAdapter extends BaseListItemAdapter<SceneSpeakDetail.Spea
             holder.rightVoiceIv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    if(mCallback != null) {
+                        mCallback.doPlay(info);
+                    }
                 }
             });
             holder.leftLayout.setVisibility(View.GONE);
@@ -149,5 +154,13 @@ public class SceneSpeakAdapter extends BaseListItemAdapter<SceneSpeakDetail.Spea
         public TextView rightTitleChTv;
         public ImageView rightVoiceIv;
         public int position;
+    }
+
+    public void setCallback(ICallBack callback) {
+        this.mCallback = callback;
+    }
+
+    interface ICallBack {
+        void doPlay(SceneSpeakDetail.SpeakItem item);
     }
 }

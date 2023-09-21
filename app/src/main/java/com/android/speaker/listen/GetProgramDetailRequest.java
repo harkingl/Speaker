@@ -19,7 +19,7 @@ public class GetProgramDetailRequest extends BaseRequest<BlogDetail> {
     }
     @Override
     protected String url() {
-        return UrlManager.GET_BLOG_DETAIL;
+        return UrlManager.GET_ONE_BLOG_ISSUE;
     }
 
     @Override

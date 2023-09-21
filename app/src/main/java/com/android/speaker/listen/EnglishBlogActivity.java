@@ -30,6 +30,7 @@ public class EnglishBlogActivity extends BaseActivity implements View.OnClickLis
     private GridView mHotGv;
     private ProgramListAdapter mProgramAdapter;
     private HotBlogListAdapter mHotBlogAdapter;
+    private BlogListAdapter mRecommendBlogAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +47,15 @@ public class EnglishBlogActivity extends BaseActivity implements View.OnClickLis
         mRecommendLv = findViewById(R.id.blog_recommend_lv);
         mProgramGv = findViewById(R.id.blog_program_gv);
         mHotGv = findViewById(R.id.blog_hot_gv);
+
+        mRecommendLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(EnglishBlogActivity.this, ProgramDetailActivity.class);
+                intent.putExtra("blogItem", ((BlogItem)mRecommendBlogAdapter.getItem(position)));
+                startActivity(intent);
+            }
+        });
     }
 
     private void configTitleBar() {
@@ -95,7 +105,8 @@ public class EnglishBlogActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onSuccess(List<BlogItem> result) {
                 if(result != null && result.size() > 0) {
-                    mRecommendLv.setAdapter(new BlogListAdapter(EnglishBlogActivity.this, result));
+                    mRecommendBlogAdapter = new BlogListAdapter(EnglishBlogActivity.this, result);
+                    mRecommendLv.setAdapter(mRecommendBlogAdapter);
                 }
             }
 

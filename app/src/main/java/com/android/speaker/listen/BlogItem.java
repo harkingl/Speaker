@@ -2,12 +2,13 @@ package com.android.speaker.listen;
 
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 /***
  * 博客
  */
-public class BlogItem {
+public class BlogItem implements Serializable {
     public String id;
     public String iconUrl;
     public int favoriteCount;

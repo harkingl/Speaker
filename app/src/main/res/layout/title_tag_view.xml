@@ -4,7 +4,9 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <View android:layout_width="match_parent"
+    <View
+        android:id="@+id/tag_color_block_view"
+        android:layout_width="match_parent"
         android:layout_height="8dp"
         android:layout_alignBottom="@+id/tag_name_tv"
         android:layout_alignLeft="@+id/tag_name_tv"
