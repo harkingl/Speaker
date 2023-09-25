@@ -128,5 +128,18 @@ public class UrlManager {
      */
     public static final String GET_SCENE_SPEAK_DETAIL = "/speakEnglish-ums/app-api/v1/project/queryScenesSpeakProject";
 
+    /**
+     * 博客详情
+     */
     public static final String GET_ONE_BLOG_ISSUE = "/speakEnglish-ums/app-api/v1/blog/findOneBlogIssue";
+
+    /**
+     * 收藏英语博客
+     */
+    public static final String ADD_BLOG = "/speakEnglish-ums/tableFavorites/addBlog";
+
+    /**
+     * 收藏场景课程
+     */
+    public static final String ADD_PROJECT = "/speakEnglish-ums/tableFavorites/addProject";
 }

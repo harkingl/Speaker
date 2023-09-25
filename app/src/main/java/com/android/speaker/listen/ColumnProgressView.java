@@ -34,7 +34,7 @@ public class ColumnProgressView extends View {
     private float mPadding = -1;
     private int mMaxHeight = -1;
     private List<Integer> mHeightList;
-    private float mProgress = 0.3f;
+    private float mProgress;
 
     public ColumnProgressView(Context context) {
         this(context, null);

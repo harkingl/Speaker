@@ -50,14 +50,6 @@ public class CourseLectureDetail implements Serializable {
         return this;
     }
 
-    public class AnalysisItem {
-        public String sentence;
-        public String grammar;
-        public String translation;
-        public double startTime;
-        public double endTime;
-    }
-
     public class HeaderContent {
         public String context;
         public double startTime;

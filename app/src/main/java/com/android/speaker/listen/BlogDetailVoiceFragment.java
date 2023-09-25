@@ -14,7 +14,7 @@ import com.android.speaker.base.component.BaseFragment;
 import com.android.speaker.util.GlideUtil;
 import com.chinsion.SpeakEnglish.R;
 
-public class BlogDetailVoiceFragment extends BaseFragment implements View.OnClickListener {
+public class BlogDetailVoiceFragment extends BaseFragment implements View.OnClickListener, BlogProgressBar.OnProgressChangedListener {
     private ImageView mTopIv;
     private TextView mTitleTv;
     private TextView mNameTv;
@@ -39,7 +39,6 @@ public class BlogDetailVoiceFragment extends BaseFragment implements View.OnClic
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         initView(view);
     }
 
@@ -56,6 +55,7 @@ public class BlogDetailVoiceFragment extends BaseFragment implements View.OnClic
         mJumpPrevIv.setOnClickListener(this);
         mJumpNextIv.setOnClickListener(this);
         mPlayIv.setOnClickListener(this);
+        mProgressBar.setOnProgressChangedListener(this);
     }
 
     public void setData(BlogDetail detail) {
@@ -68,11 +68,41 @@ public class BlogDetailVoiceFragment extends BaseFragment implements View.OnClic
     }
 
     public void updateProgress(int currentPositionMs) {
-        mProgressBar.updateProgress(currentPositionMs);
+        if(mProgressBar != null) {
+            mProgressBar.updateProgress(currentPositionMs);
+        }
+    }
+
+    public void play(boolean isPlay) {
+        mPlayIv.setImageResource(isPlay ? R.drawable.ic_course_stop : R.drawable.ic_course_play);
     }
 
     @Override
     public void onClick(View v) {
+        int id = v.getId();
+        switch (id) {
+            case R.id.voice_jump_prev_iv:
+                if(mCallback != null) {
+                    mCallback.jumpPrev();
+                }
+                break;
+            case R.id.voice_jump_next_iv:
+                if(mCallback != null) {
+                    mCallback.jumpNext();
+                }
+                break;
+            case R.id.voice_play_iv:
+                if(mCallback != null) {
+                    mCallback.play();
+                }
+                break;
+        }
+    }
 
+    @Override
+    public void onProgressChanged(int total, int current) {
+        if(mCallback != null) {
+            mCallback.seekTo(current);
+        }
     }
 }

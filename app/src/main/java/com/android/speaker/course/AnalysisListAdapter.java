@@ -10,12 +10,12 @@ import com.chinsion.SpeakEnglish.R;
 
 import java.util.List;
 
-public class AnalysisListAdapter extends BaseListItemAdapter<CourseLectureDetail.AnalysisItem> {
+public class AnalysisListAdapter extends BaseListItemAdapter<AnalysisItem> {
     // 中文翻译是否打开
     private boolean mIsOpen;
     private int selectIndex = -1;
 
-    public AnalysisListAdapter(Context context, List<CourseLectureDetail.AnalysisItem> list, boolean isOpen) {
+    public AnalysisListAdapter(Context context, List<AnalysisItem> list, boolean isOpen) {
         super(context, list);
 
         this.mIsOpen = isOpen;
@@ -37,7 +37,7 @@ public class AnalysisListAdapter extends BaseListItemAdapter<CourseLectureDetail
 
         holder.position = position;
 
-        CourseLectureDetail.AnalysisItem info = items.get(position);
+        AnalysisItem info = items.get(position);
         if(selectIndex == position) {
             holder.titleEnTv.setTextColor(context.getColor(R.color.common_green_color));
         } else {
@@ -66,7 +66,7 @@ public class AnalysisListAdapter extends BaseListItemAdapter<CourseLectureDetail
         return selectIndex;
     }
 
-    class ViewHolder {
+    public class ViewHolder {
         public TextView titleEnTv;
         public TextView titleChTv;
         public int position;

@@ -1,6 +1,11 @@
 package com.android.speaker.listen;
 
+import com.android.speaker.course.AnalysisItem;
+import com.android.speaker.course.CourseLectureDetail;
+
 import org.json.JSONObject;
+
+import java.util.List;
 
 /***
  * 博客详情
@@ -20,6 +25,7 @@ public class BlogDetail {
     public double audioDuration;
     public String des;
     public String name;
+    public List<AnalysisItem> list;
 
     public BlogDetail parse(JSONObject obj) {
         id = obj.optString("id");

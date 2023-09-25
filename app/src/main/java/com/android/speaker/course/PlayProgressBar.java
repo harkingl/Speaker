@@ -62,26 +62,44 @@ public class PlayProgressBar extends RelativeLayout {
         LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         this.addView(view, params);
 
-//        mSlideIv.setOnTouchListener(new OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                switch (event.getAction()) {
-//                    case MotionEvent.ACTION_MOVE:
-//                        refreshView((int) event.getX());
-//                        break;
-//                }
-//                return true;
-//            }
-//        });
+        view.setOnTouchListener(new OnTouchListener() {
+            private float lastX = -1;
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        lastX = event.getX();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        refreshView((int) (event.getX()-lastX));
+                        lastX = event.getX();
+                        break;
+                }
+                return true;
+            }
+        });
     }
 
     private void refreshView(int x) {
         mSlideParams.leftMargin += x;
-        int currentDuration = (int) ((float)mSlideParams.leftMargin/mMaxSlidingWidth*mDurationMs);
+        if(mSlideParams.leftMargin <= 0) {
+            mSlideParams.leftMargin = 0;
+        } else if(mSlideParams.leftMargin >= mMaxSlidingWidth) {
+            mSlideParams.leftMargin = (int) mMaxSlidingWidth;
+        }
+        mSlideIv.setLayoutParams(mSlideParams);
+        int currentDuration = (int) ((float)(mSlideParams.leftMargin)/mMaxSlidingWidth*mDurationMs);
         mProgressBar.setProgress(currentDuration);
         if(mListener != null) {
             mListener.onProgressChanged(mDurationMs, currentDuration);
         }
+
+//        mSlideParams.leftMargin += x;
+//        int currentDuration = (int) ((float)mSlideParams.leftMargin/mMaxSlidingWidth*mDurationMs);
+//        mProgressBar.setProgress(currentDuration);
+//        if(mListener != null) {
+//            mListener.onProgressChanged(mDurationMs, currentDuration);
+//        }
     }
 
     public void start(int durationMs) {
@@ -96,6 +114,9 @@ public class PlayProgressBar extends RelativeLayout {
         mLeftTimeTv.setText(TimeUtil.timeToString(currentPositionMs/1000));
 
         mSlideParams.leftMargin = (int) ((float)currentPositionMs/mDurationMs*mMaxSlidingWidth);
+        if(mSlideParams.leftMargin >= mMaxSlidingWidth) {
+            mSlideParams.leftMargin = (int) mMaxSlidingWidth;
+        }
         requestLayout();
     }
 

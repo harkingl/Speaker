@@ -25,6 +25,7 @@ public class BlogProgressBar extends RelativeLayout {
     private OnProgressChangedListener mListener;
     private int mDurationMs;
     private float mMaxSlidingWidth = -1;
+    private int mStartMargin;
 
     public BlogProgressBar(Context context) {
         this(context, null);
@@ -36,6 +37,7 @@ public class BlogProgressBar extends RelativeLayout {
         super(context, attrs, defStyleAttr);
         this.mContext = context;
 
+        mStartMargin = -1*ScreenUtil.dip2px(10);
         initView();
     }
 
@@ -44,7 +46,7 @@ public class BlogProgressBar extends RelativeLayout {
         super.onLayout(changed, l, t, r, b);
 
         if(mMaxSlidingWidth == -1) {
-            mMaxSlidingWidth = mProgressBar.getWidth();// - mSlideView.getWidth() - ScreenUtil.dip2px(10);
+            mMaxSlidingWidth = mProgressBar.getWidth() - ScreenUtil.dip2px(5);
         }
     }
 
@@ -81,15 +83,14 @@ public class BlogProgressBar extends RelativeLayout {
 
     private void refreshView(int x) {
         mSlideParams.leftMargin += x;
-        if(mSlideParams.leftMargin <= -30) {
-            mSlideParams.leftMargin = -30;
+        if(mSlideParams.leftMargin <= mStartMargin) {
+            mSlideParams.leftMargin = mStartMargin;
         } else if(mSlideParams.leftMargin >= mMaxSlidingWidth) {
             mSlideParams.leftMargin = (int) mMaxSlidingWidth;
         }
-//        mSlideView.scrollBy(x, 0);
         mSlideView.setLayoutParams(mSlideParams);
-        int currentDuration = (int) ((float)(mSlideParams.leftMargin+30)/mMaxSlidingWidth*mDurationMs);
-        mProgressBar.setProgress((float)(mSlideParams.leftMargin+30)/mMaxSlidingWidth);
+        int currentDuration = (int) ((float)(mSlideParams.leftMargin-mStartMargin)/mMaxSlidingWidth*mDurationMs);
+        mProgressBar.setProgress((float)(mSlideParams.leftMargin-mStartMargin)/mMaxSlidingWidth);
         if(mListener != null) {
             mListener.onProgressChanged(mDurationMs, currentDuration);
         }
@@ -105,7 +106,11 @@ public class BlogProgressBar extends RelativeLayout {
         mProgressBar.setProgress((float)currentPositionMs/mDurationMs);
         mLeftTimeTv.setText(TimeUtil.timeToString(currentPositionMs/1000));
 
-        mSlideParams.leftMargin = (int) ((float)currentPositionMs/mDurationMs*mMaxSlidingWidth);
+        mSlideParams.leftMargin = (int) ((float)currentPositionMs/mDurationMs*mMaxSlidingWidth)+mStartMargin;
+        if(mSlideParams.leftMargin >= mMaxSlidingWidth) {
+            mSlideParams.leftMargin = (int) mMaxSlidingWidth;
+        }
+        mSlideView.setLayoutParams(mSlideParams);
         requestLayout();
     }
 

@@ -1,6 +1,7 @@
 package com.android.speaker.listen;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -43,7 +44,19 @@ public class BlogListAdapter extends BaseListItemAdapter<BlogItem> {
         holder.titleTv.setText(info.titleZh);
         holder.timeTv.setText(context.getString(R.string.blog_item_time, info.publishTime, info.audioDuration));
 
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoBlogDetailPage(info);
+            }
+        });
         return convertView;
+    }
+
+    private void gotoBlogDetailPage(BlogItem item) {
+        Intent i = new Intent(context, BlogDetailActivity.class);
+        i.putExtra("blog_item", item);
+        context.startActivity(i);
     }
 
     class ViewHolder {

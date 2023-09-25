@@ -18,7 +18,6 @@ import com.android.speaker.util.ScreenUtil;
 import com.android.speaker.util.ToastUtil;
 import com.chinsion.SpeakEnglish.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class EnglishBlogActivity extends BaseActivity implements View.OnClickListener {
@@ -47,15 +46,6 @@ public class EnglishBlogActivity extends BaseActivity implements View.OnClickLis
         mRecommendLv = findViewById(R.id.blog_recommend_lv);
         mProgramGv = findViewById(R.id.blog_program_gv);
         mHotGv = findViewById(R.id.blog_hot_gv);
-
-        mRecommendLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(EnglishBlogActivity.this, ProgramDetailActivity.class);
-                intent.putExtra("blogItem", ((BlogItem)mRecommendBlogAdapter.getItem(position)));
-                startActivity(intent);
-            }
-        });
     }
 
     private void configTitleBar() {
@@ -197,7 +187,7 @@ public class EnglishBlogActivity extends BaseActivity implements View.OnClickLis
         mHotGv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                gotoBlogDetailPage(((BlogItem)mHotBlogAdapter.getItem(position)));
             }
         });
         mHotGv.setLayoutParams(params);
@@ -208,6 +198,12 @@ public class EnglishBlogActivity extends BaseActivity implements View.OnClickLis
         mHotGv.setStretchMode(GridView.NO_STRETCH);
         mHotBlogAdapter = new HotBlogListAdapter(this, list, columnCount);
         mHotGv.setAdapter(mHotBlogAdapter);
+    }
+
+    private void gotoBlogDetailPage(BlogItem item) {
+        Intent i = new Intent(this, BlogDetailActivity.class);
+        i.putExtra("blog_item", item);
+        this.startActivity(i);
     }
 
     @Override
