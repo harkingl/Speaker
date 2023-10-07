@@ -9,18 +9,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /***
- * 收藏英语博客
+ * 移除收藏
  */
-public class AddBlogRequest extends BaseRequest<String> {
-    // 博客ID
+public class RemoveBlogRequest extends BaseRequest<Boolean> {
+    // 收藏ID
     private String id;
-    public AddBlogRequest(Context context, String id) {
+    public RemoveBlogRequest(Context context, String id) {
         super(context);
         this.id = id;
     }
     @Override
     protected String url() {
-        return UrlManager.ADD_BLOG;
+        return UrlManager.REMOVE_BLOG;
     }
 
     @Override
@@ -31,8 +31,8 @@ public class AddBlogRequest extends BaseRequest<String> {
     }
 
     @Override
-    protected String result(JSONObject json) throws Exception {
+    protected Boolean result(JSONObject json) throws Exception {
 
-        return json.optString("data");
+        return true;
     }
 }

@@ -1,11 +1,18 @@
 package com.android.speaker.course;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Html;
 import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,7 +25,9 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.base.component.BaseFragment;
+import com.android.speaker.base.component.NoScrollListView;
 import com.android.speaker.home.FragmentAdapter;
+import com.android.speaker.listen.DialogPlayListAdapter;
 import com.android.speaker.server.okhttp.RequestListener;
 import com.android.speaker.util.LogUtil;
 import com.android.speaker.util.ScreenUtil;
@@ -36,7 +45,7 @@ import java.util.List;
 /***
  * 课程课件
  */
-public class CourseLectureDetailActivity extends BaseActivity implements View.OnClickListener {
+public class CourseLectureDetailActivity extends BaseActivity implements View.OnClickListener, QuestionListener {
 
     private static final String TAG = "CourseLectureDetailActivity";
 
@@ -64,6 +73,8 @@ public class CourseLectureDetailActivity extends BaseActivity implements View.On
     private int mCurrSelectPosition = -1;
     private ExoPlayer mPlayer;
     private CourseLectureDetail mDetail;
+    private List<QuestionInfo> mQuestionList;
+    private int mQuestionIndex = -1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -251,6 +262,22 @@ public class CourseLectureDetailActivity extends BaseActivity implements View.On
                 ToastUtil.toastLongMessage(e.getMessage());
             }
         });
+
+        new GetQuestionListRequest(this, mInfo.id).schedule(false, new RequestListener<List<QuestionInfo>>() {
+            @Override
+            public void onSuccess(List<QuestionInfo> result) {
+                if(result != null && result.size() > 0) {
+                    mQuestionList = result;
+                    mQuestionIndex = 0;
+                }
+            }
+
+            @Override
+            public void onFailed(Throwable e) {
+
+            }
+        });
+
     }
 
     private void setView(CourseLectureDetail detail) {
@@ -335,6 +362,13 @@ public class CourseLectureDetailActivity extends BaseActivity implements View.On
             }
         }
         mProgressBar.updateProgress(currentPositionMs);
+
+        if(mQuestionIndex >= 0 && currentPositionMs >= mQuestionList.get(mQuestionIndex).showTime*1000) {
+            showDialog(mQuestionList.get(mQuestionIndex));
+            // 暂停播放
+            mPlayIv.setImageResource(R.drawable.ic_course_play);
+            mPlayer.pause();
+        }
     }
 
     @Override
@@ -409,5 +443,125 @@ public class CourseLectureDetailActivity extends BaseActivity implements View.On
             mPlayer.stop();
             mPlayer.release();
         }
+    }
+
+    private void showDialog(QuestionInfo info) {
+        if(info.type == QuestionInfo.TYPE_FILL_BLANK) {
+            List<String> list = new ArrayList<>();
+            list.add("with");
+            list.add("way");
+            list.add("without");
+            list.add("late");
+            list.add("for");
+            list.add("ahead");
+            info.questionSelect = list;
+
+            FillBlankDialog dialog = new FillBlankDialog(this);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setCancelable(false);
+            dialog.show();
+
+            WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+            lp.width = ScreenUtil.getScreenWidth(this);
+            lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            lp.gravity = Gravity.BOTTOM;
+            dialog.getWindow().setAttributes(lp);
+
+            dialog.setListener(this);
+            dialog.setData(info);
+        } else if(info.type == QuestionInfo.TYPE_QUESTION_SELECT || info.type == QuestionInfo.TYPE_LISTEN_SELECT) {
+            List<String> list = new ArrayList<>();
+            list.add("A.  恶劣天气");
+            list.add("B.  家中急事");
+            list.add("C.  交通堵塞");
+            list.add("D.  身体不适");
+            info.questionSelect = list;
+
+            info.type = QuestionInfo.TYPE_LISTEN_SELECT;
+            info.audioUrl = "https://dict.youdao.com/dictvoice?audio=running late&type=2";
+            info.answerAnalysis = "想和多少牛奶就喝多少应为“Drink as much milk as you want“。题中的D选项也表达同。。。一样多的意思，但many后跟可数名词，而milk为不可数名词，故选B。";
+
+            SelectQuestionDialog dialog = new SelectQuestionDialog(this);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setCancelable(false);
+            dialog.show();
+            WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+            lp.width = ScreenUtil.getScreenWidth(this);//WindowManager.LayoutParams.MATCH_PARENT;
+            lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            lp.gravity = Gravity.BOTTOM;
+            dialog.getWindow().setAttributes(lp);
+
+            dialog.setListener(this);
+            dialog.setData(info);
+        } else if(info.type == QuestionInfo.TYPE_SPEAK) {
+            SpeakPracticeDialog dialog = new SpeakPracticeDialog(this);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setCancelable(false);
+            dialog.show();
+
+            WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+            lp.width = ScreenUtil.getScreenWidth(this);
+            lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            lp.gravity = Gravity.BOTTOM;
+            dialog.getWindow().setAttributes(lp);
+
+            dialog.setListener(this);
+            dialog.setData(info);
+        } else {
+            ToastUtil.toastLongMessage("暂不支持");
+        }
+    }
+
+    @Override
+    public void onContinue() {
+        if(mQuestionIndex < mQuestionList.size()-1) {
+            mQuestionIndex++;
+        } else {
+            mQuestionIndex = -1;
+        }
+        mPlayIv.setImageResource(R.drawable.ic_course_stop);
+        mPlayer.play();
+    }
+
+    @Override
+    public void answerAnalysis(String content) {
+        showAnswerAnalysisDialog(content);
+    }
+
+    private void showAnswerAnalysisDialog(String content) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogStyle);
+        View layout = LayoutInflater.from(this).inflate(R.layout.dialog_answer_analysis, null);
+        final AlertDialog dialog = builder.create();
+        dialog.setView(layout);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.show();
+        Window window = dialog.getWindow();
+        window.setContentView(R.layout.dialog_answer_analysis);
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.gravity = Gravity.BOTTOM;
+        window.setAttributes(lp);
+
+        TextView contentTv = window.findViewById(R.id.dialog_content_tv);
+        contentTv.setText(Html.fromHtml(content));
+        TextView btn = window.findViewById(R.id.dialog_btn_continue_tv);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onContinue();
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private void test() {
+        QuestionInfo info = new QuestionInfo();
+        info.question = "I'm gonna be a bit late.";
+        info.translation = "我要迟到一会儿。";
+        info.type = QuestionInfo.TYPE_SPEAK;
+        info.audioUrl = "https://dict.youdao.com/dictvoice?audio=running late&type=2";
+        showDialog(info);
     }
 }

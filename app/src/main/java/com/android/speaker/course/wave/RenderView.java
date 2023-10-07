@@ -136,6 +136,7 @@ public abstract class RenderView extends SurfaceView implements SurfaceHolder.Ca
         }
 
         renderThread = new RenderThread(this);
+        startThread();
     }
 
     /**
@@ -206,7 +207,7 @@ public abstract class RenderView extends SurfaceView implements SurfaceHolder.Ca
 
     public void startAnim() {
         isStartAnim = true;
-        startThread();
+//        startThread();
     }
 
     private void startThread() {

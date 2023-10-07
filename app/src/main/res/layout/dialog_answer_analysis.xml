@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
+
+    <LinearLayout
+        android:id="@+id/dialog_common_view_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="20dp"
+        android:padding="20dp"
+        android:background="@drawable/white_bg_shape_20"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color_1"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="答案解析"/>
+
+        <TextView
+            android:id="@+id/dialog_content_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/text_color_48496E"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:text="想和多少牛奶就喝多少应为"/>
+
+        <TextView
+            android:id="@+id/dialog_btn_continue_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:paddingVertical="12dp"
+            android:paddingHorizontal="44dp"
+            android:background="@drawable/btn_bg_shape_green"
+            android:textSize="16dp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:text="继续听讲"/>
+    </LinearLayout>
+
+</RelativeLayout>

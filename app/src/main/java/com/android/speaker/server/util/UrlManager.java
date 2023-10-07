@@ -139,7 +139,16 @@ public class UrlManager {
     public static final String ADD_BLOG = "/speakEnglish-ums/tableFavorites/addBlog";
 
     /**
+     * 移除收藏
+     */
+    public static final String REMOVE_BLOG = "/speakEnglish-ums/tableFavorites/remove";
+
+    /**
      * 收藏场景课程
      */
     public static final String ADD_PROJECT = "/speakEnglish-ums/tableFavorites/addProject";
+    /**
+     * 问题列表
+     */
+    public static final String GET_QUESTIONS = "/speakEnglish-ums/app-api/v1/project/queryQuestions";
 }

@@ -3,6 +3,7 @@ package com.android.speaker.listen;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -49,6 +50,7 @@ public class BlogDetailActivity extends BaseActivity implements View.OnClickList
     private boolean mIsOpen = false;
     // 是否收藏
     private boolean mIsFavorite = false;
+    private String mFavoriteId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -147,29 +149,36 @@ public class BlogDetailActivity extends BaseActivity implements View.OnClickList
 
         changeTag(TAB_INDEX_VOICE);
 
-        new GetCourseLectureDetailRequest(this, "40").schedule(false, new RequestListener<CourseLectureDetail>() {
-            @Override
-            public void onSuccess(CourseLectureDetail result) {
-                getData(result);
-            }
-
-            @Override
-            public void onFailed(Throwable e) {
-                ToastUtil.toastLongMessage(e.getMessage());
-            }
-        });
+//        new GetCourseLectureDetailRequest(this, "40").schedule(false, new RequestListener<CourseLectureDetail>() {
+//            @Override
+//            public void onSuccess(CourseLectureDetail result) {
+//                getData(result);
+//            }
+//
+//            @Override
+//            public void onFailed(Throwable e) {
+//                ToastUtil.toastLongMessage(e.getMessage());
+//            }
+//        });
+        getData();
     }
 
-    private void getData(CourseLectureDetail detail) {
-        new GetProgramDetailRequest(this, "1").schedule(false, new RequestListener<BlogDetail>() {
+    private void getData() {
+        new GetProgramDetailRequest(this, mItem.id).schedule(false, new RequestListener<BlogDetail>() {
             @Override
             public void onSuccess(BlogDetail result) {
-                result.audioUrl = detail.audioSssKey;
-                mList = detail.analysisItemList;
-                result.list = detail.analysisItemList;
-                preparePlayer(detail.audioSssKey);
+                mList = result.list;
 
-                result.audioDuration = 0.5f;
+                if(!TextUtils.isEmpty(result.favoritesId) && !"null".equals(result.favoritesId)) {
+                    mIsFavorite = true;
+                    mFavoriteId = result.favoritesId;
+                    mStarIv.setImageResource(R.drawable.ic_star_blue_select);
+                }
+
+                if(!TextUtils.isEmpty(result.audioUrl)) {
+                    preparePlayer(result.audioUrl);
+                }
+
                 if(mVoiceFragment != null) {
                     mVoiceFragment.setData(result);
                 }
@@ -313,13 +322,26 @@ public class BlogDetailActivity extends BaseActivity implements View.OnClickList
 
     private void addBlog() {
         if(mIsFavorite) {
-
-        } else {
-            new AddBlogRequest(this, mItem.id).schedule(false, new RequestListener<Boolean>() {
+            new RemoveBlogRequest(this, mFavoriteId).schedule(false, new RequestListener<Boolean>() {
                 @Override
                 public void onSuccess(Boolean result) {
+//                    ToastUtil.toastLongMessage("取消收藏成功");
+                    mIsFavorite = false;
+                    mStarIv.setImageResource(R.drawable.ic_star_blue);
+                }
+
+                @Override
+                public void onFailed(Throwable e) {
+                    ToastUtil.toastLongMessage(e.getMessage());
+                }
+            });
+        } else {
+            new AddBlogRequest(this, mItem.id).schedule(false, new RequestListener<String>() {
+                @Override
+                public void onSuccess(String result) {
                     ToastUtil.toastLongMessage("收藏成功");
                     mIsFavorite = true;
+                    mFavoriteId = result;
                     mStarIv.setImageResource(R.drawable.ic_star_blue_select);
                 }
 

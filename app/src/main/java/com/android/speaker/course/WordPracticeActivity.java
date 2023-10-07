@@ -246,7 +246,7 @@ public class WordPracticeActivity extends BaseActivity implements View.OnClickLi
         }
         mediaRecorder.start();
 
-        mHandler.sendEmptyMessageDelayed(1, SPACE);
+        mHandler.sendEmptyMessageDelayed(WHAT_UPDATE_MIC, SPACE);
     }
 
     private static final int WHAT_UPDATE_MIC = 1;
