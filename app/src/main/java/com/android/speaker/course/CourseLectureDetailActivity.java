@@ -1,7 +1,6 @@
 package com.android.speaker.course;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -25,9 +24,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.base.component.BaseFragment;
-import com.android.speaker.base.component.NoScrollListView;
 import com.android.speaker.home.FragmentAdapter;
-import com.android.speaker.listen.DialogPlayListAdapter;
 import com.android.speaker.server.okhttp.RequestListener;
 import com.android.speaker.util.LogUtil;
 import com.android.speaker.util.ScreenUtil;
@@ -447,15 +444,6 @@ public class CourseLectureDetailActivity extends BaseActivity implements View.On
 
     private void showDialog(QuestionInfo info) {
         if(info.type == QuestionInfo.TYPE_FILL_BLANK) {
-            List<String> list = new ArrayList<>();
-            list.add("with");
-            list.add("way");
-            list.add("without");
-            list.add("late");
-            list.add("for");
-            list.add("ahead");
-            info.questionSelect = list;
-
             FillBlankDialog dialog = new FillBlankDialog(this);
             dialog.setCanceledOnTouchOutside(false);
             dialog.setCancelable(false);
@@ -470,17 +458,6 @@ public class CourseLectureDetailActivity extends BaseActivity implements View.On
             dialog.setListener(this);
             dialog.setData(info);
         } else if(info.type == QuestionInfo.TYPE_QUESTION_SELECT || info.type == QuestionInfo.TYPE_LISTEN_SELECT) {
-            List<String> list = new ArrayList<>();
-            list.add("A.  恶劣天气");
-            list.add("B.  家中急事");
-            list.add("C.  交通堵塞");
-            list.add("D.  身体不适");
-            info.questionSelect = list;
-
-            info.type = QuestionInfo.TYPE_LISTEN_SELECT;
-            info.audioUrl = "https://dict.youdao.com/dictvoice?audio=running late&type=2";
-            info.answerAnalysis = "想和多少牛奶就喝多少应为“Drink as much milk as you want“。题中的D选项也表达同。。。一样多的意思，但many后跟可数名词，而milk为不可数名词，故选B。";
-
             SelectQuestionDialog dialog = new SelectQuestionDialog(this);
             dialog.setCanceledOnTouchOutside(false);
             dialog.setCancelable(false);

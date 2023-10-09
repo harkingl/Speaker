@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:lineSpacingExtra="4dp"
+            android:includeFontPadding="false"
             android:textColor="@color/text_color_1"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -32,7 +33,7 @@
             android:id="@+id/dialog_tags_fl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"/>
+            android:layout_marginTop="6dp"/>
 
         <TextView
             android:id="@+id/dialog_btn_commit_tv"

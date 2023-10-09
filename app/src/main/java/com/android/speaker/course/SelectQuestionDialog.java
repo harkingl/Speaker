@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -88,8 +90,16 @@ public class SelectQuestionDialog extends Dialog implements View.OnClickListener
         }
         mSelectList = info.questionSelect;
         mAnswerList = info.answerList;
+        int index = info.question.indexOf("{{%1}}");
+        if(index >= 0) {
+            String text = info.question.replace("{{%1}}", "        ");
+            SpannableString content = new SpannableString(text);
+            content.setSpan(new UnderlineSpan(), index, index+8, 0);
+            mContentTv.setText(content);
+        } else {
+            mContentTv.setText(info.question);
+        }
 
-        mContentTv.setText(info.question);
         if(info.type == QuestionInfo.TYPE_LISTEN_SELECT) {
             mVoiceLayout.setVisibility(View.VISIBLE);
             initPlayer();

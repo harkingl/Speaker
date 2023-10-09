@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FillBlankDialog extends Dialog implements View.OnClickListener{
-    private static final int DEFAULT_BLANK_COUNT = 10;
+    private static final String PLACEHOLDER_TEXT = "******";
     private TextView mContentTv;
     private FlowLayout mTagLayout;
     private TextView mCommitTv;
@@ -77,21 +77,23 @@ public class FillBlankDialog extends Dialog implements View.OnClickListener{
             if(index >= 0) {
                 AnswerRange range = new AnswerRange();
                 range.startIndex = index;
-                range.endIndex = index + DEFAULT_BLANK_COUNT;
-                range.blankCount = DEFAULT_BLANK_COUNT;
+                range.endIndex = index + PLACEHOLDER_TEXT.length();
+                range.blankCount = PLACEHOLDER_TEXT.length();
 
                 mAnswerRangeList.add(range);
-                text = text.replace(placeHolder, getBlankContent());
+                text = text.replace(placeHolder, PLACEHOLDER_TEXT);
             }
         }
 
-        mSpannableBuilder = new SpannableStringBuilder(text);
+        mSpannableBuilder = new SpannableStringBuilder(text + "\n");
         mSelectList = info.questionSelect;
         mAnswerList = info.answerList;
 
         for(AnswerRange range : mAnswerRangeList) {
 //            ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#4DB6AC"));
-            mSpannableBuilder.setSpan(new RoundedBackgroundSpan(mContext), range.startIndex, range.endIndex, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            RoundedBackgroundSpan span = new RoundedBackgroundSpan(mContext);
+            span.setPlaceHolder(PLACEHOLDER_TEXT);
+            mSpannableBuilder.setSpan(span, range.startIndex, range.endIndex, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
         }
 
         // 设置下划线颜色
@@ -136,7 +138,7 @@ public class FillBlankDialog extends Dialog implements View.OnClickListener{
                     int index = mMySelectList.indexOf(tagName);
                     if(index != -1) {
                         mMySelectList.set(index, "");
-                        fillAnswer(getBlankContent(), index);
+                        fillAnswer("", index);
                     }
                 } else {
                     v.setSelected(true);
@@ -173,9 +175,15 @@ public class FillBlankDialog extends Dialog implements View.OnClickListener{
         }
         // 替换答案
         AnswerRange range = mAnswerRangeList.get(position);
-        mSpannableBuilder.replace(range.startIndex, range.endIndex, "  " + answer + "  ");
+        int newEndIndex = range.endIndex;
+        if(TextUtils.isEmpty(answer)) {
+            mSpannableBuilder.replace(range.startIndex, range.endIndex, PLACEHOLDER_TEXT);
+            newEndIndex = range.startIndex + PLACEHOLDER_TEXT.length();
+        } else {
+            mSpannableBuilder.replace(range.startIndex, range.endIndex, answer);
+            newEndIndex = range.startIndex + answer.length();
+        }
 
-        int newEndIndex = range.startIndex + answer.length() + 4;
         int difference = newEndIndex - range.endIndex;
         range.endIndex = newEndIndex;
 
@@ -190,15 +198,6 @@ public class FillBlankDialog extends Dialog implements View.OnClickListener{
             oldNextRange.startIndex += difference;
             oldNextRange.endIndex += difference;
         }
-    }
-
-    private String getBlankContent() {
-        String s = "";
-        for(int i = 0; i < DEFAULT_BLANK_COUNT; i++) {
-            s += " ";
-        }
-
-        return s;
     }
 
     @Override
@@ -239,7 +238,7 @@ public class FillBlankDialog extends Dialog implements View.OnClickListener{
             int red = mContext.getResources().getColor(R.color.common_red_color);
 
             int backgroundColor = mMySelectList.get(i).equals(mAnswerList.get(i)) ? green : red;
-            mSpannableBuilder.setSpan(new RoundedBackgroundSpan(backgroundColor, white), range.startIndex, range.endIndex, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            mSpannableBuilder.setSpan(new RoundedBackgroundSpan(mContext, backgroundColor, white, 16), range.startIndex, range.endIndex, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
         }
         mContentTv.setText(mSpannableBuilder);
 

@@ -1,6 +1,7 @@
 package com.android.speaker.listen;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +63,9 @@ public class BlogDetailVoiceFragment extends BaseFragment implements View.OnClic
         if(detail != null) {
             GlideUtil.loadCornerImage(mTopIv, detail.iconUrl, null, 10);
             mTitleTv.setText(detail.titleEn);
+            if(!TextUtils.isEmpty(detail.name)) {
+                mNameTv.setText(detail.name);
+            }
             mProgressBar.start((int) (detail.audioDuration*60*1000));
             this.mDetail = detail;
         }

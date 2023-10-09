@@ -32,7 +32,7 @@ public class QuestionInfo implements Serializable {
         id = obj.optString("id");
         sceneId = obj.optString("sceneId");
         question = obj.optString("question");
-        JSONArray array = obj.optJSONArray("questionSelect");
+        JSONArray array = obj.optJSONArray("questionSelects");
         if(array != null) {
             questionSelect = new ArrayList<>();
             for(int i = 0; i < array.length(); i++) {
@@ -48,7 +48,7 @@ public class QuestionInfo implements Serializable {
         }
         type = obj.optInt("type");
         showTime = obj.optDouble("showTime");
-        audioUrl = obj.optString("audioUrl");
+        audioUrl = obj.optString("audioOssKey");
         answerAnalysis = obj.optString("answerAnalysis");
         translation = obj.optString("translation");
 
