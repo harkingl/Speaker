@@ -144,7 +144,7 @@ public class CourseFragment extends BaseFragment implements View.OnClickListener
 //                    item.homePage = "https://dummyimage.com/250/ff00ff/000000";
 //                    courseList.add(item);
 //                }
-                CourseAdapter adapter = new CourseAdapter(getActivity(), result);
+                CourseAdapter adapter = new CourseAdapter(getActivity(), result, CourseUtil.TYPE_COURSE_PROJECT);
                 mSceneCourseGv.setAdapter(adapter);
             }
 
@@ -160,7 +160,7 @@ public class CourseFragment extends BaseFragment implements View.OnClickListener
             @Override
             public void onSuccess(List<CourseItem> result) {
                 if(result != null && result.size() > 0) {
-                    mQualityLv.setAdapter(new QualityCourseAdapter(getActivity(), result));
+                    mQualityLv.setAdapter(new QualityCourseAdapter(getActivity(), result, CourseUtil.TYPE_COURSE_CATALOG));
                 }
             }
 
@@ -176,7 +176,7 @@ public class CourseFragment extends BaseFragment implements View.OnClickListener
             @Override
             public void onSuccess(List<CourseItem> result) {
                 if(result != null && result.size() > 0) {
-                    mSpecialLv.setAdapter(new QualityCourseAdapter(getActivity(), result));
+                    mSpecialLv.setAdapter(new QualityCourseAdapter(getActivity(), result, CourseUtil.TYPE_COURSE_SPECIAL));
                 }
             }
 

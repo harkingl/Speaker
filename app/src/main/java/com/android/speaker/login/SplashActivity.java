@@ -1,6 +1,7 @@
 package com.android.speaker.login;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,9 +9,11 @@ import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 
+import com.android.speaker.base.Constants;
 import com.android.speaker.base.bean.UserInfo;
 import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.home.HomeActivity;
@@ -34,7 +37,40 @@ public class SplashActivity extends BaseActivity {
         }
         setContentView(R.layout.activity_splash);
 
-        mHandler.sendEmptyMessageDelayed(1, 3000);
+
+        SharedPreferences shareInfo = getSharedPreferences(Constants.SP_PRIVACY_DIALOG, 0);
+        boolean isAlert = shareInfo.getBoolean("is_alert", false);
+        if(!isAlert) {
+            showDialog();
+        } else {
+            mHandler.sendEmptyMessageDelayed(1, 3000);
+        }
+    }
+
+    private void showDialog() {
+        PrivacyDialog dialog = new PrivacyDialog(this);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.setListener(new PrivacyDialog.DialogListener() {
+            @Override
+            public void onAgree() {
+                SharedPreferences shareInfo = getSharedPreferences(Constants.SP_PRIVACY_DIALOG, 0);
+                shareInfo.edit().putBoolean("is_alert", true).apply();
+                handleData();
+            }
+
+            @Override
+            public void onDisagree() {
+                finish();
+            }
+        });
+        dialog.show();
+
+        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+//        lp.gravity = Gravity.BOTTOM;
+        dialog.getWindow().setAttributes(lp);
     }
 
     private Handler mHandler = new Handler(Looper.getMainLooper()) {
@@ -42,13 +78,17 @@ public class SplashActivity extends BaseActivity {
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
 
-            if(TextUtils.isEmpty(UserInfo.getInstance().getToken())) {
-                LoginUtil.getInstance(SplashActivity.this).oneKeyLogin(SplashActivity.this);
-//                startActivity(new Intent(SplashActivity.this, LoginCaptchaActivity.class));
-            } else {
-                startActivity(new Intent(SplashActivity.this, HomeActivity.class));
-            }
-            finish();
+            handleData();
         }
     };
+
+    private void handleData() {
+        if(TextUtils.isEmpty(UserInfo.getInstance().getToken())) {
+            LoginUtil.getInstance(SplashActivity.this).oneKeyLogin(SplashActivity.this);
+//                startActivity(new Intent(SplashActivity.this, LoginCaptchaActivity.class));
+        } else {
+            startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+        }
+        finish();
+    }
 }

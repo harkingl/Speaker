@@ -20,6 +20,7 @@ import com.android.speaker.base.bean.UserInfo;
 import com.android.speaker.base.component.BaseFragment;
 import com.android.speaker.course.CourseAdapter;
 import com.android.speaker.course.CourseItem;
+import com.android.speaker.course.CourseUtil;
 import com.android.speaker.course.GetRecommendCourseListRequest;
 import com.android.speaker.home.IHomeCallBack;
 import com.android.speaker.server.okhttp.RequestListener;
@@ -174,7 +175,7 @@ public class StudyFragment extends BaseFragment implements View.OnClickListener 
                     result = result.subList(0, DEFAULT_MAX_SIZE);
                     mMoreCourseTv.setVisibility(View.VISIBLE);
                 }
-                CourseAdapter adapter = new CourseAdapter(getActivity(), result);
+                CourseAdapter adapter = new CourseAdapter(getActivity(), result, CourseUtil.TYPE_COURSE_CATALOG);
                 mCourseGv.setAdapter(adapter);
             }
 

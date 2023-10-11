@@ -1,6 +1,7 @@
 package com.android.speaker.course;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -16,8 +17,11 @@ import java.util.List;
  * 精品和专项课程adapter
  */
 public class QualityCourseAdapter extends BaseListItemAdapter<CourseItem> {
-    public QualityCourseAdapter(Context context, List<CourseItem> list) {
+    private int mType;
+    public QualityCourseAdapter(Context context, List<CourseItem> list, int type) {
         super(context, list);
+
+        this.mType = type;
     }
 
     @Override
@@ -42,6 +46,16 @@ public class QualityCourseAdapter extends BaseListItemAdapter<CourseItem> {
         GlideUtil.loadCornerImage(holder.iv, info.homePage, null, 10);
         holder.titleTv.setText(info.title);
         holder.descTv.setText(info.des);
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(context, CoursePreviewActivity.class);
+                i.putExtra(CourseUtil.KEY_COURSE_ITEM, info);
+                i.putExtra(CourseUtil.KEY_COURSE_TYPE, mType);
+                context.startActivity(i);
+            }
+        });
 
         return convertView;
     }

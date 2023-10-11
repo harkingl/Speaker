@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.android.speaker.base.component.BaseActivity;
+import com.android.speaker.listen.RemoveBlogRequest;
 import com.android.speaker.server.okhttp.RequestListener;
 import com.android.speaker.util.GlideUtil;
 import com.android.speaker.util.ToastUtil;
@@ -24,6 +25,7 @@ import org.apmem.tools.layouts.FlowLayout;
 public class CoursePreviewActivity extends BaseActivity implements View.OnClickListener {
 
     private ImageView mBackIv;
+    private ImageView mStarIv;
     private ImageView mTopIv;
     private TextView mTitleTv;
     private TextView mDescTv;
@@ -38,6 +40,9 @@ public class CoursePreviewActivity extends BaseActivity implements View.OnClickL
     private View mCourseInstructionLayout;
     private View mRolePlayLayout;
     private CourseItem mInfo;
+    private boolean mIsFavorite = false;
+    private String mFavoriteId;
+    private int mType;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,6 +55,7 @@ public class CoursePreviewActivity extends BaseActivity implements View.OnClickL
 
     private void initView() {
         mBackIv = findViewById(R.id.preview_back_iv);
+        mStarIv = findViewById(R.id.preview_followup_iv);
         mTopIv = findViewById(R.id.preview_top_img_iv);
         mTitleTv = findViewById(R.id.preview_title_tv);
         mDescTv = findViewById(R.id.preview_desc_tv);
@@ -65,6 +71,7 @@ public class CoursePreviewActivity extends BaseActivity implements View.OnClickL
         mRolePlayLayout = findViewById(R.id.preview_roleplay_ll);
 
         mBackIv.setOnClickListener(this);
+        mStarIv.setOnClickListener(this);
         mStartTv.setOnClickListener(this);
         mWordsLayout.setOnClickListener(this);
         mSceneLayout.setOnClickListener(this);
@@ -73,7 +80,8 @@ public class CoursePreviewActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initData() {
-        mInfo = (CourseItem) getIntent().getSerializableExtra("course_item");
+        mInfo = (CourseItem) getIntent().getSerializableExtra(CourseUtil.KEY_COURSE_ITEM);
+        mType = getIntent().getIntExtra(CourseUtil.KEY_COURSE_TYPE, CourseUtil.TYPE_COURSE_CATALOG);
 
         if(!TextUtils.isEmpty(mInfo.homePage)) {
             GlideUtil.loadImage(mTopIv, mInfo.homePage, null);
@@ -85,6 +93,11 @@ public class CoursePreviewActivity extends BaseActivity implements View.OnClickL
             @Override
             public void onSuccess(CoursePreviewInfo result) {
                 if(result != null) {
+                    if(!TextUtils.isEmpty(result.favoritesId) && !"null".equals(result.favoritesId)) {
+                        mIsFavorite = true;
+                        mFavoriteId = result.favoritesId;
+                        mStarIv.setImageResource(R.drawable.ic_star_white_select);
+                    }
                     setBottomView(result);
                 }
             }
@@ -137,12 +150,47 @@ public class CoursePreviewActivity extends BaseActivity implements View.OnClickL
             startActivity(i);
         } else if(id == R.id.preview_course_instruction_ll) {
             Intent i = new Intent(this, CourseLectureDetailActivity.class);
-            i.putExtra("course_item", mInfo);
+            i.putExtra(CourseUtil.KEY_COURSE_ITEM, mInfo);
             startActivity(i);
         } else if(id == R.id.preview_scenes_ll) {
             Intent i = new Intent(this, SceneSpeakActivity.class);
-            i.putExtra("course_item", mInfo);
+            i.putExtra(CourseUtil.KEY_COURSE_ITEM, mInfo);
             startActivity(i);
+        } else if(id == R.id.preview_followup_iv) {
+            addBlog();
+        }
+    }
+
+    private void addBlog() {
+        if(mIsFavorite) {
+            new RemoveBlogRequest(this, mFavoriteId).schedule(false, new RequestListener<Boolean>() {
+                @Override
+                public void onSuccess(Boolean result) {
+//                    ToastUtil.toastLongMessage("取消收藏成功");
+                    mIsFavorite = false;
+                    mStarIv.setImageResource(R.drawable.ic_star_white);
+                }
+
+                @Override
+                public void onFailed(Throwable e) {
+                    ToastUtil.toastLongMessage(e.getMessage());
+                }
+            });
+        } else {
+            new AddCourseFavoriteRequest(this, mInfo.id, mType).schedule(false, new RequestListener<String>() {
+                @Override
+                public void onSuccess(String result) {
+                    ToastUtil.toastLongMessage("收藏成功");
+                    mIsFavorite = true;
+                    mFavoriteId = result;
+                    mStarIv.setImageResource(R.drawable.ic_star_white_select);
+                }
+
+                @Override
+                public void onFailed(Throwable e) {
+                    ToastUtil.toastLongMessage(e.getMessage());
+                }
+            });
         }
     }
 }

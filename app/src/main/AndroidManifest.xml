@@ -65,6 +65,10 @@
             </intent-filter>
         </activity>
 
+        <activity android:name="com.android.speaker.web.WebActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+
         <activity android:name="com.android.speaker.login.LoginCaptchaActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>

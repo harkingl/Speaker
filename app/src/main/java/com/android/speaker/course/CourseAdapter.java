@@ -16,8 +16,11 @@ import com.chinsion.SpeakEnglish.R;
 import java.util.List;
 
 public class CourseAdapter extends BaseListItemAdapter<CourseItem> {
-    public CourseAdapter(Context context, List<CourseItem> list) {
+    private int mType;
+    public CourseAdapter(Context context, List<CourseItem> list, int type) {
         super(context, list);
+
+        this.mType = type;
     }
 
     @Override
@@ -51,7 +54,8 @@ public class CourseAdapter extends BaseListItemAdapter<CourseItem> {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(context, CoursePreviewActivity.class);
-                i.putExtra("course_item", info);
+                i.putExtra(CourseUtil.KEY_COURSE_ITEM, info);
+                i.putExtra(CourseUtil.KEY_COURSE_TYPE, mType);
                 context.startActivity(i);
             }
         });

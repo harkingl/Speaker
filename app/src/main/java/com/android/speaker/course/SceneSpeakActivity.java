@@ -178,7 +178,7 @@ public class SceneSpeakActivity extends BaseActivity implements View.OnClickList
     }
 
     private void initData() {
-        mInfo = (CourseItem) getIntent().getSerializableExtra("course_item");
+        mInfo = (CourseItem) getIntent().getSerializableExtra(CourseUtil.KEY_COURSE_ITEM);
 
         mTranslateIv.setImageResource(R.drawable.ic_translate_zh);
 

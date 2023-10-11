@@ -144,9 +144,20 @@ public class UrlManager {
     public static final String REMOVE_BLOG = "/speakEnglish-ums/tableFavorites/remove";
 
     /**
+     * 收藏精品课程
+     */
+    public static final String ADD_COURSE_CATALOG = "/speakEnglish-ums/tableFavorites/addCourseCatalog";
+
+    /**
      * 收藏场景课程
      */
-    public static final String ADD_PROJECT = "/speakEnglish-ums/tableFavorites/addProject";
+    public static final String ADD_COURSE_PROJECT = "/speakEnglish-ums/tableFavorites/addProject";
+
+    /**
+     * 收藏专项课程
+     */
+    public static final String ADD_COURSE_SPECIAL = "/speakEnglish-ums/tableFavorites/addSpecialization";
+
     /**
      * 问题列表
      */

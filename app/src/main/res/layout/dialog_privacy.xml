@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="20dp"
+    android:background="@color/transparent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:gravity="center_vertical"
+    tools:ignore="MissingDefaultResource">
+
+    <LinearLayout
+        android:id="@+id/dialog_common_view_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="30dp"
+        android:paddingBottom="20dp"
+        android:background="@drawable/white_bg_shape_20"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textColor="@color/text_color_1"
+            android:text="用户协议与隐私保护"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/dialog_privacy_content_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:scrollbars="vertical"
+            android:overScrollMode="ifContentScrolls"
+            android:maxHeight="400dp"
+            android:ellipsize="end"
+            android:textColor="@color/text_color_2"
+            android:text="@string/privacy_content"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/dialog_privacy_agree_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="26dp"
+            android:layout_marginHorizontal="20dp"
+            android:gravity="center"
+            android:paddingVertical="12dp"
+            android:background="@drawable/btn_bg_shape_purple"
+            android:textColor="@color/white"
+            android:text="同意并继续"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/dialog_privacy_disagree_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/text_color_2"
+            android:text="不同意"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+</LinearLayout>
