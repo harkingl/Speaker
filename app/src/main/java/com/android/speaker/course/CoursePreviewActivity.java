@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.listen.RemoveBlogRequest;
 import com.android.speaker.server.okhttp.RequestListener;
+import com.android.speaker.study.SpeakerDetailActivity;
 import com.android.speaker.util.GlideUtil;
 import com.android.speaker.util.ToastUtil;
 import com.chinsion.SpeakEnglish.R;
@@ -43,6 +44,7 @@ public class CoursePreviewActivity extends BaseActivity implements View.OnClickL
     private boolean mIsFavorite = false;
     private String mFavoriteId;
     private int mType;
+    private String mOpenSpeakId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,6 +100,7 @@ public class CoursePreviewActivity extends BaseActivity implements View.OnClickL
                         mFavoriteId = result.favoritesId;
                         mStarIv.setImageResource(R.drawable.ic_star_white_select);
                     }
+                    mOpenSpeakId = result.openSpeakId;
                     setBottomView(result);
                 }
             }
@@ -158,6 +161,10 @@ public class CoursePreviewActivity extends BaseActivity implements View.OnClickL
             startActivity(i);
         } else if(id == R.id.preview_followup_iv) {
             addBlog();
+        } else if(id == R.id.preview_roleplay_ll) {
+            Intent intent = new Intent(this, SpeakerDetailActivity.class);
+            intent.putExtra("open_speak_id", mOpenSpeakId);
+            startActivity(intent);
         }
     }
 

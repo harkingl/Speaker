@@ -8,13 +8,14 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.android.speaker.course.ChatItem;
 import com.android.speaker.server.util.UrlManager;
 import com.android.speaker.util.LogUtil;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.time.Duration;
+import java.util.UUID;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -40,10 +41,11 @@ public class WebSocketUtil {
         mWebSocket = mClient.newWebSocket(request, mListener);
     }
 
-    public void sendMessage(String message, String targetId) {
-        if(TextUtils.isEmpty(message)) {
-            return;
-        }
+    public void setMessageListener(MessageReceivedListener messageListener) {
+        this.mMessageListener = messageListener;
+    }
+
+    public ChatItem sendMessage(String message, String targetId) {
         JSONObject obj = new JSONObject();
         try {
             if(TextUtils.isEmpty(mConversationId)) {
@@ -51,12 +53,22 @@ public class WebSocketUtil {
             } else {
                 obj.put("conversationId", mConversationId);
             }
+            String uuid = UUID.randomUUID().toString();
+            obj.put("uniqueId", uuid);
             obj.put("content", message);
 
-            mWebSocket.send(obj.toString());
+            boolean success = mWebSocket.send(obj.toString());
+
+            ChatItem item = new ChatItem();
+            item.uniqueId = uuid;
+            item.content = message;
+            item.isSuccess = success;
+            return item;
         } catch (Exception e) {
             LogUtil.e(TAG, e.getMessage());
         }
+
+        return null;
     }
 
     private WebSocketListener mListener = new WebSocketListener() {

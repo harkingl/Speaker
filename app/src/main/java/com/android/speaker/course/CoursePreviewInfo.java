@@ -23,6 +23,7 @@ public class CoursePreviewInfo {
     public String openSpeak;
     public String[] tips;
     public String favoritesId;
+    public String openSpeakId;
 
     public CoursePreviewInfo parse(JSONObject obj) throws JSONException {
         id = obj.optString("id");
@@ -46,6 +47,7 @@ public class CoursePreviewInfo {
             tips = tipsStr.split(",");
         }
         favoritesId = obj.optString("favoritesId");
+        openSpeakId = obj.optString("openSpeakId");
 
         return this;
     }

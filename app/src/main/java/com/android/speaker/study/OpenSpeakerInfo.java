@@ -10,16 +10,16 @@ import java.util.List;
 
 public class OpenSpeakerInfo implements Serializable {
     // 场景ID
-    public int id;
-    public int scenesId;
+    public String id;
+    public String scenesId;
     public String tips;
     public String ossUrl;
     public String title;
     public String des;
 
     public OpenSpeakerInfo parse(JSONObject obj) throws JSONException {
-        id = obj.optInt("id");
-        scenesId = obj.optInt("scenesId");
+        id = obj.optString("id");
+        scenesId = obj.optString("scenesId");
         tips = obj.optString("tips");
         ossUrl = obj.optString("ossUrl");
         title = obj.optString("title");

@@ -241,7 +241,7 @@ public class StudyFragment extends BaseFragment implements View.OnClickListener 
         switch (id) {
             case R.id.study_open_mouth_start_tv:
                 Intent i = new Intent(getActivity(), SpeakerDetailActivity.class);
-                i.putExtra("speaker_info", mInfo);
+                i.putExtra("open_speak_id", mInfo.id);
                 startActivity(i);
                 break;
             case R.id.study_open_mouth_more_tv:

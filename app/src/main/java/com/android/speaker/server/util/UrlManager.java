@@ -162,4 +162,9 @@ public class UrlManager {
      * 问题列表
      */
     public static final String GET_QUESTIONS = "/speakEnglish-ums/app-api/v1/project/queryQuestions";
+
+    /**
+     * 开口说对话详情
+     */
+    public static final String GET_SPEAK_CHAT_DETAIL = "/speakEnglish-ums/app-api/v1/project/queryScenesSpeakProject";
 }

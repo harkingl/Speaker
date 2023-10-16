@@ -14,7 +14,7 @@
         android:src="@drawable/ic_circle_green"/>
 
     <TextView
-        android:id="@+id/item_title_zh_tv"
+        android:id="@+id/item_title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/item_img_iv"
@@ -23,16 +23,5 @@
         android:layout_marginLeft="16dp"
         android:textSize="14sp"
         android:textColor="@color/text_color_1"
-        tools:text="告知Monica你可能要迟到了，并告知她迟到原因：堵车。"/>
-    <TextView
-        android:id="@+id/item_title_en_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/item_title_zh_tv"
-        android:layout_alignLeft="@+id/item_title_zh_tv"
-        android:layout_marginTop="8dp"
-        android:textSize="13sp"
-        android:textColor="@color/text_color_2"
-        tools:text="Notify Monica that you may be late and inform her of the reason for being late: traffic jam."/>
-
+        tools:text="在对方主动帮助告知他人后，你可以首先表示感谢。并可建议他们可以准时开始会议，不用等你。"/>
 </RelativeLayout>

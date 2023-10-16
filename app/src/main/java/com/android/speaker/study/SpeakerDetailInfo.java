@@ -10,8 +10,8 @@ import java.util.List;
 
 public class SpeakerDetailInfo implements Serializable {
     // 场景ID
-    public int id;
-    public int scenesId;
+    public String id;
+    public String scenesId;
     public String sceneDes;
     public String tips;
     public String ossUrl;
@@ -19,8 +19,8 @@ public class SpeakerDetailInfo implements Serializable {
     public List<ExampleInfo> exampleInfoList;
 
     public SpeakerDetailInfo parse(JSONObject obj) throws JSONException {
-        id = obj.optInt("id");
-        scenesId = obj.optInt("scenesId");
+        id = obj.optString("id");
+        scenesId = obj.optString("scenesId");
         sceneDes = obj.optString("sceneDes");
         tips = obj.optString("tips");
         ossUrl = obj.optString("ossUrl");

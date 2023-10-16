@@ -1,27 +1,25 @@
-package com.android.speaker.listen;
+package com.android.speaker.course;
 
 import android.content.Context;
 
 import com.android.speaker.server.okhttp.BaseRequest;
 import com.android.speaker.server.util.UrlManager;
-import com.android.speaker.study.OpenSpeakerInfo;
-import com.android.speaker.study.SpeakerDetailInfo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /***
- * 开口说详情
+ * 开口说对话详情
  */
-public class GetSpeakerDetailRequest extends BaseRequest<SpeakerDetailInfo> {
+public class GetSpeakChatDetailRequest extends BaseRequest<SpeakChatDetail> {
     private String id;
-    public GetSpeakerDetailRequest(Context context, String id) {
+    public GetSpeakChatDetailRequest(Context context, String id) {
         super(context);
         this.id = id;
     }
     @Override
     protected String url() {
-        return UrlManager.GET_OPEN_SPEAKER_DETAIL;
+        return UrlManager.GET_SCENE_SPEAK_DETAIL;
     }
 
     @Override
@@ -32,9 +30,9 @@ public class GetSpeakerDetailRequest extends BaseRequest<SpeakerDetailInfo> {
     }
 
     @Override
-    protected SpeakerDetailInfo result(JSONObject json) throws Exception {
+    protected SpeakChatDetail result(JSONObject json) throws Exception {
         JSONObject data = json.optJSONObject("data");
 
-        return new SpeakerDetailInfo().parse(data);
+        return new SpeakChatDetail().parse(data);
     }
 }

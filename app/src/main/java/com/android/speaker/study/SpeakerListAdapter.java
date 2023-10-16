@@ -1,6 +1,7 @@
 package com.android.speaker.study;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -37,6 +38,14 @@ public class SpeakerListAdapter extends BaseListItemAdapter<OpenSpeakerInfo> {
         holder.titleTv.setText(info.title);
         holder.descTv.setText(info.des);
 
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, SpeakerDetailActivity.class);
+                i.putExtra("open_speak_id", info.id);
+                context.startActivity(i);
+            }
+        });
         return convertView;
     }
 
