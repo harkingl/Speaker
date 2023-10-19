@@ -16,13 +16,8 @@ import com.chinsion.SpeakEnglish.R;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * ================================================
- * 作    者：JayGoo
- * 版    本：1.0.0
- * 创建日期：2017/7/21
- * 描    述: 绘制波浪曲线
- * ================================================
+/***
+ * 绘制波浪曲线
  */
 public class WaveLineView extends RenderView {
 

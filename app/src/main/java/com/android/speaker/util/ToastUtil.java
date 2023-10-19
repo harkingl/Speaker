@@ -1,14 +1,19 @@
 package com.android.speaker.util;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.speaker.MainApplication;
+import com.chinsion.SpeakEnglish.R;
 
 public class ToastUtil {
 
@@ -49,5 +54,39 @@ public class ToastUtil {
                 toast.show();
             }
         });
+    }
+
+    /***
+     * 自定义toast 上面图片，下面文字
+     * @param activity
+     * @param resourceId
+     * @param tip
+     */
+    public static void showDefineToast(Context activity, int resourceId, String tip) {
+        Toast toast = new Toast(activity);
+        LinearLayout linearLayout = new LinearLayout(activity);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.setPadding(20, 20, 20, 20);
+
+        View view = null;
+        ImageView imageView = new ImageView(activity);
+        imageView.setImageResource(resourceId);
+        view = imageView;
+
+
+        TextView mTv = new TextView(activity);
+        mTv.setText(tip);
+        mTv.setTextSize(15);
+        mTv.setTextColor(Color.WHITE);
+        mTv.setGravity(Gravity.CENTER);
+
+        linearLayout.addView(view);
+        linearLayout.addView(mTv);
+        linearLayout.setGravity(Gravity.CENTER);
+        linearLayout.setBackgroundResource(R.drawable.toast_bg_shape);
+        int height = ScreenUtil.getScreenHeight(activity) / 3;
+        toast.setView(linearLayout);
+        toast.setGravity(Gravity.TOP, 0, height);
+        toast.show();
     }
 }

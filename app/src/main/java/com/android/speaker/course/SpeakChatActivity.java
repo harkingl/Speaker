@@ -24,6 +24,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.base.component.BaseFragment;
 import com.android.speaker.base.component.NoScrollListView;
+import com.android.speaker.chat.audio.AudioButton;
 import com.android.speaker.home.FragmentAdapter;
 import com.android.speaker.listen.DialogPlayListAdapter;
 import com.android.speaker.server.okhttp.RequestListener;
@@ -59,6 +60,7 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
     private ImageView mInputIv;
     private EditText mInputTv;
     private ImageView mTipIv;
+    private AudioButton mAudioBtn;
     private List<ImageView> mIndicationViews = new ArrayList<>();
     private List<BaseFragment> mPageList = new ArrayList<>();
     private List<ChatItem> mList;
@@ -92,6 +94,7 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
         mInputIv = findViewById(R.id.chat_btn_input_iv);
         mInputTv = findViewById(R.id.chat_input_et);
         mTipIv = findViewById(R.id.chat_tip_iv);
+        mAudioBtn = findViewById(R.id.chat_audio_btn);
 
         mBackIv.setOnClickListener(this);
         mTranslateIv.setOnClickListener(this);
@@ -272,6 +275,9 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
         stopPlayer();
         if(mSocketUtil != null) {
             mSocketUtil.disConnect();
+        }
+        if(mAudioBtn != null) {
+            mAudioBtn.release();
         }
         super.onDestroy();
     }

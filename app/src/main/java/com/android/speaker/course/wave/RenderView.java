@@ -9,14 +9,6 @@ import android.view.SurfaceView;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-/**
- * ================================================
- * 作    者：JayGoo
- * 版    本：1.0.0
- * 创建日期：2017/7/21
- * 描    述: 封装的SurfaceView
- * ================================================
- */
 public abstract class RenderView extends SurfaceView implements SurfaceHolder.Callback {
 
     //是否正在绘制动画
