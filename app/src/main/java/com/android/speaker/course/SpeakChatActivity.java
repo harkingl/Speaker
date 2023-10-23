@@ -38,6 +38,10 @@ import com.chinsion.SpeakEnglish.R;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,6 +75,7 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
     private SpeakChatDetail mDetail;
     private long mEndTimeMs;
     private WebSocketUtil mSocketUtil;
+    private List<String> mContentList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -125,10 +130,21 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
                 return false;
             }
         });
+
+        mAudioBtn.setListener(new AudioButton.AudioFinishListener() {
+            @Override
+            public void onAudioFinish(boolean isSuccess) {
+                if(isSuccess && !TextUtils.isEmpty(mAudioBtn.getAudioPath())) {
+                    sendAudio(mAudioBtn.getAudioPath());
+                }
+            }
+        });
     }
 
     private void initData() {
         mInfo = (SpeakerDetailInfo) getIntent().getSerializableExtra(CourseUtil.KEY_SPEAK_DETAIL);
+
+        mContentList = new ArrayList<>();
 
         mSocketUtil = new WebSocketUtil();
         mSocketUtil.setMessageListener(mListener);
@@ -174,6 +190,9 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
 
         if(detail.chatItemList != null && detail.chatItemList.size() > 0) {
             mList = detail.chatItemList;
+            for(ChatItem item : detail.chatItemList) {
+                mContentList.add(item.content);
+            }
             mAdapter = new SpeakChatAdapter(this, mList, true);
             mAdapter.setCallback(this);
             mListView.setAdapter(mAdapter);
@@ -221,12 +240,57 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
             if(item != null) {
                 item.name = mDetail.myName;
                 mList.add(item);
+                mContentList.add(text);
                 mAdapter.notifyDataSetChanged();
                 mListView.setSelection(mList.size()-1);
                 mInputTv.setText("");
+                doContentAnalysis(item);
             }
         }
         hideSoftInput();
+    }
+
+    private void doContentAnalysis(final ChatItem item) {
+        if(item == null || item.state != ChatItem.STATE_ANALYSISING) {
+            return;
+        }
+
+        new GetAnalysisRequest(this, mContentList, item).schedule(true, new RequestListener<ChatItem>() {
+            @Override
+            public void onSuccess(ChatItem result) {
+                result.state = ChatItem.STATE_FINISH;
+                mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailed(Throwable e) {
+                LogUtil.e(TAG, e.getMessage());
+                if(mContentList.size() > 0) {
+                    mContentList.remove(mContentList.size()-1);
+                }
+            }
+        });
+    }
+
+    private void sendAudio(String path) {
+        FileInputStream objFileIS = null;
+        try {
+            objFileIS = new FileInputStream(new File(path));
+
+            ByteArrayOutputStream objByteArrayOS = new ByteArrayOutputStream();
+            byte[] byteBufferString = new byte[1024];
+            while (true) {
+                int readNum = objFileIS.read(byteBufferString);
+                objByteArrayOS.write(byteBufferString, 0, readNum);
+                if (readNum < 1024) {
+                    break;
+                }
+            }
+            ChatItem item = mSocketUtil.sendAudio(objByteArrayOS.toByteArray(), "40");
+        } catch (Exception e) {
+            LogUtil.e(TAG, e.getMessage());
+        }
+
     }
 
     @Override
@@ -240,6 +304,16 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
             mAdapter.setIsOpen(mIsOpen);
         } else if(id == R.id.chat_tip_iv) {
             showTipDialog(this);
+        } else if(id == R.id.chat_btn_input_iv) {
+            mAudioIv.setVisibility(View.VISIBLE);
+            mInputIv.setVisibility(View.GONE);
+            mAudioBtn.setVisibility(View.GONE);
+            mInputTv.setVisibility(View.VISIBLE);
+        } else if(id == R.id.chat_btn_audio_iv) {
+            mAudioIv.setVisibility(View.GONE);
+            mInputIv.setVisibility(View.VISIBLE);
+            mAudioBtn.setVisibility(View.VISIBLE);
+            mInputTv.setVisibility(View.GONE);
         }
     }
 

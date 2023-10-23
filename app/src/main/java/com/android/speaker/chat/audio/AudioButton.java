@@ -13,6 +13,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -42,6 +44,7 @@ public class AudioButton extends androidx.appcompat.widget.AppCompatTextView {
     private AudioAnimationView cancelAnimView;
     private TextView tipTv;
     private ImageView closeIv;
+    private ImageView bottomIv;
 
     private static final int DEFAULT_TIME = Audio.DEFAULT_MAX_DURATION;// 默认最大时间
     private static final int MIN_TIME = 1; // 最短录制时间，默认1s
@@ -83,26 +86,7 @@ public class AudioButton extends androidx.appcompat.widget.AppCompatTextView {
         recordListener = new Audio.RecordListener() {
             @Override
             public void onCompleted(String filePath) {
-                if ((Math.abs(endY - startY) > 100)) {
-                    deleteAudio();
-                    recordState = RECORD_NO;
-                    startY = 0;
-                    endY = 0;
-                    return;
-                } else if (recodeTime < MIN_TIME) {
-                    deleteAudio();
-                    ToastUtil.showDefineToast(context, R.drawable.ic_info,
-                            "说话时间太短");// 显示录音时间太短对话框
-                    recordState = RECORD_NO;
-                } else {
-                    stopRecord();
-                    // 显示播放文件
-                    if (audioFile != null) {
-                        listener.onAudioFinish(true);
-                    } else {
-                        listener.onAudioFinish(false);
-                    }
-                }
+                onFinish();
             }
 
             @Override
@@ -112,6 +96,23 @@ public class AudioButton extends androidx.appcompat.widget.AppCompatTextView {
         };
 
         audio.setRecordListener(recordListener);
+    }
+
+    private void onFinish() {
+        if (recodeTime < MIN_TIME) {
+            deleteAudio();
+            ToastUtil.showDefineToast(context, R.drawable.ic_info,
+                    "说话时间太短");// 显示录音时间太短对话框
+            recordState = RECORD_NO;
+        } else {
+            stopRecord();
+            // 显示播放文件
+            if (audioFile != null) {
+                listener.onAudioFinish(true);
+            } else {
+                listener.onAudioFinish(false);
+            }
+        }
     }
 
     public interface AudioFinishListener {
@@ -128,9 +129,9 @@ public class AudioButton extends androidx.appcompat.widget.AppCompatTextView {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_UP && recordState == RECORD_ING) {
-            stopRecord();
-        }
+//        if (ev.getAction() == MotionEvent.ACTION_UP && recordState == RECORD_ING) {
+//            stopRecord();
+//        }
         return super.dispatchTouchEvent(ev);
     }
 
@@ -163,12 +164,7 @@ public class AudioButton extends androidx.appcompat.widget.AppCompatTextView {
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
                 if (recordState == RECORD_ING) {
-                    recordState = RECODE_ED;
-                    if (dialog.isShowing()) {
-                        dialog.dismiss();
-                    }
-                    audio.stopRecord();
-                    voiceValue = 0.0f;
+                    onFinish();
                 }
                 break;
         }
@@ -176,19 +172,45 @@ public class AudioButton extends androidx.appcompat.widget.AppCompatTextView {
     }
 
     private void checkPosition(float x, float y) {
-        if(y <= closeIv.getBottom() && cancelLayout.getVisibility() == GONE) {
+        if(y <= bottomIv.getTop() && cancelLayout.getVisibility() == GONE) {
             tipTv.setText("松开 取消");
+//            fadeInAnim(cancelLayout);
+//            fadeOutAnim(inputLayout);
             cancelLayout.setVisibility(VISIBLE);
             inputLayout.setVisibility(GONE);
             inputAnimView.stopAnimation();
             cancelAnimView.startAnimation();
-        } else if(y > closeIv.getBottom() && inputLayout.getVisibility() == GONE) {
+        } else if(y > bottomIv.getTop() && inputLayout.getVisibility() == GONE) {
             tipTv.setText("松开 发送");
             cancelLayout.setVisibility(GONE);
             inputLayout.setVisibility(VISIBLE);
+//            fadeInAnim(inputAnimView);
+//            fadeOutAnim(cancelAnimView);
             inputAnimView.startAnimation();
             cancelAnimView.stopAnimation();
         }
+    }
+
+    private void fadeInAnim(View view) {
+        if (view.getVisibility() == View.VISIBLE) {
+            return;
+        }
+        view.setVisibility(View.VISIBLE);
+
+        Animation animation = new AlphaAnimation(0.0f, 1.0f);
+        animation.setDuration(500);
+        view.startAnimation(animation);
+    }
+
+    private void fadeOutAnim(View view) {
+        if (view.getVisibility() != View.VISIBLE) {
+            return;
+        }
+
+        Animation animation = new AlphaAnimation(1.0f, 0.0f);
+        animation.setDuration(500);
+        view.startAnimation(animation);
+        view.setVisibility(View.GONE);
     }
 
     private Runnable animRunnable = new Runnable() {
@@ -200,10 +222,8 @@ public class AudioButton extends androidx.appcompat.widget.AppCompatTextView {
                 try {
                     Thread.sleep(200);
                     recodeTime += 0.2;
-                    if (recordState == RECORD_ING) {
-                        voiceValue = audio.getAmplitude();// 返回振幅
-                        imgHandle.sendEmptyMessage(1);
-                    }
+                    voiceValue = audio.getAmplitude();// 返回振幅
+                    imgHandle.sendEmptyMessage(1);
                 } catch (InterruptedException e) {
                     LogUtil.e(TAG, e.getMessage());
                 }
@@ -240,7 +260,6 @@ public class AudioButton extends androidx.appcompat.widget.AppCompatTextView {
         } else {
             cancelAnimView.updateVoiceValue(voiceValue);
         }
-        System.out.println("############voiceValue：" + voiceValue + " " + 20 * Math.log10(voiceValue));
 //        if ((Math.abs(endY - startY) > 100)) {
 //            dialog_img.setImageResource(R.drawable.gh_base_release_finger_cancel);// 提示松开手指，取消发送
 //            tv_releaseFinger.setText(context.getResources().getString(R.string.cancel_record));
@@ -321,6 +340,7 @@ public class AudioButton extends androidx.appcompat.widget.AppCompatTextView {
         cancelAnimView = dialog.findViewById(R.id.dialog_audio_cancel_anim_view);
         tipTv = dialog.findViewById(R.id.dialog_record_tip_tv);
         closeIv = dialog.findViewById(R.id.dialog_record_close_iv);
+        bottomIv = dialog.findViewById(R.id.dialog_bottom_iv);
     }
 
     public String getAudioPath() {

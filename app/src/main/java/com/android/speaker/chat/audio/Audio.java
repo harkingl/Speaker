@@ -15,7 +15,7 @@ import com.google.android.exoplayer2.Player;
 public class Audio {
 	public static final String TAG = "Audio";
 	
-	public static final int DEFAULT_MAX_DURATION = 60;
+	public static final int DEFAULT_MAX_DURATION = 60*1000;
 	
 	private Context mContext;
 	private MediaRecorder mAudioRecorder;
@@ -132,9 +132,9 @@ public class Audio {
 		}
 
 		mFilePath = filePath;
-		mAudioRecorder.reset();
+//		mAudioRecorder.reset();
 		mAudioRecorder.setOutputFile(filePath);
-		mAudioRecorder.setMaxDuration(maxTimeInMs);
+//		mAudioRecorder.setMaxDuration(maxTimeInMs);
 		try {
 			mAudioRecorder.prepare();
 			mAudioRecorder.start();
@@ -196,29 +196,6 @@ public class Audio {
 		releasePlayer();
 		releaseRecord();
 		mAudio = null;
-	}
-	
-	public int getDuration(String filePath) {
-		int duration = 0;
-		MediaPlayer mAudioPlayer = new MediaPlayer();
-		mAudioPlayer.reset();
-		try {
-			mAudioPlayer.setDataSource(filePath);
-			mAudioPlayer.prepare();
-			duration = mAudioPlayer.getDuration();
-			mAudioPlayer.reset();
-		} catch (Exception e) {
-            LogUtil.e(TAG, e.getMessage());
-		}
-		if(duration % 1000 > 500){
-			duration = (duration / 1000) + 1;
-		}else{
-			duration = duration / 1000;
-		}
-		if(duration <= 0){
-			duration = 1;
-		}
-		return duration;
 	}
 
 	private int BASE = 1;

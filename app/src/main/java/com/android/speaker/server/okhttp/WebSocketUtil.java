@@ -62,7 +62,32 @@ public class WebSocketUtil {
             ChatItem item = new ChatItem();
             item.uniqueId = uuid;
             item.content = message;
-            item.isSuccess = success;
+            item.state = success ? ChatItem.STATE_ANALYSISING : ChatItem.STATE_SEND_FAILED;
+            return item;
+        } catch (Exception e) {
+            LogUtil.e(TAG, e.getMessage());
+        }
+
+        return null;
+    }
+
+    public ChatItem sendAudio(byte[] bytes, String targetId) {
+        JSONObject obj = new JSONObject();
+        try {
+            if(TextUtils.isEmpty(mConversationId)) {
+                obj.put("sceneId", targetId);
+            } else {
+                obj.put("conversationId", mConversationId);
+            }
+            String uuid = UUID.randomUUID().toString();
+            obj.put("uniqueId", uuid);
+            obj.put("content", bytes);
+
+            boolean success = mWebSocket.send(obj.toString());
+
+            ChatItem item = new ChatItem();
+            item.uniqueId = uuid;
+            item.state = ChatItem.STATE_SENDING;
             return item;
         } catch (Exception e) {
             LogUtil.e(TAG, e.getMessage());

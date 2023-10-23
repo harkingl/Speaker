@@ -123,7 +123,6 @@
                     android:textSize="16sp"
                     android:textColor="@color/text_color_1"
                     android:hint="请输入内容"
-                    android:visibility="gone"
                     android:textColorHint="@color/hint_text_color"/>
                 <com.android.speaker.chat.audio.AudioButton
                     android:id="@+id/chat_audio_btn"
@@ -137,6 +136,7 @@
                     android:textSize="16sp"
                     android:textColor="@color/text_color_1"
                     android:textStyle="bold"
+                    android:visibility="gone"
                     android:text="按住 说话"/>
 
                     <ImageView

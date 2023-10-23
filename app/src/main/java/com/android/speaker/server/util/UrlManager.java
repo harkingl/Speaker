@@ -103,7 +103,7 @@ public class UrlManager {
     /**
      * 获取开口说详情
      */
-    public static final String GET_OPEN_SPEAKER_DETAIL = "/speakEnglish-ums/app-api/v1/project/openSpeakb/findOne";
+    public static final String GET_OPEN_SPEAKER_DETAIL = "/speakEnglish-ums/app-api/v1/project/openSpeak/findOne";
     public static final String GET_OPEN_SPEAKER_LIST_BY_SUB = "/speakEnglish-ums/app-api/v1/project/openSpeak/listBySub";
     /**
      * 精品课程/课程预览
@@ -166,5 +166,10 @@ public class UrlManager {
     /**
      * 开口说对话详情
      */
-    public static final String GET_SPEAK_CHAT_DETAIL = "/speakEnglish-ums/app-api/v1/project/queryScenesSpeakProject";
+    public static final String GET_SPEAK_CHAT_DETAIL = "/speakEnglish-ums/app-api/v1/project/openSpeak/queryScroll";
+
+    /**
+     * 获取文本点评和解析
+     */
+    public static final String GET_CONTENT_ANALYSIS = "/speakEnglish-ums/app-api/v1/openspeak/openSpeak/queryanalysis";
 }

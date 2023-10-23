@@ -28,9 +28,6 @@ public class SpeakChatDetail implements Serializable {
                 item.content = analysisArray.getJSONObject(i).optString("content");
                 item.audioOssKey = analysisArray.getJSONObject(i).optString("audioOssKey");
                 item.transfer = analysisArray.getJSONObject(i).optString("transfer");
-                item.teacherInsights = analysisArray.getJSONObject(i).optString("teacherInsights");
-                item.startTime = analysisArray.getJSONObject(i).optDouble("startTime");
-                item.endTime = analysisArray.getJSONObject(i).optDouble("endTime");
                 chatItemList.add(item);
             }
         }
