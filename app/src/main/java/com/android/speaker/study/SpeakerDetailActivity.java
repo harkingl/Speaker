@@ -18,6 +18,7 @@ import com.android.speaker.course.SpeakChatActivity;
 import com.android.speaker.listen.GetSpeakerDetailRequest;
 import com.android.speaker.server.okhttp.RequestListener;
 import com.android.speaker.util.GlideUtil;
+import com.android.speaker.util.StringUtil;
 import com.android.speaker.util.ToastUtil;
 import com.chinsion.SpeakEnglish.R;
 
@@ -99,7 +100,8 @@ public class SpeakerDetailActivity extends BaseActivity implements View.OnClickL
         mTitleTv.setText(info.title);
 
         if(!TextUtils.isEmpty(info.sceneDes)) {
-            mSimulationContentTv.setText(Html.fromHtml(getResources().getString(R.string.sample)));
+            String unescapedString = StringUtil.unescapeString(info.sceneDes.substring(2, info.sceneDes.length()-2));
+            mSimulationContentTv.setText(Html.fromHtml(unescapedString));
         }
         if(info.exampleInfoList != null) {
             mList.addAll(info.exampleInfoList);

@@ -12,6 +12,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.concurrent.TimeUnit;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -33,12 +35,16 @@ public abstract class BaseRequest<R> {
 
     private RequestListener<R> mListener;
 
-    private static OkHttpClient mClient = new OkHttpClient();
+    private static OkHttpClient mClient;
 
     private Context mContext;
 
     protected BaseRequest(Context context) {
         mContext = context;
+        mClient = new OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .build();
     }
 
     protected abstract String url();

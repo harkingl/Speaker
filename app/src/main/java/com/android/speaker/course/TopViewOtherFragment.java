@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.android.speaker.base.component.BaseFragment;
+import com.android.speaker.util.StringUtil;
 import com.chinsion.SpeakEnglish.R;
 
 public class TopViewOtherFragment extends BaseFragment {
@@ -38,6 +39,6 @@ public class TopViewOtherFragment extends BaseFragment {
     }
 
     private void initData() {
-        mContentTv.setText(Html.fromHtml(mContent));
+        mContentTv.setText(Html.fromHtml(StringUtil.unescapeString(mContent)));
     }
 }

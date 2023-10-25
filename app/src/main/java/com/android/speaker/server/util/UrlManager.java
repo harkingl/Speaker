@@ -166,7 +166,7 @@ public class UrlManager {
     /**
      * 开口说对话详情
      */
-    public static final String GET_SPEAK_CHAT_DETAIL = "/speakEnglish-ums/app-api/v1/project/openSpeak/queryScroll";
+    public static final String GET_SPEAK_CHAT_DETAIL = "/speakEnglish-ums/app-api/v1/project/openSpeak/findScroll";
 
     /**
      * 获取文本点评和解析

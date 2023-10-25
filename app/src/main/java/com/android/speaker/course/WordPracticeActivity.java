@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.media.MediaBrowserCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -35,7 +34,6 @@ import com.google.android.exoplayer2.Player;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 public class WordPracticeActivity extends BaseActivity implements View.OnClickListener {
@@ -232,13 +230,10 @@ public class WordPracticeActivity extends BaseActivity implements View.OnClickLi
     private void startRecording() {
         mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-//        mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-//        mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
         mFilePath = FileUtil.createRecordFile().getAbsolutePath();
         mediaRecorder.setOutputFile(mFilePath);
-//        mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
         try {
             mediaRecorder.prepare();
         } catch (IOException e) {

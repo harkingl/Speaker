@@ -17,4 +17,9 @@ public class ChatItem implements Serializable {
     public int state;
     public String score;
     public String analysis;
+    // 修正后的内容
+    public String standarAnswer;
+    // 是否显示点评信息
+    public boolean isAnalysisShow;
+    public boolean isMySelf;
 }

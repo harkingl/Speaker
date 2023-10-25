@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,10 +25,10 @@ import com.android.speaker.base.component.BaseFragment;
 import com.android.speaker.base.component.NoScrollListView;
 import com.android.speaker.chat.audio.AudioButton;
 import com.android.speaker.home.FragmentAdapter;
-import com.android.speaker.listen.DialogPlayListAdapter;
 import com.android.speaker.server.okhttp.RequestListener;
 import com.android.speaker.server.okhttp.WebSocketUtil;
 import com.android.speaker.study.SpeakerDetailInfo;
+import com.android.speaker.util.FileUtil;
 import com.android.speaker.util.GlideUtil;
 import com.android.speaker.util.LogUtil;
 import com.android.speaker.util.ScreenUtil;
@@ -38,12 +37,16 @@ import com.chinsion.SpeakEnglish.R;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /***
  * 开口说对话
@@ -161,6 +164,11 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
 
         mPlayer = new ExoPlayer.Builder(this).build();
 
+        mList = new ArrayList<>();
+        mAdapter = new SpeakChatAdapter(this, mList, true);
+        mAdapter.setCallback(this);
+        mListView.setAdapter(mAdapter);
+
         new GetSpeakChatDetailRequest(this, mInfo.id).schedule(false, new RequestListener<SpeakChatDetail>() {
             @Override
             public void onSuccess(SpeakChatDetail result) {
@@ -175,9 +183,9 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void setView(SpeakChatDetail detail) {
-        if(detail.headerContentList != null && detail.headerContentList.size() > 0) {
+        if(detail.scrollTitleList != null && detail.scrollTitleList.size() > 0) {
 //            mPageList.add(new TopViewFirstFragment(mInfo.title, mInfo.des));
-            for(SpeakChatDetail.HeaderContent content : detail.headerContentList) {
+            for(SpeakChatDetail.HeaderContent content : detail.scrollTitleList) {
                 mPageList.add(new TopViewOtherFragment(content.context));
             }
             FragmentAdapter adapter = new FragmentAdapter(this);
@@ -188,18 +196,12 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
             updateIndicationView(0);
         }
 
+        //TODO
+        detail.userName = "Monica";
+        detail.myName = "James";
         if(detail.chatItemList != null && detail.chatItemList.size() > 0) {
-            mList = detail.chatItemList;
-            for(ChatItem item : detail.chatItemList) {
-                mContentList.add(item.content);
-            }
-            mAdapter = new SpeakChatAdapter(this, mList, true);
-            mAdapter.setCallback(this);
-            mListView.setAdapter(mAdapter);
-
-            //TODO
-            detail.userName = mList.get(0).name;
-            detail.myName = mList.get(1).name;
+            mList.addAll(detail.chatItemList);
+            mAdapter.notifyDataSetChanged();
         }
 
         mSocketUtil.connect();
@@ -239,6 +241,7 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
             ChatItem item = mSocketUtil.sendMessage(text, "40");
             if(item != null) {
                 item.name = mDetail.myName;
+                item.isMySelf = true;
                 mList.add(item);
                 mContentList.add(text);
                 mAdapter.notifyDataSetChanged();
@@ -274,21 +277,49 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
 
     private void sendAudio(String path) {
         FileInputStream objFileIS = null;
+        FileOutputStream out = null;
+        ByteArrayOutputStream objByteArrayOS = null;
         try {
             objFileIS = new FileInputStream(new File(path));
 
-            ByteArrayOutputStream objByteArrayOS = new ByteArrayOutputStream();
+            File f = new File(FileUtil.ROOT_FILE_PATH, "byte.txt");
+            if(!f.exists()) {
+                f.createNewFile();
+            }
+            out = new FileOutputStream(f);
+            objByteArrayOS = new ByteArrayOutputStream();
+            String uuid = UUID.randomUUID().toString();
+            objByteArrayOS.write(uuid.getBytes());
+            out.write(uuid.getBytes());
             byte[] byteBufferString = new byte[1024];
             while (true) {
                 int readNum = objFileIS.read(byteBufferString);
-                objByteArrayOS.write(byteBufferString, 0, readNum);
+                if(readNum != -1) {
+                    objByteArrayOS.write(byteBufferString, 0, readNum);
+                    out.write(byteBufferString, 0, readNum);
+                }
                 if (readNum < 1024) {
                     break;
                 }
             }
-            ChatItem item = mSocketUtil.sendAudio(objByteArrayOS.toByteArray(), "40");
+            ChatItem item = mSocketUtil.sendAudio(objByteArrayOS.toByteArray(), uuid);
         } catch (Exception e) {
             LogUtil.e(TAG, e.getMessage());
+        } finally {
+            if(objByteArrayOS != null) {
+                try {
+                    objByteArrayOS.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if(out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+
+                }
+            }
         }
 
     }
@@ -359,12 +390,30 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
     private WebSocketUtil.MessageReceivedListener mListener = new WebSocketUtil.MessageReceivedListener() {
         @Override
         public void handleMessage(String message) {
-            ToastUtil.toastLongMessage(message);
+//            ToastUtil.toastLongMessage(message);
+
+            try {
+                JSONObject obj = new JSONObject(message);
+
+                ChatItem item = new ChatItem();
+                item.uniqueId = obj.optString("uniqueId");
+                item.content = obj.optString("data");
+                item.state = ChatItem.STATE_FINISH;
+                item.name = mDetail.userName;
+                item.isMySelf = false;
+                mList.add(item);
+                mAdapter.notifyDataSetChanged();
+            } catch (Exception e) {
+                LogUtil.e(TAG, e.getMessage());
+            }
             LogUtil.d(TAG, message);
         }
     };
 
     private void showTipDialog(final Context context) {
+        if(mDetail == null || mDetail.showTitles == null) {
+            return;
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.DialogStyle);
         View layout = LayoutInflater.from(context).inflate(R.layout.dialog_chat_tip, null);
         final AlertDialog dialog = builder.create();
@@ -389,10 +438,6 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
         NoScrollListView lv = (NoScrollListView) window.findViewById(R.id.dialog_common_lv);
         lv.setMaxHeight((int)(ScreenUtil.getScreenHeight(this)*0.34));
 
-        List<String> list = new ArrayList<>();
-        list.add("在对方主动帮助告知他人后，你可以首先表示感谢。并可建议他们可以准时开始会议，不用等你。");
-        list.add("eg. Great, thanks. Go ahead and start without me.");
-
-        lv.setAdapter(new ChatTipListAdapter(this, list));
+        lv.setAdapter(new ChatTipListAdapter(this, mDetail.showTitles));
     }
 }

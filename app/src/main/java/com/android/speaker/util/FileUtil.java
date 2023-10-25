@@ -15,7 +15,7 @@ public class FileUtil {
     public static File createRecordFile() {
         // Create an image file name
         String timeStamp = new SimpleDateFormat(FORMAT_DATE).format(new Date());
-        File mediaFile = new File(ROOT_FILE_PATH, "audio_" + timeStamp + ".mp4");
+        File mediaFile = new File(ROOT_FILE_PATH, "audio_" + timeStamp + ".wav");
 
         createOrExistsDir(mediaFile.getParentFile());
 

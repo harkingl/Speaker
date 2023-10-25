@@ -19,7 +19,7 @@ public class GetSpeakChatDetailRequest extends BaseRequest<SpeakChatDetail> {
     }
     @Override
     protected String url() {
-        return UrlManager.GET_SCENE_SPEAK_DETAIL;
+        return UrlManager.GET_SPEAK_CHAT_DETAIL;
     }
 
     @Override

@@ -71,22 +71,12 @@ public class WebSocketUtil {
         return null;
     }
 
-    public ChatItem sendAudio(byte[] bytes, String targetId) {
-        JSONObject obj = new JSONObject();
+    public ChatItem sendAudio(byte[] bytes, String uniqueId) {
         try {
-            if(TextUtils.isEmpty(mConversationId)) {
-                obj.put("sceneId", targetId);
-            } else {
-                obj.put("conversationId", mConversationId);
-            }
-            String uuid = UUID.randomUUID().toString();
-            obj.put("uniqueId", uuid);
-            obj.put("content", bytes);
-
-            boolean success = mWebSocket.send(obj.toString());
+            boolean success = mWebSocket.send(new ByteString(bytes));
 
             ChatItem item = new ChatItem();
-            item.uniqueId = uuid;
+            item.uniqueId = uniqueId;
             item.state = ChatItem.STATE_SENDING;
             return item;
         } catch (Exception e) {
@@ -103,24 +93,14 @@ public class WebSocketUtil {
             LogUtil.d(TAG, "onMessage：" + text);
 
             if(mMessageListener != null) {
-                String content = text;
-                try {
-                    JSONObject obj = new JSONObject(text);
-                    if(TextUtils.isEmpty(mConversationId)) {
-                        mConversationId = obj.optString("conversationId");
-                        content = obj.optString("data");
-                    }
-                } catch (Exception e) {
-                    LogUtil.e(TAG, e.getMessage());
-                }
-                mMessageListener.handleMessage(content);
+                mMessageListener.handleMessage(text);
             }
         }
 
         @Override
         public void onMessage(@NonNull WebSocket webSocket, @NonNull ByteString bytes) {
             super.onMessage(webSocket, bytes);
-            LogUtil.d(TAG, "onMessage：" + bytes);
+            LogUtil.d(TAG, "onMessage11：" + bytes);
         }
 
         @Override

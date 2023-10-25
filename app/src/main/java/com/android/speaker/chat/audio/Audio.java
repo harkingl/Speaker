@@ -42,8 +42,9 @@ public class Audio {
 	private void initAudioRecorder() {
 		mAudioRecorder = new MediaRecorder();
 		mAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-		mAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+		mAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
 		mAudioRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+
 //		mAudioRecorder.setMaxDuration(DEFAULT_MAX_DURATION);
 
 
@@ -147,19 +148,22 @@ public class Audio {
 	}
 	
 	public void stopRecord() {
-		if(mAudioRecorder != null) {
-			try {
-				mAudioRecorder.stop();
-			}catch (Exception e){
-				LogUtil.e(TAG,e.toString());
-			}
-		}
+//		if(mAudioRecorder != null) {
+//			try {
+//				mAudioRecorder.stop();
+//				mAudioRecorder.reset();
+//			}catch (Exception e){
+//				LogUtil.e(TAG,e.toString());
+//			}
+//		}
+		releaseRecord();
 	}
 
 	private void releaseRecord() {
 		if(mAudioRecorder != null) {
 			try {
 				mAudioRecorder.stop();
+				mAudioRecorder.reset();
 			}catch (Exception e){
 				LogUtil.e(TAG,e.toString());
 			} finally {

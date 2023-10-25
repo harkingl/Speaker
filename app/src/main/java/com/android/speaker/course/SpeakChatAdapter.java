@@ -1,6 +1,7 @@
 package com.android.speaker.course;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -15,16 +16,12 @@ public class SpeakChatAdapter extends BaseListItemAdapter<ChatItem> {
     // 中文翻译是否打开
     private boolean mIsOpen;
     private int selectIndex = -1;
-    private String mLeftName;
     private ICallBack mCallback;
 
     public SpeakChatAdapter(Context context, List<ChatItem> list, boolean isOpen) {
         super(context, list);
 
         this.mIsOpen = isOpen;
-        if(list != null && list.size() > 0) {
-            mLeftName = list.get(0).name;
-        }
     }
 
     @Override
@@ -32,7 +29,7 @@ public class SpeakChatAdapter extends BaseListItemAdapter<ChatItem> {
         ViewHolder holder = null;
         if(convertView == null) {
             holder = new ViewHolder();
-            convertView = inflater.inflate(R.layout.scene_speak_item, null);
+            convertView = inflater.inflate(R.layout.speak_chat_item, null);
             holder.leftLayout = convertView.findViewById(R.id.item_left_parent_rl);
             holder.leftIconTv = convertView.findViewById(R.id.item_left_icon_tv);
             holder.leftNameTv = convertView.findViewById(R.id.item_left_name_tv);
@@ -44,9 +41,15 @@ public class SpeakChatAdapter extends BaseListItemAdapter<ChatItem> {
             holder.rightIconTv = convertView.findViewById(R.id.item_right_icon_tv);
             holder.rightNameTv = convertView.findViewById(R.id.item_right_name_tv);
             holder.rightContentLayout = convertView.findViewById(R.id.item_right_content_ll);
+            holder.rightStateIv = convertView.findViewById(R.id.item_right_state_iv);
+            holder.rightStateTv = convertView.findViewById(R.id.item_right_state_tv);
+            holder.rightArrowIv = convertView.findViewById(R.id.item_right_arrow_iv);
+            holder.rightTitleLayout = convertView.findViewById(R.id.item_right_title_ll);
             holder.rightTitleEnTv = convertView.findViewById(R.id.item_right_title_en_tv);
-            holder.rightTitleChTv = convertView.findViewById(R.id.item_right_title_ch_tv);
             holder.rightVoiceIv = convertView.findViewById(R.id.item_right_voice_iv);
+            holder.rightAnalysisLayout = convertView.findViewById(R.id.item_right_analysis_ll);
+            holder.rightStandAnswerTv = convertView.findViewById(R.id.item_right_stand_answer_tv);
+            holder.rightAnalysisTv = convertView.findViewById(R.id.item_right_analysis_tv);
 
             convertView.setTag(holder);
         } else {
@@ -55,7 +58,7 @@ public class SpeakChatAdapter extends BaseListItemAdapter<ChatItem> {
 
         holder.position = position;
         ChatItem info = items.get(position);
-        if(info.name.equals(mLeftName)) {
+        if(!info.isMySelf) {
             holder.leftIconTv.setText(info.name.charAt(0) + "");
             holder.leftNameTv.setText(info.name);
             holder.leftTitleEnTv.setText(info.content);
@@ -65,19 +68,19 @@ public class SpeakChatAdapter extends BaseListItemAdapter<ChatItem> {
             } else {
                 holder.leftTitleChTv.setVisibility(View.GONE);
             }
-            if(selectIndex == position) {
-                holder.leftIconTv.setBackgroundResource(R.drawable.green_circle_bg_shape);
-                holder.leftNameTv.setTextColor(context.getColor(R.color.text_color_00B49B));
-                holder.leftContentLayout.setBackgroundResource(R.drawable.chat_item_left_bg_select_shape);
-                holder.leftTitleChTv.setTextColor(context.getColor(R.color.text_color_00B49B));
-                holder.leftVoiceIv.setImageResource(R.drawable.chat_item_voice_select);
-            } else {
-                holder.leftIconTv.setBackgroundResource(R.drawable.purple_circle_bg_shape);
-                holder.leftNameTv.setTextColor(context.getColor(R.color.text_color_2));
-                holder.leftContentLayout.setBackgroundResource(R.drawable.chat_item_left_bg_shape);
-                holder.leftTitleChTv.setTextColor(context.getColor(R.color.text_color_2));
-                holder.leftVoiceIv.setImageResource(R.drawable.chat_item_voice_default);
-            }
+//            if(selectIndex == position) {
+//                holder.leftIconTv.setBackgroundResource(R.drawable.green_circle_bg_shape);
+//                holder.leftNameTv.setTextColor(context.getColor(R.color.text_color_00B49B));
+//                holder.leftContentLayout.setBackgroundResource(R.drawable.chat_item_left_bg_select_shape);
+//                holder.leftTitleChTv.setTextColor(context.getColor(R.color.text_color_00B49B));
+//                holder.leftVoiceIv.setImageResource(R.drawable.chat_item_voice_select);
+//            } else {
+//                holder.leftIconTv.setBackgroundResource(R.drawable.purple_circle_bg_shape);
+//                holder.leftNameTv.setTextColor(context.getColor(R.color.text_color_2));
+//                holder.leftContentLayout.setBackgroundResource(R.drawable.chat_item_left_bg_shape);
+//                holder.leftTitleChTv.setTextColor(context.getColor(R.color.text_color_2));
+//                holder.leftVoiceIv.setImageResource(R.drawable.chat_item_voice_default);
+//            }
             holder.leftVoiceIv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -98,25 +101,36 @@ public class SpeakChatAdapter extends BaseListItemAdapter<ChatItem> {
 //            } else {
 //                holder.rightTitleChTv.setVisibility(View.GONE);
 //            }
-            if(selectIndex == position) {
-                holder.rightIconTv.setBackgroundResource(R.drawable.green_circle_bg_shape);
-                holder.rightNameTv.setTextColor(context.getColor(R.color.text_color_00B49B));
-                holder.rightContentLayout.setBackgroundResource(R.drawable.chat_item_right_bg_select_shape);
-                holder.rightTitleChTv.setTextColor(context.getColor(R.color.text_color_00B49B));
-                holder.rightVoiceIv.setImageResource(R.drawable.chat_item_voice_select);
-            } else {
-                holder.rightIconTv.setBackgroundResource(R.drawable.purple_circle_bg_shape);
-                holder.rightNameTv.setTextColor(context.getColor(R.color.text_color_2));
-                holder.rightContentLayout.setBackgroundResource(R.drawable.chat_item_right_bg_shape);
-                holder.rightTitleChTv.setTextColor(context.getColor(R.color.text_color_2));
-                holder.rightVoiceIv.setImageResource(R.drawable.chat_item_voice_default);
-            }
-            holder.rightVoiceIv.setOnClickListener(new View.OnClickListener() {
+//            if(selectIndex == position) {
+//                holder.rightIconTv.setBackgroundResource(R.drawable.green_circle_bg_shape);
+//                holder.rightNameTv.setTextColor(context.getColor(R.color.text_color_00B49B));
+//                holder.rightContentLayout.setBackgroundResource(R.drawable.chat_item_right_bg_select_shape);
+//                holder.rightTitleChTv.setTextColor(context.getColor(R.color.text_color_00B49B));
+//                holder.rightVoiceIv.setImageResource(R.drawable.chat_item_voice_select);
+//            } else {
+//                holder.rightIconTv.setBackgroundResource(R.drawable.purple_circle_bg_shape);
+//                holder.rightNameTv.setTextColor(context.getColor(R.color.text_color_2));
+//                holder.rightContentLayout.setBackgroundResource(R.drawable.chat_item_right_bg_shape);
+//                holder.rightTitleChTv.setTextColor(context.getColor(R.color.text_color_2));
+//                holder.rightVoiceIv.setImageResource(R.drawable.chat_item_voice_default);
+//            }
+//            holder.rightVoiceIv.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if(mCallback != null) {
+//                        mCallback.doPlay(info);
+//                    }
+//                }
+//            });
+
+            holder.rightArrowIv.setVisibility(View.GONE);
+            holder.rightAnalysisLayout.setVisibility(View.GONE);
+            setRightStateView(info, holder);
+            holder.rightArrowIv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(mCallback != null) {
-                        mCallback.doPlay(info);
-                    }
+                    info.isAnalysisShow = !info.isAnalysisShow;
+                    notifyDataSetChanged();
                 }
             });
             holder.leftLayout.setVisibility(View.GONE);
@@ -124,6 +138,40 @@ public class SpeakChatAdapter extends BaseListItemAdapter<ChatItem> {
         }
 
         return convertView;
+    }
+
+    private void setRightStateView(ChatItem info, ViewHolder holder) {
+        if(info.state == ChatItem.STATE_SEND_FAILED) {
+            holder.rightStateIv.setImageResource(R.drawable.ic_chat_warning);
+            holder.rightStateTv.setText("发送失败");
+        } else if(info.state == ChatItem.STATE_ANALYSISING) {
+            holder.rightStateIv.setImageResource(R.drawable.ic_chat_sync);
+            holder.rightStateTv.setText("分析中");
+        } else if(info.state == ChatItem.STATE_FINISH) {
+            if(TextUtils.isEmpty(info.analysis)) {
+                holder.rightStateIv.setImageResource(R.drawable.ic_chat_check);
+                holder.rightStateTv.setText("完美表达");
+            } else {
+                holder.rightStateIv.setImageResource(R.drawable.ic_chat_bulb);
+                holder.rightStateTv.setText("优化提升");
+                holder.rightArrowIv.setImageResource(info.isAnalysisShow ? R.drawable.ic_arrow_up : R.drawable.ic_arrow_down);
+                holder.rightArrowIv.setVisibility(View.VISIBLE);
+                if(info.isAnalysisShow) {
+                    if(!TextUtils.isEmpty(info.standarAnswer)) {
+                        holder.rightStandAnswerTv.setText(info.standarAnswer);
+                        holder.rightStandAnswerTv.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.rightStandAnswerTv.setVisibility(View.GONE);
+                    }
+                    holder.rightTitleLayout.setBackgroundColor(context.getColor(R.color.common_green_color));
+                    holder.rightAnalysisTv.setText(info.analysis);
+                    holder.rightAnalysisLayout.setVisibility(View.VISIBLE);
+                } else {
+                    holder.rightTitleLayout.setBackgroundResource(R.drawable.speak_chat_item_right_bottom_bg_shape);
+                    holder.rightAnalysisLayout.setVisibility(View.GONE);
+                }
+            }
+        }
     }
 
     public void setIsOpen(boolean isOpen) {
@@ -150,9 +198,15 @@ public class SpeakChatAdapter extends BaseListItemAdapter<ChatItem> {
         public TextView rightIconTv;
         public TextView rightNameTv;
         public View rightContentLayout;
+        public ImageView rightStateIv;
+        public TextView rightStateTv;
+        public ImageView rightArrowIv;
+        public View rightTitleLayout;
         public TextView rightTitleEnTv;
-        public TextView rightTitleChTv;
         public ImageView rightVoiceIv;
+        public View rightAnalysisLayout;
+        public TextView rightStandAnswerTv;
+        public TextView rightAnalysisTv;
         public int position;
     }
 

@@ -21,7 +21,7 @@ public class SpeakerDetailInfo implements Serializable {
     public SpeakerDetailInfo parse(JSONObject obj) throws JSONException {
         id = obj.optString("id");
         scenesId = obj.optString("scenesId");
-        sceneDes = obj.optString("sceneDes");
+        sceneDes = obj.optString("sceneDess");
         tips = obj.optString("tips");
         ossUrl = obj.optString("ossUrl");
         title = obj.optString("title");
