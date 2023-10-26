@@ -136,12 +136,12 @@ public class UrlManager {
     /**
      * 收藏英语博客
      */
-    public static final String ADD_BLOG = "/speakEnglish-ums/tableFavorites/addBlog";
+    public static final String ADD_BLOG_FAVORITE = "/speakEnglish-ums/tableFavorites/addBlog";
 
     /**
      * 移除收藏
      */
-    public static final String REMOVE_BLOG = "/speakEnglish-ums/tableFavorites/remove";
+    public static final String REMOVE_BLOG_FAVORITE = "/speakEnglish-ums/tableFavorites/remove";
 
     /**
      * 收藏精品课程
@@ -172,4 +172,14 @@ public class UrlManager {
      * 获取文本点评和解析
      */
     public static final String GET_CONTENT_ANALYSIS = "/speakEnglish-ums/app-api/v1/openspeak/openSpeak/queryanalysis";
+
+    /**
+     * 获取生词本
+     */
+    public static final String GET_NOTEBOOK_LIST = "/speakEnglish-ums/app-api/v1/user/queryNotebook";
+
+    /**
+     * 获取收藏列表
+     */
+    public static final String GET_FAVORITE_LIST = "/speakEnglish-ums/tableFavorites/queryList";
 }

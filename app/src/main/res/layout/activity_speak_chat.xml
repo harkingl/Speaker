@@ -147,7 +147,22 @@
                         android:src="@drawable/ic_chat_tip"/>
                 </LinearLayout>
 
-            </LinearLayout>
+            <TextView
+                android:id="@+id/chat_view_point_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="8dp"
+                android:gravity="center"
+                android:paddingVertical="12dp"
+                android:background="@drawable/btn_bg_shape_green"
+                android:textSize="16dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:visibility="gone"
+                android:text="查看要点"/>
+
         </LinearLayout>
+    </LinearLayout>
 
 </RelativeLayout>

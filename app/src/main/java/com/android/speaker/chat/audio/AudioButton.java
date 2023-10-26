@@ -299,6 +299,7 @@ public class AudioButton extends androidx.appcompat.widget.AppCompatTextView {
         audioFile = FileUtil.createRecordFile();
         audio.startRecord(audioFile.getAbsolutePath(), DEFAULT_TIME * 1000);
         inputAnimView.startAnimation();
+        inputTv.setText("...");
     }
 
     private void stopRecord() {

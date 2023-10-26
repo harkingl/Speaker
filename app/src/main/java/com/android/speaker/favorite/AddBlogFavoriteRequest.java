@@ -1,4 +1,4 @@
-package com.android.speaker.course;
+package com.android.speaker.favorite;
 
 import android.content.Context;
 
@@ -9,27 +9,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /***
- * 收藏课程
+ * 收藏英语博客
  */
-public class AddCourseFavoriteRequest extends BaseRequest<String> {
-    // 课程ID
+public class AddBlogFavoriteRequest extends BaseRequest<String> {
+    // 博客ID
     private String id;
-    private int type;
-    public AddCourseFavoriteRequest(Context context, String id, int type) {
+    public AddBlogFavoriteRequest(Context context, String id) {
         super(context);
         this.id = id;
-        this.type = type;
     }
     @Override
     protected String url() {
-        String url = UrlManager.ADD_COURSE_CATALOG;
-        if(type == CourseUtil.TYPE_COURSE_PROJECT) {
-            url = UrlManager.ADD_COURSE_PROJECT;
-        } else if(type == CourseUtil.TYPE_COURSE_SPECIAL) {
-            url = UrlManager.ADD_COURSE_SPECIAL;
-        }
-
-        return url;
+        return UrlManager.ADD_BLOG_FAVORITE;
     }
 
     @Override

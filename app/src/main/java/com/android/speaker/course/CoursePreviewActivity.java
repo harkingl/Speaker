@@ -11,7 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.android.speaker.base.component.BaseActivity;
-import com.android.speaker.listen.RemoveBlogRequest;
+import com.android.speaker.favorite.AddCourseFavoriteRequest;
+import com.android.speaker.favorite.RemoveBlogFavoriteRequest;
 import com.android.speaker.server.okhttp.RequestListener;
 import com.android.speaker.study.SpeakerDetailActivity;
 import com.android.speaker.util.GlideUtil;
@@ -170,7 +171,7 @@ public class CoursePreviewActivity extends BaseActivity implements View.OnClickL
 
     private void addBlog() {
         if(mIsFavorite) {
-            new RemoveBlogRequest(this, mFavoriteId).schedule(false, new RequestListener<Boolean>() {
+            new RemoveBlogFavoriteRequest(this, mFavoriteId).schedule(false, new RequestListener<Boolean>() {
                 @Override
                 public void onSuccess(Boolean result) {
 //                    ToastUtil.toastLongMessage("取消收藏成功");

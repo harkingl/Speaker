@@ -2,7 +2,6 @@ package com.android.speaker.me;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.android.speaker.base.bean.UserInfo;
 import com.android.speaker.base.component.BaseFragment;
+import com.android.speaker.favorite.FavoriteListActivity;
 import com.android.speaker.me.setting.SettingActivity;
 import com.chinsion.SpeakEnglish.R;
 
@@ -105,10 +104,17 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
             case R.id.me_setting_iv:
                 gotoSetting();
                 break;
+            case R.id.me_function_collect_tv:
+                gotoFavorite();
+                break;
         }
     }
 
     private void gotoSetting() {
         startActivity(new Intent(getActivity(), SettingActivity.class));
+    }
+
+    private void gotoFavorite() {
+        startActivity(new Intent(getActivity(), FavoriteListActivity.class));
     }
 }

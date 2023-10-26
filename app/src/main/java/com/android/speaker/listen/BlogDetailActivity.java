@@ -15,8 +15,8 @@ import androidx.fragment.app.FragmentTransaction;
 import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.base.component.TitleTagView;
 import com.android.speaker.course.AnalysisItem;
-import com.android.speaker.course.CourseLectureDetail;
-import com.android.speaker.course.GetCourseLectureDetailRequest;
+import com.android.speaker.favorite.AddBlogFavoriteRequest;
+import com.android.speaker.favorite.RemoveBlogFavoriteRequest;
 import com.android.speaker.server.okhttp.RequestListener;
 import com.android.speaker.util.LogUtil;
 import com.android.speaker.util.ToastUtil;
@@ -322,7 +322,7 @@ public class BlogDetailActivity extends BaseActivity implements View.OnClickList
 
     private void addBlog() {
         if(mIsFavorite) {
-            new RemoveBlogRequest(this, mFavoriteId).schedule(false, new RequestListener<Boolean>() {
+            new RemoveBlogFavoriteRequest(this, mFavoriteId).schedule(false, new RequestListener<Boolean>() {
                 @Override
                 public void onSuccess(Boolean result) {
 //                    ToastUtil.toastLongMessage("取消收藏成功");
@@ -336,7 +336,7 @@ public class BlogDetailActivity extends BaseActivity implements View.OnClickList
                 }
             });
         } else {
-            new AddBlogRequest(this, mItem.id).schedule(false, new RequestListener<String>() {
+            new AddBlogFavoriteRequest(this, mItem.id).schedule(false, new RequestListener<String>() {
                 @Override
                 public void onSuccess(String result) {
                     ToastUtil.toastLongMessage("收藏成功");

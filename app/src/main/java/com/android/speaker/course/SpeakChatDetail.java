@@ -20,20 +20,8 @@ public class SpeakChatDetail implements Serializable {
 
     public SpeakChatDetail parse(JSONObject obj) throws JSONException {
         id = obj.optString("id");
-//        JSONObject contentObj = obj.getJSONObject("content");
-//        JSONArray analysisArray = contentObj.optJSONArray("content");
-//        if(analysisArray != null) {
-//            chatItemList = new ArrayList<>();
-//            for(int i = 0; i < analysisArray.length(); i++) {
-//                ChatItem item = new ChatItem();
-//                item.name = analysisArray.getJSONObject(i).optString("name");
-//                item.icon = analysisArray.getJSONObject(i).optString("icon");
-//                item.content = analysisArray.getJSONObject(i).optString("content");
-//                item.audioOssKey = analysisArray.getJSONObject(i).optString("audioOssKey");
-//                item.transfer = analysisArray.getJSONObject(i).optString("transfer");
-//                chatItemList.add(item);
-//            }
-//        }
+        userName = obj.optString("yourName");
+        myName = obj.optString("myName");
         JSONArray scrollTitleArray = obj.optJSONArray("scrollTitleList");
         if(scrollTitleArray != null) {
             scrollTitleList = new ArrayList<>();

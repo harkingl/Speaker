@@ -2,6 +2,7 @@ package com.android.speaker.course;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -24,6 +25,8 @@ import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.base.component.BaseFragment;
 import com.android.speaker.base.component.NoScrollListView;
 import com.android.speaker.chat.audio.AudioButton;
+import com.android.speaker.favorite.FavoriteItem;
+import com.android.speaker.favorite.GetFavoriteListRequest;
 import com.android.speaker.home.FragmentAdapter;
 import com.android.speaker.server.okhttp.RequestListener;
 import com.android.speaker.server.okhttp.WebSocketUtil;
@@ -44,6 +47,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -54,6 +60,7 @@ import java.util.UUID;
 public class SpeakChatActivity extends BaseActivity implements View.OnClickListener, SpeakChatAdapter.ICallBack {
 
     private static final String TAG = "SpeakChatActivity";
+    private static final int MAX_PROGRESS = 100;
 
     private ImageView mTopIv;
     private ImageView mBackIv;
@@ -63,14 +70,16 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
     private LinearLayout mIndicationsLayout;
     private ListView mListView;
     private ProgressBar mProgressBar;
+    private View mBottomLayout;
     private ImageView mAudioIv;
     private ImageView mInputIv;
     private EditText mInputTv;
     private ImageView mTipIv;
+    private TextView mPointTv;
     private AudioButton mAudioBtn;
     private List<ImageView> mIndicationViews = new ArrayList<>();
     private List<BaseFragment> mPageList = new ArrayList<>();
-    private List<ChatItem> mList;
+    private ArrayList<ChatItem> mList;
     private SpeakChatAdapter mAdapter;
     private boolean mIsOpen = true;
     private ExoPlayer mPlayer;
@@ -79,6 +88,7 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
     private long mEndTimeMs;
     private WebSocketUtil mSocketUtil;
     private List<String> mContentList;
+    private int mProgress;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,17 +108,20 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
         mIndicationsLayout = findViewById(R.id.chat_indications_ll);
         mListView = findViewById(R.id.chat_data_lv);
         mProgressBar = findViewById(R.id.chat_progress_bar);
+        mBottomLayout = findViewById(R.id.chat_bottom_ll);
         mAudioIv = findViewById(R.id.chat_btn_audio_iv);
         mInputIv = findViewById(R.id.chat_btn_input_iv);
         mInputTv = findViewById(R.id.chat_input_et);
         mTipIv = findViewById(R.id.chat_tip_iv);
         mAudioBtn = findViewById(R.id.chat_audio_btn);
+        mPointTv = findViewById(R.id.chat_view_point_tv);
 
         mBackIv.setOnClickListener(this);
         mTranslateIv.setOnClickListener(this);
         mAudioIv.setOnClickListener(this);
         mInputIv.setOnClickListener(this);
         mTipIv.setOnClickListener(this);
+        mPointTv.setOnClickListener(this);
         mViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -127,7 +140,12 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
-                    sendMessage();
+                    String text = mInputTv.getText().toString();
+                    if(TextUtils.isEmpty(text)) {
+                        ToastUtil.toastLongMessage("请输入内容");
+                        return true;
+                    }
+                    sendMessage(text);
                     return true;
                 }
                 return false;
@@ -160,7 +178,7 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
         mTitleTv.setText(mInfo.title);
 
         mProgressBar.setMax(100);
-        mProgressBar.setProgress(50);
+        mProgressBar.setProgress(0);
 
         mPlayer = new ExoPlayer.Builder(this).build();
 
@@ -196,9 +214,6 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
             updateIndicationView(0);
         }
 
-        //TODO
-        detail.userName = "Monica";
-        detail.myName = "James";
         if(detail.chatItemList != null && detail.chatItemList.size() > 0) {
             mList.addAll(detail.chatItemList);
             mAdapter.notifyDataSetChanged();
@@ -230,12 +245,7 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
         mIndicationViews.get(pos).setImageResource(R.drawable.ic_indication_selected);
     }
 
-    private void sendMessage() {
-        String text = mInputTv.getText().toString();
-        if(TextUtils.isEmpty(text)) {
-            ToastUtil.toastLongMessage("请输入内容");
-            return;
-        }
+    private void sendMessage(String text) {
         if(mInfo != null) {
 //            ChatItem item = mSocketUtil.sendMessage(text, mInfo.id);
             ChatItem item = mSocketUtil.sendMessage(text, "40");
@@ -276,52 +286,34 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void sendAudio(String path) {
-        FileInputStream objFileIS = null;
-        FileOutputStream out = null;
-        ByteArrayOutputStream objByteArrayOS = null;
         try {
-            objFileIS = new FileInputStream(new File(path));
-
-            File f = new File(FileUtil.ROOT_FILE_PATH, "byte.txt");
-            if(!f.exists()) {
-                f.createNewFile();
-            }
-            out = new FileOutputStream(f);
-            objByteArrayOS = new ByteArrayOutputStream();
-            String uuid = UUID.randomUUID().toString();
-            objByteArrayOS.write(uuid.getBytes());
-            out.write(uuid.getBytes());
-            byte[] byteBufferString = new byte[1024];
-            while (true) {
-                int readNum = objFileIS.read(byteBufferString);
-                if(readNum != -1) {
-                    objByteArrayOS.write(byteBufferString, 0, readNum);
-                    out.write(byteBufferString, 0, readNum);
-                }
-                if (readNum < 1024) {
-                    break;
-                }
-            }
-            ChatItem item = mSocketUtil.sendAudio(objByteArrayOS.toByteArray(), uuid);
+            UUID uuid = UUID.randomUUID();
+            byte[] uuidBytes = ByteBuffer.allocate(16)
+                    .putLong(uuid.getMostSignificantBits())
+                    .putLong(uuid.getLeastSignificantBits())
+                    .array();
+            byte[] audioData = readBytesFromFile(new File(path));
+            byte[] combinedData = new byte[uuidBytes.length + audioData.length];
+            System.arraycopy(uuidBytes, 0, combinedData, 0, uuidBytes.length);
+            System.arraycopy(audioData, 0, combinedData, uuidBytes.length, audioData.length);
+            ChatItem item = mSocketUtil.sendAudio(combinedData, uuid.toString());
         } catch (Exception e) {
             LogUtil.e(TAG, e.getMessage());
-        } finally {
-            if(objByteArrayOS != null) {
-                try {
-                    objByteArrayOS.close();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if(out != null) {
-                try {
-                    out.close();
-                } catch (IOException e) {
-
-                }
-            }
         }
 
+    }
+
+    private static byte[] readBytesFromFile(File file) throws IOException {
+        FileInputStream fis = new FileInputStream(file);
+        FileChannel channel = fis.getChannel();
+        int size = (int) channel.size();
+        ByteBuffer buffer = ByteBuffer.allocate(size);
+        channel.read(buffer);
+        buffer.flip();
+        byte[] data = new byte[size];
+        buffer.get(data);
+        fis.close();
+        return data;
     }
 
     @Override
@@ -345,7 +337,17 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
             mInputIv.setVisibility(View.VISIBLE);
             mAudioBtn.setVisibility(View.VISIBLE);
             mInputTv.setVisibility(View.GONE);
+        } else if(id == R.id.chat_view_point_tv) {
+            gotoReportPage();
         }
+    }
+
+    private void gotoReportPage() {
+        Intent i = new Intent(this, ChatReportActivity.class);
+        i.putExtra(CourseUtil.KEY_TITLE, mInfo.title);
+        i.putExtra(CourseUtil.KEY_CHAT_LIST, mList);
+        startActivity(i);
+        finish();
     }
 
     @Override
@@ -375,6 +377,29 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
+    private void updateProgress(boolean isEnd) {
+        if(isEnd) {
+            mProgress = MAX_PROGRESS;
+            mProgressBar.setProgress(mProgress);
+            mBottomLayout.setVisibility(View.GONE);
+            mPointTv.setVisibility(View.VISIBLE);
+            return;
+        }
+        if(mProgress < 50) {
+            mProgress += 10;
+        } else if(mProgress < 80) {
+            mProgress += 5;
+        } else if(mProgress < 90) {
+            mProgress += 2;
+        } else {
+            mProgress += 1;
+        }
+        if(mProgress >= MAX_PROGRESS) {
+            mProgress = MAX_PROGRESS - 1;
+        }
+        mProgressBar.setProgress(mProgress);
+    }
+
     @Override
     protected void onDestroy() {
         stopPlayer();
@@ -390,22 +415,28 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
     private WebSocketUtil.MessageReceivedListener mListener = new WebSocketUtil.MessageReceivedListener() {
         @Override
         public void handleMessage(String message) {
-//            ToastUtil.toastLongMessage(message);
-
             try {
                 JSONObject obj = new JSONObject(message);
 
-                ChatItem item = new ChatItem();
-                item.uniqueId = obj.optString("uniqueId");
-                item.content = obj.optString("data");
-                item.state = ChatItem.STATE_FINISH;
-                item.name = mDetail.userName;
-                item.isMySelf = false;
-                mList.add(item);
-                mAdapter.notifyDataSetChanged();
+                String id = obj.optString("id");
+                String content = obj.optString("data");
+                if(TextUtils.isEmpty(content)) {
+                    return;
+                }
+                if(!TextUtils.isEmpty(id)) {
+                    sendMessage(content);
+                } else {
+                    ChatItem item = new ChatItem();
+                    item.state = ChatItem.STATE_FINISH;
+                    item.name = mDetail.userName;
+                    item.isMySelf = false;
+                    mList.add(item);
+                    mAdapter.notifyDataSetChanged();
+                }
             } catch (Exception e) {
                 LogUtil.e(TAG, e.getMessage());
             }
+            updateProgress(false);
             LogUtil.d(TAG, message);
         }
     };

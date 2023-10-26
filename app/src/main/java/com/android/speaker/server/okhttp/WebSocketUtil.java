@@ -92,15 +92,15 @@ public class WebSocketUtil {
             super.onMessage(webSocket, text);
             LogUtil.d(TAG, "onMessage：" + text);
 
-            if(mMessageListener != null) {
-                mMessageListener.handleMessage(text);
-            }
+            Message msg = mHandler.obtainMessage(WHAT_HANDLE_MSG);
+            msg.obj = text;
+            mHandler.sendMessageDelayed(msg, 50);
         }
 
         @Override
         public void onMessage(@NonNull WebSocket webSocket, @NonNull ByteString bytes) {
             super.onMessage(webSocket, bytes);
-            LogUtil.d(TAG, "onMessage11：" + bytes);
+            LogUtil.d(TAG, "onMessage byte：" + bytes);
         }
 
         @Override
@@ -121,13 +121,21 @@ public class WebSocketUtil {
     };
 
     private static final int WHAT_RETRY = 1;
+    private static final int WHAT_HANDLE_MSG = 2;
     private Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
 
-            if(msg.what == WHAT_RETRY) {
-                connect();
+            switch (msg.what) {
+                case WHAT_RETRY:
+                    connect();
+                    break;
+                case WHAT_HANDLE_MSG:
+                    if(mMessageListener != null) {
+                        mMessageListener.handleMessage((String) msg.obj);
+                    }
+                    break;
             }
         }
     };

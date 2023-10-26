@@ -1,4 +1,4 @@
-package com.android.speaker.listen;
+package com.android.speaker.favorite;
 
 import android.content.Context;
 
@@ -11,16 +11,16 @@ import org.json.JSONObject;
 /***
  * 移除收藏
  */
-public class RemoveBlogRequest extends BaseRequest<Boolean> {
+public class RemoveBlogFavoriteRequest extends BaseRequest<Boolean> {
     // 收藏ID
     private String id;
-    public RemoveBlogRequest(Context context, String id) {
+    public RemoveBlogFavoriteRequest(Context context, String id) {
         super(context);
         this.id = id;
     }
     @Override
     protected String url() {
-        return UrlManager.REMOVE_BLOG;
+        return UrlManager.REMOVE_BLOG_FAVORITE;
     }
 
     @Override
