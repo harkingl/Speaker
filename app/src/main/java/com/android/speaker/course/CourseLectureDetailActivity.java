@@ -61,7 +61,6 @@ public class CourseLectureDetailActivity extends BaseActivity implements View.On
     private ImageView mJumpNextIv;
     private ImageView mPlayIv;
     private PlayProgressBar mProgressBar;
-    private CourseItem mInfo;
     private List<ImageView> mIndicationViews = new ArrayList<>();
     private List<BaseFragment> mPageList = new ArrayList<>();
     private List<AnalysisItem> mList;
@@ -72,6 +71,7 @@ public class CourseLectureDetailActivity extends BaseActivity implements View.On
     private CourseLectureDetail mDetail;
     private List<QuestionInfo> mQuestionList;
     private int mQuestionIndex = -1;
+    private CoursePreviewInfo mInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -184,7 +184,7 @@ public class CourseLectureDetailActivity extends BaseActivity implements View.On
     }
 
     private void initData() {
-        mInfo = (CourseItem) getIntent().getSerializableExtra(CourseUtil.KEY_COURSE_ITEM);
+        mInfo = (CoursePreviewInfo) getIntent().getSerializableExtra(CourseUtil.KEY_COURSE_PREVIEW_INFO);
 
         mTranslateIv.setImageResource(R.drawable.ic_translate_zh);
 

@@ -41,11 +41,12 @@ public class CoursePreviewActivity extends BaseActivity implements View.OnClickL
     private View mSceneLayout;
     private View mCourseInstructionLayout;
     private View mRolePlayLayout;
-    private CourseItem mInfo;
     private boolean mIsFavorite = false;
     private String mFavoriteId;
     private int mType;
     private String mOpenSpeakId;
+    private String mId;
+    private CoursePreviewInfo mInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,26 +84,14 @@ public class CoursePreviewActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initData() {
-        mInfo = (CourseItem) getIntent().getSerializableExtra(CourseUtil.KEY_COURSE_ITEM);
+        mId = getIntent().getStringExtra(CourseUtil.KEY_COURSE_ID);
         mType = getIntent().getIntExtra(CourseUtil.KEY_COURSE_TYPE, CourseUtil.TYPE_COURSE_CATALOG);
 
-        if(!TextUtils.isEmpty(mInfo.homePage)) {
-            GlideUtil.loadImage(mTopIv, mInfo.homePage, null);
-        }
-        mTitleTv.setText(mInfo.title);
-        mDescTv.setText(mInfo.des);
-
-        new GetCoursePreviewRequest(this, mInfo.id).schedule(false, new RequestListener<CoursePreviewInfo>() {
+        new GetCoursePreviewRequest(this, mId).schedule(false, new RequestListener<CoursePreviewInfo>() {
             @Override
             public void onSuccess(CoursePreviewInfo result) {
                 if(result != null) {
-                    if(!TextUtils.isEmpty(result.favoritesId) && !"null".equals(result.favoritesId)) {
-                        mIsFavorite = true;
-                        mFavoriteId = result.favoritesId;
-                        mStarIv.setImageResource(R.drawable.ic_star_white_select);
-                    }
-                    mOpenSpeakId = result.openSpeakId;
-                    setBottomView(result);
+                    setView(result);
                 }
             }
 
@@ -113,10 +102,22 @@ public class CoursePreviewActivity extends BaseActivity implements View.OnClickL
         });
     }
 
-    private void setBottomView(CoursePreviewInfo info) {
+    private void setView(CoursePreviewInfo info) {
         if(info == null) {
             return;
         }
+        if(!TextUtils.isEmpty(info.homePage)) {
+            GlideUtil.loadImage(mTopIv, info.homePage, null);
+        }
+        mTitleTv.setText(info.title);
+        mDescTv.setText(info.des);
+        if(!TextUtils.isEmpty(info.favoritesId) && !"null".equals(info.favoritesId)) {
+            mIsFavorite = true;
+            mFavoriteId = info.favoritesId;
+            mStarIv.setImageResource(R.drawable.ic_star_white_select);
+        }
+        mOpenSpeakId = info.openSpeakId;
+
         if(info.tips != null && info.tips.length > 0) {
             mTagLayout.removeAllViews();
             for(String tagName : info.tips) {
@@ -129,6 +130,8 @@ public class CoursePreviewActivity extends BaseActivity implements View.OnClickL
         mSceneTv.setText("场景：" + info.sceneSpeak);
         mCourseInstructionTv.setText("语法点：" + info.sceneProject);
         mRolePlayTv.setText("场景描述：" + info.openSpeak);
+
+        this.mInfo = info;
     }
 
     private View generateTagView(String tagName) {
@@ -146,19 +149,19 @@ public class CoursePreviewActivity extends BaseActivity implements View.OnClickL
             finish();
         } else if(id == R.id.preview_btn_start_tv) {
             Intent i = new Intent(this, WordPracticeActivity.class);
-            i.putExtra("id", mInfo.id);
+            i.putExtra("id", mId);
             startActivity(i);
         } else if(id == R.id.preview_words_ll) {
             Intent i = new Intent(this, WordPracticeActivity.class);
-            i.putExtra("id", mInfo.id);
+            i.putExtra("id", mId);
             startActivity(i);
         } else if(id == R.id.preview_course_instruction_ll) {
             Intent i = new Intent(this, CourseLectureDetailActivity.class);
-            i.putExtra(CourseUtil.KEY_COURSE_ITEM, mInfo);
+            i.putExtra(CourseUtil.KEY_COURSE_PREVIEW_INFO, mInfo);
             startActivity(i);
         } else if(id == R.id.preview_scenes_ll) {
             Intent i = new Intent(this, SceneSpeakActivity.class);
-            i.putExtra(CourseUtil.KEY_COURSE_ITEM, mInfo);
+            i.putExtra(CourseUtil.KEY_COURSE_PREVIEW_INFO, mInfo);
             startActivity(i);
         } else if(id == R.id.preview_followup_iv) {
             addBlog();
@@ -185,7 +188,7 @@ public class CoursePreviewActivity extends BaseActivity implements View.OnClickL
                 }
             });
         } else {
-            new AddCourseFavoriteRequest(this, mInfo.id, mType).schedule(false, new RequestListener<String>() {
+            new AddCourseFavoriteRequest(this, mId, mType).schedule(false, new RequestListener<String>() {
                 @Override
                 public void onSuccess(String result) {
                     ToastUtil.toastLongMessage("收藏成功");

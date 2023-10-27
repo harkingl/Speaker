@@ -29,7 +29,6 @@ import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.analytics.AnalyticsListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +55,7 @@ public class SceneSpeakActivity extends BaseActivity implements View.OnClickList
     private ImageView mJumpNextIv;
     private ImageView mPlayIv;
     private PlayProgressBar mProgressBar;
-    private CourseItem mInfo;
+    private CoursePreviewInfo mInfo;
     private List<ImageView> mIndicationViews = new ArrayList<>();
     private List<BaseFragment> mPageList = new ArrayList<>();
     private List<SceneSpeakDetail.SpeakItem> mList;
@@ -178,7 +177,7 @@ public class SceneSpeakActivity extends BaseActivity implements View.OnClickList
     }
 
     private void initData() {
-        mInfo = (CourseItem) getIntent().getSerializableExtra(CourseUtil.KEY_COURSE_ITEM);
+        mInfo = (CoursePreviewInfo) getIntent().getSerializableExtra(CourseUtil.KEY_COURSE_PREVIEW_INFO);
 
         mTranslateIv.setImageResource(R.drawable.ic_translate_zh);
 

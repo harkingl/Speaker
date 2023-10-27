@@ -110,7 +110,8 @@ public class ListenFragment extends BaseFragment implements View.OnClickListener
 
     private void gotoPlayPage(ScenePlayItem item) {
         Intent i = new Intent(getActivity(), ScenePlayListActivity.class);
-        i.putExtra("scene_play_item", item);
+        i.putExtra("scene_play_id", item.id);
+        i.putExtra("scene_play_title", item.title);
         startActivity(i);
     }
     private void gotoBlogPage() {

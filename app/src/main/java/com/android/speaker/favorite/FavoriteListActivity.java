@@ -63,11 +63,7 @@ public class FavoriteListActivity extends BaseActivity implements View.OnClickLi
             @Override
             public void onSuccess(List<FavoriteItem> result) {
                 mListView.onLoadDone();
-//                mCourseLv.setCurrentPage(result.pageNo);
-//                mCourseLv.setTotalPageNumber(result.pageCount);
                 if(result != null) {
-                    mList.addAll(result);
-                    mList.addAll(result);
                     mList.addAll(result);
                 }
                 mAdapter.notifyDataSetChanged();

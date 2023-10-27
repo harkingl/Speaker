@@ -50,7 +50,8 @@ public class AllScenePlayActivity extends BaseActivity implements View.OnClickLi
 
     private void gotoPlayPage(ScenePlayItem item) {
         Intent i = new Intent(this, ScenePlayListActivity.class);
-        i.putExtra("scene_play_item", item);
+        i.putExtra("scene_play_id", item.id);
+        i.putExtra("scene_play_title", item.title);
         startActivity(i);
     }
 

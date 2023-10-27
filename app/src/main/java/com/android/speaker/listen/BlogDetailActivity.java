@@ -42,7 +42,7 @@ public class BlogDetailActivity extends BaseActivity implements View.OnClickList
     private ExoPlayer mPlayer;
     private BlogDetailVoiceFragment mVoiceFragment;
     private BlogDetailAiFragment mAiFragment;
-    private BlogItem mItem;
+    private String mId;
     private BlogDetail mDetail;
     private List<AnalysisItem> mList;
     private int mCurrentIndex;
@@ -77,7 +77,7 @@ public class BlogDetailActivity extends BaseActivity implements View.OnClickList
     }
 
     private void initData() {
-        mItem = (BlogItem) getIntent().getSerializableExtra("blog_item");
+        mId = getIntent().getStringExtra("blog_id");
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         mVoiceFragment = new BlogDetailVoiceFragment(this);
@@ -164,7 +164,7 @@ public class BlogDetailActivity extends BaseActivity implements View.OnClickList
     }
 
     private void getData() {
-        new GetProgramDetailRequest(this, mItem.id).schedule(false, new RequestListener<BlogDetail>() {
+        new GetProgramDetailRequest(this, mId).schedule(false, new RequestListener<BlogDetail>() {
             @Override
             public void onSuccess(BlogDetail result) {
                 mList = result.list;
@@ -336,7 +336,7 @@ public class BlogDetailActivity extends BaseActivity implements View.OnClickList
                 }
             });
         } else {
-            new AddBlogFavoriteRequest(this, mItem.id).schedule(false, new RequestListener<String>() {
+            new AddBlogFavoriteRequest(this, mId).schedule(false, new RequestListener<String>() {
                 @Override
                 public void onSuccess(String result) {
                     ToastUtil.toastLongMessage("收藏成功");

@@ -21,6 +21,8 @@ import androidx.annotation.NonNull;
 import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.base.component.NoScrollListView;
 import com.android.speaker.course.SceneCourseActivity;
+import com.android.speaker.favorite.AddStreamFavoriteRequest;
+import com.android.speaker.favorite.RemoveBlogFavoriteRequest;
 import com.android.speaker.server.okhttp.RequestListener;
 import com.android.speaker.util.GlideUtil;
 import com.android.speaker.util.LogUtil;
@@ -58,7 +60,10 @@ public class ScenePlayListActivity extends BaseActivity implements View.OnClickL
     private List<ScenePlayDataItem> mList;
     private PlayAllListAdapter mAdapter;
     private List<ScenePlayDataItem> mPlayList;
-    private ScenePlayItem mItem;
+    private String mId;
+    private String mTitle;
+    private boolean mIsFavorite = false;
+    private String mFavoriteId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,10 +128,10 @@ public class ScenePlayListActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initData() {
-        mItem = (ScenePlayItem) getIntent().getSerializableExtra("scene_play_item");
-        if(mItem != null) {
-            GlideUtil.loadImage(mTopImgIv, mItem.iconUrl, null);
-            mTitleTv.setText(mItem.title);
+        mId = getIntent().getStringExtra("scene_play_id");
+        mTitle = getIntent().getStringExtra("scene_play_title");
+        if(!TextUtils.isEmpty(mTitle)) {
+            mTitleTv.setText(mTitle);
         }
         mPlayer = new ExoPlayer.Builder(this).build();
         mPlayer.addListener(new Player.Listener() {
@@ -166,33 +171,21 @@ public class ScenePlayListActivity extends BaseActivity implements View.OnClickL
 
         mList = new ArrayList<>();
         mPlayList = new ArrayList<>();
-//        for(int i = 0; i < 20; i++) {
-//            ScenePlayDataItem item = new ScenePlayDataItem();
-//            item.title = "Shopping overseas" + i;
-//            item.des = "出国想要买买买？什么地方值得买？怎么…";
-//            item.leveName = "A1";
-//            mList.add(item);
-//        }
-//        mPlayList.addAll(mList);
-
-//        mPlayer.addMediaItem(MediaItem.fromUri("http://amssamples.streaming.mediaservices.windows.net/91492735-c523-432b-ba01-faba6c2206a2/AzureMediaServicesPromo.ism/manifest"));
-//        mPlayer.addMediaItem(MediaItem.fromUri("http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8"));
-//        mPlayer.addMediaItem(MediaItem.fromUri("https://storage.googleapis.com/exoplayer-test-media-0/play.mp3"));
-////        mPlayer.addMediaItem(MediaItem.fromUri("https://storage.googleapis.com/exoplayer-test-media-0/play.mp3"));
-//        mPlayer.addMediaItem(MediaItem.fromUri("https://storage.googleapis.com/exoplayer-test-media-0/play.mp3"));
-
-//        mPlayer.prepare();
-//        mPlayer.setPlayWhenReady(true);
-//        mPlayer.setPauseAtEndOfMediaItems(true);
-//        mPlayer.play();
 
         mAdapter = new PlayAllListAdapter(this, mList);
         mListView.setAdapter(mAdapter);
 
-        new GetScenePlayDataListRequest(this, 1, 20, mItem.id).schedule(false, new RequestListener<List<ScenePlayDataItem>>() {
+        new GetScenePlayDataListRequest(this, 1, 20, mId).schedule(false, new RequestListener<List<ScenePlayDataItem>>() {
             @Override
             public void onSuccess(List<ScenePlayDataItem> result) {
                 if(result != null) {
+                    // TODO 设置icon
+//                    GlideUtil.loadImage(mTopImgIv, mItem.iconUrl, null);
+//                    if(!TextUtils.isEmpty(info.favoritesId) && !"null".equals(info.favoritesId)) {
+//                        mIsFavorite = true;
+//                        mFavoriteId = info.favoritesId;
+//                        mFollowupIv.setImageResource(R.drawable.ic_star_white_select);
+//                    }
                     mList.addAll(result);
                     mAdapter.notifyDataSetChanged();
                 }
@@ -251,6 +244,7 @@ public class ScenePlayListActivity extends BaseActivity implements View.OnClickL
         if(v == mBackIv) {
             finish();
         } else if(v == mFollowupIv) {
+            addFavorite();
         } else if(v == mPlayAllLayout) {
             if(mList != null && mList.size() > 0) {
                 mPlayList.clear();
@@ -344,5 +338,38 @@ public class ScenePlayListActivity extends BaseActivity implements View.OnClickL
             }
         });
         mDialogAdapter.setSelectIndex(mPlayer.getCurrentMediaItemIndex());
+    }
+
+    private void addFavorite() {
+        if(mIsFavorite) {
+            new RemoveBlogFavoriteRequest(this, mFavoriteId).schedule(false, new RequestListener<Boolean>() {
+                @Override
+                public void onSuccess(Boolean result) {
+//                    ToastUtil.toastLongMessage("取消收藏成功");
+                    mIsFavorite = false;
+                    mFollowupIv.setImageResource(R.drawable.ic_star_white);
+                }
+
+                @Override
+                public void onFailed(Throwable e) {
+                    ToastUtil.toastLongMessage(e.getMessage());
+                }
+            });
+        } else {
+            new AddStreamFavoriteRequest(this, mId).schedule(false, new RequestListener<String>() {
+                @Override
+                public void onSuccess(String result) {
+                    ToastUtil.toastLongMessage("收藏成功");
+                    mIsFavorite = true;
+                    mFavoriteId = result;
+                    mFollowupIv.setImageResource(R.drawable.ic_star_white_select);
+                }
+
+                @Override
+                public void onFailed(Throwable e) {
+                    ToastUtil.toastLongMessage(e.getMessage());
+                }
+            });
+        }
     }
 }

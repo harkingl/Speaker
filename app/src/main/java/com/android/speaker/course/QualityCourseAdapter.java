@@ -51,7 +51,7 @@ public class QualityCourseAdapter extends BaseListItemAdapter<CourseItem> {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(context, CoursePreviewActivity.class);
-                i.putExtra(CourseUtil.KEY_COURSE_ITEM, info);
+                i.putExtra(CourseUtil.KEY_COURSE_ID, info.id);
                 i.putExtra(CourseUtil.KEY_COURSE_TYPE, mType);
                 context.startActivity(i);
             }

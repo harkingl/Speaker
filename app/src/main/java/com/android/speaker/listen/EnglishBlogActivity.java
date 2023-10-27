@@ -202,7 +202,7 @@ public class EnglishBlogActivity extends BaseActivity implements View.OnClickLis
 
     private void gotoBlogDetailPage(BlogItem item) {
         Intent i = new Intent(this, BlogDetailActivity.class);
-        i.putExtra("blog_item", item);
+        i.putExtra("blog_id", item.id);
         this.startActivity(i);
     }
 

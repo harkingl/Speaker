@@ -68,6 +68,32 @@
             android:layout_marginTop="9dp"
             android:orientation="vertical"
             android:background="@drawable/common_bottom_bg_shape">
+            <LinearLayout
+                android:id="@+id/chat_empty_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="34dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13dp"
+                    android:textColor="@color/text_color_2"
+                    android:text="长按底部“"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13dp"
+                    android:textColor="@color/text_color_00B49B"
+                    android:text="按住 说话"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13dp"
+                    android:textColor="@color/text_color_2"
+                    android:text="”按钮，开始对话吧"/>
+            </LinearLayout>
             <ListView
                 android:id="@+id/chat_data_lv"
                 android:layout_width="match_parent"

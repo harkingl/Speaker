@@ -1,11 +1,16 @@
 package com.android.speaker.favorite;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.speaker.base.component.BaseListItemAdapter;
+import com.android.speaker.course.CoursePreviewActivity;
+import com.android.speaker.course.CourseUtil;
+import com.android.speaker.listen.BlogDetailActivity;
+import com.android.speaker.listen.ScenePlayListActivity;
 import com.chinsion.SpeakEnglish.R;
 
 import java.util.List;
@@ -71,9 +76,37 @@ public class FavoriteListAdapter extends BaseListItemAdapter<FavoriteItem> {
     }
 
     private void gotoFavoriteDetailPage(FavoriteItem item) {
-//        Intent i = new Intent(context, BlogDetailActivity.class);
-//        i.putExtra("blog_item", item);
-//        context.startActivity(i);
+        switch (item.type) {
+            case FavoriteItem.TYPE_BLOG:
+                Intent i = new Intent(context, BlogDetailActivity.class);
+                i.putExtra("blog_id", item.id);
+                context.startActivity(i);
+                break;
+            case FavoriteItem.TYPE_STREAM:
+                Intent intent = new Intent(context, ScenePlayListActivity.class);
+                intent.putExtra("scene_play_id", item.id);
+                intent.putExtra("scene_play_title", item.name);
+                context.startActivity(intent);
+                break;
+            case FavoriteItem.TYPE_SCENE:
+            case FavoriteItem.TYPE_SPECIAL:
+            case FavoriteItem.TYPE_QUALITY:
+                gotoCoursePreview(item);
+                break;
+        }
+    }
+
+    private void gotoCoursePreview(FavoriteItem item) {
+        int type = CourseUtil.TYPE_COURSE_PROJECT;
+        if(item.type == FavoriteItem.TYPE_QUALITY) {
+            type = CourseUtil.TYPE_COURSE_CATALOG;
+        } else if(item.type == FavoriteItem.TYPE_SPECIAL) {
+            type = CourseUtil.TYPE_COURSE_SPECIAL;
+        }
+        Intent i = new Intent(context, CoursePreviewActivity.class);
+        i.putExtra(CourseUtil.KEY_COURSE_ID, item.id);
+        i.putExtra(CourseUtil.KEY_COURSE_TYPE, type);
+        context.startActivity(i);
     }
 
     class ViewHolder {

@@ -182,4 +182,9 @@ public class UrlManager {
      * 获取收藏列表
      */
     public static final String GET_FAVORITE_LIST = "/speakEnglish-ums/tableFavorites/queryList";
+
+    /**
+     * 收藏场景连播
+     */
+    public static final String ADD_STREAM_FAVORITE = "/speakEnglish-ums/tableFavorites/addStream";
 }

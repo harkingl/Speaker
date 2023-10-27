@@ -55,7 +55,7 @@ public class BlogListAdapter extends BaseListItemAdapter<BlogItem> {
 
     private void gotoBlogDetailPage(BlogItem item) {
         Intent i = new Intent(context, BlogDetailActivity.class);
-        i.putExtra("blog_item", item);
+        i.putExtra("blog_id", item.id);
         context.startActivity(i);
     }
 

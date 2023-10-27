@@ -18,8 +18,8 @@ import java.util.List;
 public class GetScenePlayDataListRequest extends BaseRequest<List<ScenePlayDataItem>> {
     private int pageNum;
     private int pageSize;
-    private int scenePlayId;
-    public GetScenePlayDataListRequest(Context context, int pageNum, int pageSize, int scenePlayId) {
+    private String scenePlayId;
+    public GetScenePlayDataListRequest(Context context, int pageNum, int pageSize, String scenePlayId) {
         super(context);
         this.pageNum = pageNum;
         this.pageSize = pageSize;

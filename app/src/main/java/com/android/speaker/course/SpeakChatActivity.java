@@ -77,6 +77,7 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
     private ImageView mTipIv;
     private TextView mPointTv;
     private AudioButton mAudioBtn;
+    private View mEmptyLayout;
     private List<ImageView> mIndicationViews = new ArrayList<>();
     private List<BaseFragment> mPageList = new ArrayList<>();
     private ArrayList<ChatItem> mList;
@@ -115,6 +116,7 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
         mTipIv = findViewById(R.id.chat_tip_iv);
         mAudioBtn = findViewById(R.id.chat_audio_btn);
         mPointTv = findViewById(R.id.chat_view_point_tv);
+        mEmptyLayout = findViewById(R.id.chat_empty_ll);
 
         mBackIv.setOnClickListener(this);
         mTranslateIv.setOnClickListener(this);
@@ -215,6 +217,7 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
         }
 
         if(detail.chatItemList != null && detail.chatItemList.size() > 0) {
+            mEmptyLayout.setVisibility(View.GONE);
             mList.addAll(detail.chatItemList);
             mAdapter.notifyDataSetChanged();
         }
@@ -258,6 +261,10 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
                 mListView.setSelection(mList.size()-1);
                 mInputTv.setText("");
                 doContentAnalysis(item);
+
+                if(mEmptyLayout.getVisibility() == View.VISIBLE) {
+                    mEmptyLayout.setVisibility(View.GONE);
+                }
             }
         }
         hideSoftInput();
@@ -432,6 +439,9 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
                     item.isMySelf = false;
                     mList.add(item);
                     mAdapter.notifyDataSetChanged();
+                    if(mEmptyLayout.getVisibility() == View.VISIBLE) {
+                        mEmptyLayout.setVisibility(View.GONE);
+                    }
                 }
             } catch (Exception e) {
                 LogUtil.e(TAG, e.getMessage());
