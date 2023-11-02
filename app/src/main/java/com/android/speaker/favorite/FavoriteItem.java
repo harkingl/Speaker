@@ -21,7 +21,7 @@ public class FavoriteItem implements Serializable {
 
     public FavoriteItem parse(JSONObject obj) {
         this.favoriteId = obj.optString("favoriteId");
-        this.date = obj.optString("data");
+        this.date = obj.optString("date");
         this.name = obj.optString("name");
         this.id = obj.optString("id");
         this.type = obj.optInt("type");

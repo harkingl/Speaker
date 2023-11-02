@@ -99,13 +99,13 @@ public class AudioButton extends androidx.appcompat.widget.AppCompatTextView {
     }
 
     private void onFinish() {
+        stopRecord();
         if (recodeTime < MIN_TIME) {
             deleteAudio();
-            ToastUtil.showDefineToast(context, R.drawable.ic_info,
+            ToastUtil.showDefineToast(context, R.drawable.ic_toast_tip,
                     "说话时间太短");// 显示录音时间太短对话框
             recordState = RECORD_NO;
         } else {
-            stopRecord();
             // 显示播放文件
             if (audioFile != null) {
                 listener.onAudioFinish(true);

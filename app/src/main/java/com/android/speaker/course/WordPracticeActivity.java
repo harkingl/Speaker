@@ -34,6 +34,7 @@ import com.google.android.exoplayer2.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class WordPracticeActivity extends BaseActivity implements View.OnClickListener {
@@ -101,9 +102,10 @@ public class WordPracticeActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void configTitleBar() {
-        mTitleBarLayout.getRightIcon().setVisibility(View.GONE);
+        mTitleBarLayout.getRightIcon().setImageResource(R.drawable.ic_add_word);
         mTitleBarLayout.setTitle("词汇热身", ITitleBarLayout.Position.MIDDLE);
         mTitleBarLayout.setOnLeftClickListener(this);
+        mTitleBarLayout.setOnRightClickListener(this);
     }
 
     private void initData() {
@@ -284,15 +286,6 @@ public class WordPracticeActivity extends BaseActivity implements View.OnClickLi
     }
 
     private boolean checkRecordPermission() {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-//            if (Environment.isExternalStorageManager()) {
-//                return true;
-//            } else {
-//                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-//                intent.setData(Uri.parse("package:" + getPackageName()));
-//                startActivityForResult(intent, REQ_RECORD);
-//            }
-//        } else
          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if(ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
@@ -308,15 +301,6 @@ public class WordPracticeActivity extends BaseActivity implements View.OnClickLi
 
         return false;
 
-//        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-//                && ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
-//            return true;
-//        }
-//
-//        ActivityCompat.requestPermissions(this,
-//                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO},
-//                REQ_RECORD);
-//        return false;
     }
 
     @Override
@@ -379,7 +363,25 @@ public class WordPracticeActivity extends BaseActivity implements View.OnClickLi
                 updateBottomView();
                 setView(mList.get(index+1), index+1);
             }
+        } else if(v == mTitleBarLayout.getRightGroup()) {
+            addNewWord();
         }
+    }
+
+    private void addNewWord() {
+        List<String> list = new ArrayList<>();
+        list.add(mCurrInfo.word);
+        new AddNewWordRequest(this, list).schedule(true, new RequestListener<String>() {
+            @Override
+            public void onSuccess(String result) {
+
+            }
+
+            @Override
+            public void onFailed(Throwable e) {
+
+            }
+        });
     }
 
     private void doPlay(boolean isMy) {

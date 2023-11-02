@@ -56,6 +56,7 @@ public class ChatReportActivity extends BaseActivity implements View.OnClickList
         }
         mTitleBarLayout.setTitle(title, ITitleBarLayout.Position.MIDDLE);
         mTitleBarLayout.setOnLeftClickListener(this);
+        mTitleBarLayout.setOnRightClickListener(this);
     }
 
     private void initData() {

@@ -143,7 +143,7 @@ public class UrlManager {
      */
     public static final String REMOVE_BLOG_FAVORITE = "/speakEnglish-ums/tableFavorites/remove";
 
-    /**
+        /**
      * 收藏精品课程
      */
     public static final String ADD_COURSE_CATALOG = "/speakEnglish-ums/tableFavorites/addCourseCatalog";
@@ -187,4 +187,14 @@ public class UrlManager {
      * 收藏场景连播
      */
     public static final String ADD_STREAM_FAVORITE = "/speakEnglish-ums/tableFavorites/addStream";
+
+    /**
+     * 添加生词本
+     */
+    public static final String ADD_NEW_WORD = "/speakEnglish-ums/app-api/v1/user/insertNotebook";
+
+    /**
+     * 获取生词本
+     */
+    public static final String GET_NEW_WORD_LIST = "/speakEnglish-ums/app-api/v1/user/queryNotebook";
 }

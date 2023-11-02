@@ -66,7 +66,8 @@ public class ToastUtil {
         Toast toast = new Toast(activity);
         LinearLayout linearLayout = new LinearLayout(activity);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
-        linearLayout.setPadding(20, 20, 20, 20);
+        int padding = ScreenUtil.dip2px(20);
+        linearLayout.setPadding(padding, 20, padding, padding/2);
 
         View view = null;
         ImageView imageView = new ImageView(activity);
