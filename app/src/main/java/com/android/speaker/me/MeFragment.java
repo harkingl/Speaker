@@ -107,6 +107,9 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
             case R.id.me_function_collect_tv:
                 gotoFavorite();
                 break;
+            case R.id.me_function_new_word_iv:
+                gotoNewWord();
+                break;
         }
     }
 
@@ -116,5 +119,9 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
     private void gotoFavorite() {
         startActivity(new Intent(getActivity(), FavoriteListActivity.class));
+    }
+
+    private void gotoNewWord() {
+        startActivity(new Intent(getActivity(), NewWordListActivity.class));
     }
 }

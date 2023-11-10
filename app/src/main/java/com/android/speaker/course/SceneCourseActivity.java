@@ -162,7 +162,7 @@ public class SceneCourseActivity extends BaseActivity implements View.OnClickLis
 
             @Override
             public void onFailed(Throwable e) {
-                mCourseLv.onLoadDone();
+                mCourseLv.onLoadFailed();
                 ToastUtil.toastLongMessage(e.getMessage());
             }
         });

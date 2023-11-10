@@ -174,11 +174,6 @@ public class UrlManager {
     public static final String GET_CONTENT_ANALYSIS = "/speakEnglish-ums/app-api/v1/openspeak/openSpeak/queryanalysis";
 
     /**
-     * 获取生词本
-     */
-    public static final String GET_NOTEBOOK_LIST = "/speakEnglish-ums/app-api/v1/user/queryNotebook";
-
-    /**
      * 获取收藏列表
      */
     public static final String GET_FAVORITE_LIST = "/speakEnglish-ums/tableFavorites/queryList";
@@ -191,10 +186,15 @@ public class UrlManager {
     /**
      * 添加生词本
      */
-    public static final String ADD_NEW_WORD = "/speakEnglish-ums/app-api/v1/user/insertNotebook";
+    public static final String ADD_NEW_WORD = "/speakEnglish-ums/app-api/v1/user/addNotebook";
 
     /**
      * 获取生词本
      */
     public static final String GET_NEW_WORD_LIST = "/speakEnglish-ums/app-api/v1/user/queryNotebook";
+
+    /**
+     * 移除生词本
+     */
+    public static final String REMOVE_NEW_WORD = "/speakEnglish-ums/app-api/v1/user/deleteNotebook";
 }

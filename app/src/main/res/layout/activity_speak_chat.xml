@@ -170,7 +170,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
+                        android:visibility="gone"
                         android:src="@drawable/ic_chat_tip"/>
+                <TextView
+                    android:id="@+id/chat_input_send_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="4dp"
+                    android:background="@drawable/btn_bg_shape_green_5"
+                    android:textSize="14dp"
+                    android:textColor="@color/white"
+                    android:visibility="visible"
+                    android:text="发送"/>
                 </LinearLayout>
 
             <TextView

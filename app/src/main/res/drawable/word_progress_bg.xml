@@ -15,7 +15,7 @@
 
                 <corners android:radius="4dp" />
                 <gradient
-                    android:type="radial"
+                    android:type="linear"
                     android:endColor="@color/common_green_color"
                     android:startColor="@color/common_green_color" />
             </shape>

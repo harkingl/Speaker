@@ -19,6 +19,8 @@ public class WordInfo implements Serializable {
     public String desc;
     public WordExplain wordExplain;
     public String audioUrl;
+    public boolean isChecked;
+    public boolean isPlaying;
 
     public WordInfo parse(JSONObject obj) throws JSONException {
         id = obj.optString("id");

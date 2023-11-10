@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
@@ -45,13 +47,18 @@ public class AudioButton extends androidx.appcompat.widget.AppCompatTextView {
     private TextView tipTv;
     private ImageView closeIv;
     private ImageView bottomIv;
+    private View bottomSyncLayout;
+    private ProgressBar bottomSyncPb;
+    private ImageView syncOkIv;
 
     private static final int DEFAULT_TIME = Audio.DEFAULT_MAX_DURATION;// 默认最大时间
     private static final int MIN_TIME = 1; // 最短录制时间，默认1s
 
     private static int RECORD_NO = 0; // 不在录音
-    private static int RECORD_ING = 1; // 正在录音
-    private static int RECODE_ED = 2; // 完成录音
+    private static final int RECORD_ING = 1; // 正在录音
+    private static final int RECORD_ANALYSISING = 2;// 分析中
+    private static final int RECORD_ANALYSIS_FINISH = 3;// 分析中
+    private static int RECORD_ED = 4; // 完成录音
 
     private static int recordState = 0; // 录音的状态
 
@@ -101,11 +108,18 @@ public class AudioButton extends androidx.appcompat.widget.AppCompatTextView {
     private void onFinish() {
         stopRecord();
         if (recodeTime < MIN_TIME) {
+            hideVoiceDialog();
             deleteAudio();
             ToastUtil.showDefineToast(context, R.drawable.ic_toast_tip,
                     "说话时间太短");// 显示录音时间太短对话框
             recordState = RECORD_NO;
         } else {
+            recordState = RECORD_ANALYSISING;
+            tipTv.setText("取消");
+            bottomIv.setVisibility(GONE);
+            bottomSyncLayout.setVisibility(VISIBLE);
+            bottomSyncPb.setVisibility(VISIBLE);
+            syncOkIv.setVisibility(GONE);
             // 显示播放文件
             if (audioFile != null) {
                 listener.onAudioFinish(true);
@@ -117,6 +131,7 @@ public class AudioButton extends androidx.appcompat.widget.AppCompatTextView {
 
     public interface AudioFinishListener {
         public void onAudioFinish(boolean isSuccess);
+        public void onAnalysisFinish(String content);
     }
 
     public AudioFinishListener getListener() {
@@ -237,7 +252,7 @@ public class AudioButton extends androidx.appcompat.widget.AppCompatTextView {
                 switch (msg.what) {
                     case 0:
                         if (recordState == RECORD_ING) {
-                            recordState = RECODE_ED;
+                            recordState = RECORD_ED;
                             hideVoiceDialog();
                             audio.stopRecord();// 停止录音
                             voiceValue = 0.0f;
@@ -294,6 +309,9 @@ public class AudioButton extends androidx.appcompat.widget.AppCompatTextView {
 
     private void startRecord() {
         recordState = RECORD_ING;
+        tipTv.setText("松开 取消");
+        bottomIv.setVisibility(VISIBLE);
+        bottomSyncLayout.setVisibility(GONE);
 //        audio.setInfoListener(infoListener);
         showVoiceDialog();
         audioFile = FileUtil.createRecordFile();
@@ -304,10 +322,7 @@ public class AudioButton extends androidx.appcompat.widget.AppCompatTextView {
 
     private void stopRecord() {
         if (recordState == RECORD_ING) {
-            recordState = RECODE_ED;
-            if (dialog.isShowing()) {
-                dialog.dismiss();
-            }
+            recordState = RECORD_ED;
             audio.stopRecord();
             voiceValue = 0.0f;
         }
@@ -342,6 +357,33 @@ public class AudioButton extends androidx.appcompat.widget.AppCompatTextView {
         tipTv = dialog.findViewById(R.id.dialog_record_tip_tv);
         closeIv = dialog.findViewById(R.id.dialog_record_close_iv);
         bottomIv = dialog.findViewById(R.id.dialog_bottom_iv);
+        bottomSyncLayout = dialog.findViewById(R.id.dialog_bottom_sync_ll);
+        bottomSyncPb = dialog.findViewById(R.id.dialog_bottom_sync_pb);
+        syncOkIv = dialog.findViewById(R.id.dialog_bottom_sync_ok_iv);
+
+        closeIv.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(recordState == RECORD_ANALYSISING || recordState == RECORD_ANALYSIS_FINISH) {
+                    hideVoiceDialog();
+                    deleteAudio();
+                    recordState = RECORD_NO;
+                }
+            }
+        });
+
+        bottomSyncLayout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(recordState == RECORD_ANALYSIS_FINISH) {
+                    if(listener != null) {
+                        listener.onAnalysisFinish(mContent);
+                    }
+                    hideVoiceDialog();
+                    recordState = RECORD_NO;
+                }
+            }
+        });
     }
 
     public String getAudioPath() {
@@ -369,5 +411,16 @@ public class AudioButton extends androidx.appcompat.widget.AppCompatTextView {
         if(audio != null) {
             audio.release();
         }
+    }
+
+    private String mContent;
+    public void analysisFinish(String content) {
+        this.mContent = content;
+        if(!TextUtils.isEmpty(content)) {
+            inputTv.setText(content);
+        }
+        bottomSyncPb.setVisibility(GONE);
+        syncOkIv.setVisibility(VISIBLE);
+        recordState = RECORD_ANALYSIS_FINISH;
     }
 }

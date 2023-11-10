@@ -166,7 +166,7 @@ public class AllSpeakerListActivity extends BaseActivity implements View.OnClick
 
             @Override
             public void onFailed(Throwable e) {
-                mCourseLv.onLoadDone();
+                mCourseLv.onLoadFailed();
                 ToastUtil.toastLongMessage(e.getMessage());
             }
         });

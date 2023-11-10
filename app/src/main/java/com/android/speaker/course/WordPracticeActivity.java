@@ -371,15 +371,15 @@ public class WordPracticeActivity extends BaseActivity implements View.OnClickLi
     private void addNewWord() {
         List<String> list = new ArrayList<>();
         list.add(mCurrInfo.word);
-        new AddNewWordRequest(this, list).schedule(true, new RequestListener<String>() {
+        new AddNewWordRequest(this, mCurrInfo.id).schedule(true, new RequestListener<String>() {
             @Override
             public void onSuccess(String result) {
-
+                ToastUtil.toastLongMessage("添加成功");
             }
 
             @Override
             public void onFailed(Throwable e) {
-
+                ToastUtil.toastLongMessage(e.getMessage());
             }
         });
     }

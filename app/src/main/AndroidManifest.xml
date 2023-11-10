@@ -136,6 +136,9 @@
         <activity android:name="com.android.speaker.favorite.FavoriteListActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
+        <activity android:name="com.android.speaker.me.NewWordListActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

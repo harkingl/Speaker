@@ -71,7 +71,7 @@ public class FavoriteListActivity extends BaseActivity implements View.OnClickLi
 
             @Override
             public void onFailed(Throwable e) {
-                mListView.onLoadDone();
+                mListView.onLoadFailed();
                 ToastUtil.toastLongMessage(e.getMessage());
             }
         });

@@ -75,6 +75,7 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
     private ImageView mInputIv;
     private EditText mInputTv;
     private ImageView mTipIv;
+    private TextView mSendTv;
     private TextView mPointTv;
     private AudioButton mAudioBtn;
     private View mEmptyLayout;
@@ -114,6 +115,7 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
         mInputIv = findViewById(R.id.chat_btn_input_iv);
         mInputTv = findViewById(R.id.chat_input_et);
         mTipIv = findViewById(R.id.chat_tip_iv);
+        mSendTv = findViewById(R.id.chat_input_send_tv);
         mAudioBtn = findViewById(R.id.chat_audio_btn);
         mPointTv = findViewById(R.id.chat_view_point_tv);
         mEmptyLayout = findViewById(R.id.chat_empty_ll);
@@ -123,6 +125,7 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
         mAudioIv.setOnClickListener(this);
         mInputIv.setOnClickListener(this);
         mTipIv.setOnClickListener(this);
+        mSendTv.setOnClickListener(this);
         mPointTv.setOnClickListener(this);
         mViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
@@ -138,21 +141,21 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
             }
         });
 
-        mInputTv.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
-                    String text = mInputTv.getText().toString();
-                    if(TextUtils.isEmpty(text)) {
-                        ToastUtil.toastLongMessage("请输入内容");
-                        return true;
-                    }
-                    sendMessage(text);
-                    return true;
-                }
-                return false;
-            }
-        });
+//        mInputTv.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+//                    String text = mInputTv.getText().toString();
+//                    if(TextUtils.isEmpty(text)) {
+//                        ToastUtil.toastLongMessage("请输入内容");
+//                        return true;
+//                    }
+//                    sendMessage(text);
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
 
         mAudioBtn.setListener(new AudioButton.AudioFinishListener() {
             @Override
@@ -160,6 +163,14 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
                 if(isSuccess && !TextUtils.isEmpty(mAudioBtn.getAudioPath())) {
                     sendAudio(mAudioBtn.getAudioPath());
                 }
+            }
+
+            @Override
+            public void onAnalysisFinish(String content) {
+//                if(!TextUtils.isEmpty(content)) {
+//
+//                }
+                sendMessage(content);
             }
         });
     }
@@ -339,13 +350,24 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
             mInputIv.setVisibility(View.GONE);
             mAudioBtn.setVisibility(View.GONE);
             mInputTv.setVisibility(View.VISIBLE);
+            mTipIv.setVisibility(View.GONE);
+            mSendTv.setVisibility(View.VISIBLE);
         } else if(id == R.id.chat_btn_audio_iv) {
             mAudioIv.setVisibility(View.GONE);
             mInputIv.setVisibility(View.VISIBLE);
             mAudioBtn.setVisibility(View.VISIBLE);
             mInputTv.setVisibility(View.GONE);
+            mTipIv.setVisibility(View.VISIBLE);
+            mSendTv.setVisibility(View.GONE);
         } else if(id == R.id.chat_view_point_tv) {
             gotoReportPage();
+        } else if(id == R.id.chat_input_send_tv) {
+            String text = mInputTv.getText().toString();
+            if(TextUtils.isEmpty(text)) {
+                ToastUtil.toastLongMessage("请输入内容");
+                return;
+            }
+            sendMessage(text);
         }
     }
 
@@ -426,16 +448,17 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
                 JSONObject obj = new JSONObject(message);
 
                 String id = obj.optString("id");
-                String content = obj.optString("data");
-                if(TextUtils.isEmpty(content)) {
-                    return;
-                }
+                String content = obj.optString("content");
+
                 if(!TextUtils.isEmpty(id)) {
-                    sendMessage(content);
-                } else {
+                    mAudioBtn.analysisFinish(content);
+//                    sendMessage(content);
+                } else if(!TextUtils.isEmpty(content)) {
                     ChatItem item = new ChatItem();
                     item.state = ChatItem.STATE_FINISH;
                     item.name = mDetail.userName;
+                    item.audioOssKey = obj.optString("audioUrl");
+                    item.transfer = obj.optString("transfer");
                     item.isMySelf = false;
                     mList.add(item);
                     mAdapter.notifyDataSetChanged();
