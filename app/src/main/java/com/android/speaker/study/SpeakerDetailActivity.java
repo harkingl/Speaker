@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 
 import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.base.component.NoScrollListView;
-import com.android.speaker.base.component.TitleBarLayout;
 import com.android.speaker.course.CourseUtil;
 import com.android.speaker.course.SpeakChatActivity;
 import com.android.speaker.listen.GetSpeakerDetailRequest;
@@ -29,11 +28,9 @@ import java.util.List;
  * 开口说详情
  */
 public class SpeakerDetailActivity extends BaseActivity implements View.OnClickListener {
-
-    private TitleBarLayout mTitleBarLayout;
+    private View mTopLayout;
     private ImageView mBackIv;
     private ImageView mHistoryIv;
-    private ImageView mTopIv;
     private TextView mTitleTv;
     private TextView mDescTv;
     private TextView mSimulationContentTv;
@@ -53,9 +50,9 @@ public class SpeakerDetailActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initView() {
+        mTopLayout = findViewById(R.id.detail_top_rl);
         mBackIv = findViewById(R.id.detail_back_iv);
         mHistoryIv = findViewById(R.id.detail_hostory_iv);
-        mTopIv = findViewById(R.id.detail_top_img_iv);
         mTitleTv = findViewById(R.id.detail_title_tv);
         mDescTv = findViewById(R.id.detail_desc_tv);
         mSimulationContentTv = findViewById(R.id.detail_simulation_content_tv);
@@ -95,7 +92,7 @@ public class SpeakerDetailActivity extends BaseActivity implements View.OnClickL
         this.mInfo = info;
 
         if(!TextUtils.isEmpty(info.ossUrl)) {
-            GlideUtil.loadImage(mTopIv, info.ossUrl, null);
+            GlideUtil.loadTargetView(mTopLayout, info.ossUrl);
         }
         mTitleTv.setText(info.title);
 

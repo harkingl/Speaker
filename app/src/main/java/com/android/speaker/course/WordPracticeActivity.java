@@ -22,6 +22,7 @@ import com.android.speaker.base.ITitleBarLayout;
 import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.base.component.TitleBarLayout;
 import com.android.speaker.course.wave.WaveLineView;
+import com.android.speaker.me.RemoveNewWordRequest;
 import com.android.speaker.server.okhttp.RequestListener;
 import com.android.speaker.util.FileUtil;
 import com.android.speaker.util.LogUtil;
@@ -173,26 +174,16 @@ public class WordPracticeActivity extends BaseActivity implements View.OnClickLi
         mCurrentTv.setText((position+1) + "/" + mList.size());
         mWordTv.setText(info.word);
         mPronunciationTv.setText(info.mark);
-        mExplainTv.setText(getExplain(info));
+        if(info.wordExplain != null) {
+            mExplainTv.setText(info.wordExplain.pos + ". " + info.wordExplain.meaning);
+        }
+        updateRightButton(info.hasFav);
 
         mCurrInfo = info;
     }
 
-    private String getExplain(WordInfo info) {
-        String content = "";
-        if(info.wordExplain != null) {
-            if(info.wordExplain.n != null) {
-                content = TextUtils.join(",", info.wordExplain.n);
-            } else if(info.wordExplain.adj != null) {
-                content = TextUtils.join(",", info.wordExplain.adj);
-            } else if(info.wordExplain.adv != null) {
-                content = TextUtils.join(",", info.wordExplain.adv);
-            } else if(info.wordExplain.v != null) {
-                content = TextUtils.join(",", info.wordExplain.v);
-            }
-        }
-
-        return content;
+    private void updateRightButton(boolean hasFav) {
+        mTitleBarLayout.getRightIcon().setImageResource(hasFav ? R.drawable.ic_remove_word : R.drawable.ic_add_word);
     }
 
     private void updateBottomView() {
@@ -369,19 +360,41 @@ public class WordPracticeActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void addNewWord() {
+        if(mCurrInfo == null) {
+            return;
+        }
+        boolean hasFav = mCurrInfo.hasFav;
         List<String> list = new ArrayList<>();
-        list.add(mCurrInfo.word);
-        new AddNewWordRequest(this, mCurrInfo.id).schedule(true, new RequestListener<String>() {
-            @Override
-            public void onSuccess(String result) {
-                ToastUtil.toastLongMessage("添加成功");
-            }
+        list.add(mCurrInfo.id);
+        if(hasFav) {
+            new RemoveNewWordRequest(this, list).schedule(true, new RequestListener<Boolean>() {
+                @Override
+                public void onSuccess(Boolean result) {
+                    ToastUtil.toastLongMessage("移除成功");
+                    mCurrInfo.hasFav = false;
+                    updateRightButton(false);
+                }
 
-            @Override
-            public void onFailed(Throwable e) {
-                ToastUtil.toastLongMessage(e.getMessage());
-            }
-        });
+                @Override
+                public void onFailed(Throwable e) {
+                    ToastUtil.toastLongMessage(e.getMessage());
+                }
+            });
+        } else {
+            new AddNewWordRequest(this, list).schedule(true, new RequestListener<String>() {
+                @Override
+                public void onSuccess(String result) {
+                    ToastUtil.toastLongMessage("添加成功");
+                    mCurrInfo.hasFav = true;
+                    updateRightButton(true);
+                }
+
+                @Override
+                public void onFailed(Throwable e) {
+                    ToastUtil.toastLongMessage(e.getMessage());
+                }
+            });
+        }
     }
 
     private void doPlay(boolean isMy) {

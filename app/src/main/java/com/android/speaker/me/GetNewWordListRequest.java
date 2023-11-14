@@ -39,9 +39,8 @@ public class GetNewWordListRequest extends BaseRequest<List<WordInfo>> {
 
     @Override
     protected List<WordInfo> result(JSONObject json) throws Exception {
-        JSONObject data = json.optJSONObject("data");
         List<WordInfo> list = new ArrayList<>();
-        JSONArray array = data.optJSONArray("list");
+        JSONArray array = json.optJSONArray("data");
         if(array != null && array.length() > 0) {
             for(int i = 0; i < array.length(); i++) {
                 list.add(new WordInfo().parse(array.getJSONObject(i)));

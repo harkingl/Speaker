@@ -186,7 +186,7 @@ public class UrlManager {
     /**
      * 添加生词本
      */
-    public static final String ADD_NEW_WORD = "/speakEnglish-ums/app-api/v1/user/addNotebook";
+    public static final String ADD_NEW_WORD = "/speakEnglish-ums/app-api/v1/user/insertNotebook";
 
     /**
      * 获取生词本
@@ -196,5 +196,5 @@ public class UrlManager {
     /**
      * 移除生词本
      */
-    public static final String REMOVE_NEW_WORD = "/speakEnglish-ums/app-api/v1/user/deleteNotebook";
+    public static final String REMOVE_NEW_WORD = "/speakEnglish-ums/app-api/v1/user/batchDeleteNotebook";
 }

@@ -1,91 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#2B2C5F"
     android:orientation="vertical">
-    <ImageView
-        android:id="@+id/detail_top_img_iv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
     <RelativeLayout
-        android:id="@+id/detail_title_bar"
+        android:id="@+id/detail_top_rl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
-        <ImageView
-            android:id="@+id/detail_back_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="20dp"
-            android:src="@drawable/ic_back_white"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:text="开口说"/>
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/detail_hostory_iv"
+        <RelativeLayout
+            android:id="@+id/detail_title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+            <ImageView
+                android:id="@+id/detail_back_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/ic_back_white"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="开口说"/>
+
+            <ImageView
+                android:id="@+id/detail_hostory_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:src="@drawable/ic_hostory"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignTop="@+id/detail_title_tv"
+            android:layout_alignBottom="@+id/detail_title_tv"
+            android:orientation="vertical">
+            <View
+                android:layout_width="6dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/common_green_color"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/detail_title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:src="@drawable/ic_hostory"/>
+            android:layout_below="@+id/detail_title_bar"
+            android:layout_marginTop="54dp"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/white"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            tools:text="Running late"/>
+
+        <TextView
+            android:id="@+id/detail_desc_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/detail_title_tv"
+            android:layout_alignLeft="@+id/detail_title_tv"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="20dp"
+            android:alpha="0.8"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:text="在开口说为您模拟的真实场景中，练习一下英语对话吧"/>
     </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/detail_title_tv"
-        android:layout_alignBottom="@+id/detail_title_tv"
-        android:orientation="vertical">
-        <View
-            android:layout_width="6dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="6dp"
-            android:layout_marginBottom="5dp"
-            android:background="@color/common_green_color"/>
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/detail_title_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/detail_title_bar"
-        android:layout_marginTop="54dp"
-        android:layout_marginLeft="20dp"
-        android:textColor="@color/white"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        tools:text="Running late"/>
-
-    <TextView
-        android:id="@+id/detail_desc_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/detail_title_tv"
-        android:layout_alignLeft="@+id/detail_title_tv"
-        android:layout_marginTop="14dp"
-        android:alpha="0.8"
-        android:textColor="@color/white"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        android:text="在开口说为您模拟的真实场景中，练习一下英语对话吧"/>
-
-    <com.android.speaker.base.component.MaxHeightScrollView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="-20dp"
         android:padding="20dp"
         android:background="@drawable/home_bottom_bg_shape"
         android:layout_alignParentBottom="true"
@@ -131,18 +135,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
-                android:layout_marginBottom="62dp"
                 android:divider="@color/transparent"
                 android:dividerHeight="12dp"
+                android:listSelector="@color/transparent"
                 android:scrollbars="none" />
         </LinearLayout>
-    </com.android.speaker.base.component.MaxHeightScrollView>
+    </ScrollView>
     <LinearLayout
         android:id="@+id/detail_bottom_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:background="#F7F7F7"
+        android:layout_marginBottom="-20dp"
         android:paddingHorizontal="20dp"
         android:paddingVertical="8dp"
         android:gravity="center_vertical"
@@ -160,4 +164,4 @@
             android:textStyle="bold"
             android:text="开始"/>
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>

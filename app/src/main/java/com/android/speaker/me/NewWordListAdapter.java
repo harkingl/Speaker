@@ -62,8 +62,13 @@ public class NewWordListAdapter extends BaseListItemAdapter<WordInfo> {
             holder.checkIv.setVisibility(View.GONE);
         }
         if(info.isPlaying || isEdit) {
-//            holder.featureTv.setText("");
-//            holder.explainTv.setText("");
+            if(info.wordExplain != null) {
+                holder.featureTv.setText(info.wordExplain.pos + ". ");
+                holder.explainTv.setText(info.wordExplain.meaning);
+            } else {
+                holder.featureTv.setText("");
+                holder.explainTv.setText("");
+            }
             holder.rectView.setVisibility(View.GONE);
             holder.explainLayout.setVisibility(View.VISIBLE);
         } else {

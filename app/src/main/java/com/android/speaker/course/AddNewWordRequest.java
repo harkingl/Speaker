@@ -16,10 +16,10 @@ import java.util.List;
  */
 public class AddNewWordRequest extends BaseRequest<String> {
     // 单词ID
-    String id;
-    public AddNewWordRequest(Context context, String id) {
+    private List<String> idList;
+    public AddNewWordRequest(Context context, List<String> idList) {
         super(context);
-        this.id = id;
+        this.idList = idList;
     }
     @Override
     protected String url() {
@@ -30,7 +30,13 @@ public class AddNewWordRequest extends BaseRequest<String> {
     @Override
     protected String body()  throws JSONException {
         JSONObject obj = new JSONObject();
-        obj.put("id", id);
+        if(idList != null) {
+            JSONArray array = new JSONArray();
+            for(String id : idList) {
+                array.put(id);
+            }
+            obj.put("noteBooks", array);
+        }
 
         return obj.toString();
     }

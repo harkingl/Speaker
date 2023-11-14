@@ -26,9 +26,9 @@ import org.apmem.tools.layouts.FlowLayout;
  */
 public class CoursePreviewActivity extends BaseActivity implements View.OnClickListener {
 
+    private View mTopLayout;
     private ImageView mBackIv;
     private ImageView mStarIv;
-    private ImageView mTopIv;
     private TextView mTitleTv;
     private TextView mDescTv;
     private FlowLayout mTagLayout;
@@ -58,9 +58,9 @@ public class CoursePreviewActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initView() {
+        mTopLayout = findViewById(R.id.preview_top_rl);
         mBackIv = findViewById(R.id.preview_back_iv);
         mStarIv = findViewById(R.id.preview_followup_iv);
-        mTopIv = findViewById(R.id.preview_top_img_iv);
         mTitleTv = findViewById(R.id.preview_title_tv);
         mDescTv = findViewById(R.id.preview_desc_tv);
         mTagLayout = findViewById(R.id.preview_tags_fl);
@@ -107,7 +107,7 @@ public class CoursePreviewActivity extends BaseActivity implements View.OnClickL
             return;
         }
         if(!TextUtils.isEmpty(info.homePage)) {
-            GlideUtil.loadImage(mTopIv, info.homePage, null);
+            GlideUtil.loadTargetView(mTopLayout, info.homePage);
         }
         mTitleTv.setText(info.title);
         mDescTv.setText(info.des);

@@ -140,7 +140,7 @@ public class NewWordListActivity extends BaseActivity implements View.OnClickLis
         List<WordInfo> selectList = mAdapter.getSelectItems();
 
         if(selectList.size() == 0) {
-            ToastUtil.toastLongMessage("请选中要勾选的生词");
+            ToastUtil.toastLongMessage("请选中要移除的生词");
             return;
         }
 

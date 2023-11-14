@@ -1,6 +1,11 @@
 package com.android.speaker.util;
 
+import android.graphics.drawable.Drawable;
+import android.view.View;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.android.speaker.MainApplication;
 import com.android.speaker.base.CornerTransform;
@@ -9,6 +14,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.CustomViewTarget;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 public class GlideUtil {
 
@@ -100,4 +108,25 @@ public class GlideUtil {
                 .into(imageView);
     }
 
+    public static void loadTargetView(View view, String url) {
+        CustomViewTarget target = new CustomViewTarget<View, Drawable>(view) {
+            @Override
+            protected void onResourceCleared(@Nullable Drawable placeholder) {
+
+            }
+
+            @Override
+            public void onLoadFailed(@Nullable Drawable errorDrawable) {
+
+            }
+
+            @Override
+            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                view.setBackground(resource);
+            }
+        };
+        Glide.with(MainApplication.getInstance())
+                .load(url)
+                .into(target);
+    }
 }

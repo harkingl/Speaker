@@ -1,97 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#2B2C5F"
     android:orientation="vertical">
-    <ImageView
-        android:id="@+id/preview_top_img_iv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
     <RelativeLayout
-        android:id="@+id/preview_title_bar"
+        android:id="@+id/preview_top_rl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
-        <ImageView
-            android:id="@+id/preview_back_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="20dp"
-            android:src="@drawable/ic_back_white"/>
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/preview_followup_iv"
+        <RelativeLayout
+            android:id="@+id/preview_title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+            <ImageView
+                android:id="@+id/preview_back_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/ic_back_white"/>
+
+            <ImageView
+                android:id="@+id/preview_followup_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:src="@drawable/ic_star_white"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignTop="@+id/preview_title_tv"
+            android:layout_alignBottom="@+id/preview_title_tv"
+            android:orientation="vertical">
+            <View
+                android:layout_width="6dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/common_green_color"/>
+        </LinearLayout>
+
+        <com.android.speaker.base.component.SingleLineZoomTextView
+            android:id="@+id/preview_title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
+            android:layout_below="@+id/preview_title_bar"
+            android:layout_marginTop="54dp"
+            android:layout_marginHorizontal="20dp"
+            android:textColor="@color/white"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            tools:text="Running late"/>
+
+        <TextView
+            android:id="@+id/preview_desc_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/preview_title_tv"
+            android:layout_alignLeft="@+id/preview_title_tv"
+            android:layout_marginTop="14dp"
             android:layout_marginRight="20dp"
-            android:src="@drawable/ic_star_white"/>
+            android:alpha="0.8"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="会议要迟到了怎么办？如何在途中向别人解释？"/>
+
+        <org.apmem.tools.layouts.FlowLayout
+            android:id="@+id/preview_tags_fl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/preview_desc_tv"
+            android:layout_marginTop="17dp"
+            android:layout_marginHorizontal="20dp"
+            android:visibility="gone"/>
     </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/preview_title_tv"
-        android:layout_alignBottom="@+id/preview_title_tv"
-        android:orientation="vertical">
-        <View
-            android:layout_width="6dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="6dp"
-            android:layout_marginBottom="5dp"
-            android:background="@color/common_green_color"/>
-    </LinearLayout>
-
-    <com.android.speaker.base.component.SingleLineZoomTextView
-        android:id="@+id/preview_title_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/preview_title_bar"
-        android:layout_marginTop="54dp"
-        android:layout_marginHorizontal="20dp"
-        android:textColor="@color/white"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        tools:text="Running late"/>
-
-    <TextView
-        android:id="@+id/preview_desc_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/preview_title_tv"
-        android:layout_alignLeft="@+id/preview_title_tv"
-        android:layout_marginTop="14dp"
-        android:layout_marginRight="20dp"
-        android:alpha="0.8"
-        android:textColor="@color/white"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        tools:text="会议要迟到了怎么办？如何在途中向别人解释？"/>
-
-    <org.apmem.tools.layouts.FlowLayout
-        android:id="@+id/preview_tags_fl"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/preview_desc_tv"
-        android:layout_marginTop="17dp"
-        android:layout_marginHorizontal="20dp"
-        android:visibility="gone"/>
-
-    <com.android.speaker.base.component.MaxHeightScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="-20dp"
         android:padding="20dp"
         android:background="@drawable/common_bottom_bg_shape"
         android:scrollbars="none"
-        android:layout_above="@+id/preview_bottom_ll"
         android:fillViewport="true">
         <LinearLayout
             android:layout_width="match_parent"
@@ -424,12 +426,12 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </com.android.speaker.base.component.MaxHeightScrollView>
+    </ScrollView>
     <LinearLayout
         android:id="@+id/preview_bottom_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="-20dp"
         android:background="#F7F7F7"
         android:paddingHorizontal="20dp"
         android:paddingVertical="8dp"
@@ -448,4 +450,4 @@
             android:textStyle="bold"
             android:text="开始学习"/>
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>
