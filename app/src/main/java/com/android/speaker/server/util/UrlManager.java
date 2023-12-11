@@ -197,4 +197,19 @@ public class UrlManager {
      * 移除生词本
      */
     public static final String REMOVE_NEW_WORD = "/speakEnglish-ums/app-api/v1/user/batchDeleteNotebook";
+
+    /**
+     * 获取商品和优惠卷信息
+     */
+    public static final String GET_VIP_INFO = "/speakEnglish-ums/api/v1/product/vipInfo/0";
+
+    /**
+     * 生成订单号
+     */
+    public static final String PAY_ORDER = "/speakEnglish-ums/api/v1/product/payOrder";
+
+    /**
+     * 优惠券列表
+     */
+    public static final String GET_COUPON_LIST = "/speakEnglish-ums/api/v1/product/coupons";
 }

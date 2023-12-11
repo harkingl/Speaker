@@ -8,6 +8,8 @@ public class Constants {
 
     public static final String PRIVACY_PROTECTION = "https://im.pcsiyu.com/yinsi/yinsiios.html?language=zh";
     public static final String USER_AGREEMENT = "https://im.pcsiyu.com/yinsi/userios.html?language=zh";
+    public static final String RENEWAL_PROTOCOL = "";
+    public static final String VIP_SERVICE_PROTOCOL = "";
 
     // 微信授权登录key
     public static final String WX_APP_ID = "wx45af7782422a6590";

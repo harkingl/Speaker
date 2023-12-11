@@ -156,13 +156,17 @@ public class CoursePreviewActivity extends BaseActivity implements View.OnClickL
             i.putExtra("id", mId);
             startActivity(i);
         } else if(id == R.id.preview_course_instruction_ll) {
-            Intent i = new Intent(this, CourseLectureDetailActivity.class);
-            i.putExtra(CourseUtil.KEY_COURSE_PREVIEW_INFO, mInfo);
-            startActivity(i);
+            if(mInfo != null) {
+                Intent i = new Intent(this, CourseLectureDetailActivity.class);
+                i.putExtra(CourseUtil.KEY_COURSE_PREVIEW_INFO, mInfo);
+                startActivity(i);
+            }
         } else if(id == R.id.preview_scenes_ll) {
-            Intent i = new Intent(this, SceneSpeakActivity.class);
-            i.putExtra(CourseUtil.KEY_COURSE_PREVIEW_INFO, mInfo);
-            startActivity(i);
+            if(mInfo != null) {
+                Intent i = new Intent(this, SceneSpeakActivity.class);
+                i.putExtra(CourseUtil.KEY_COURSE_PREVIEW_INFO, mInfo);
+                startActivity(i);
+            }
         } else if(id == R.id.preview_followup_iv) {
             addBlog();
         } else if(id == R.id.preview_roleplay_ll) {

@@ -1,12 +1,8 @@
 package com.android.speaker.base.component;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.ListView;
-
-import com.android.speaker.util.ScreenUtil;
-import com.chinsion.SpeakEnglish.R;
 
 public class NoScrollListView extends ListView {
 	private int mMaxHeight;
@@ -23,14 +19,7 @@ public class NoScrollListView extends ListView {
 		super(context, attrs, defStyle);
 
 		// 默认最大高度为屏幕高度的0.6
-		mMaxHeight = (int) (ScreenUtil.getScreenHeight(context)*0.6);
-
-//		TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.ConstraintHeightListView, 0, defStyle);
-//		try {
-//			mMaxHeight = array.getDimension(R.styleable.ConstraintHeightListView_maxHeight, -1);
-//		} finally {
-//			array.recycle();
-//		}
+//		mMaxHeight = (int) (ScreenUtil.getScreenHeight(context)*0.6);
 	}
 
 	@Override
@@ -38,7 +27,7 @@ public class NoScrollListView extends ListView {
 		//获取lv本身高度
 		int specSize = MeasureSpec.getSize(heightMeasureSpec);
 		//限制高度小于lv高度,设置为限制高度
-		if (mMaxHeight <= specSize && mMaxHeight > -1) {
+		if (mMaxHeight <= specSize && mMaxHeight > 0) {
 			heightMeasureSpec = MeasureSpec.makeMeasureSpec(Float.valueOf(mMaxHeight).intValue(),
 					MeasureSpec.AT_MOST);
 		} else {

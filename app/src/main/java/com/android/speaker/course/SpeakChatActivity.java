@@ -457,6 +457,7 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
                     ChatItem item = new ChatItem();
                     item.state = ChatItem.STATE_FINISH;
                     item.name = mDetail.userName;
+                    item.content = content;
                     item.audioOssKey = obj.optString("audioUrl");
                     item.transfer = obj.optString("transfer");
                     item.isMySelf = false;

@@ -42,7 +42,7 @@ import java.util.List;
  */
 public class ScenePlayListActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = SceneCourseActivity.class.getSimpleName();
-    private ImageView mTopImgIv;
+    private View mTopLayout;
     private ImageView mBackIv;
     private ImageView mFollowupIv;
     private TextView mTitleTv;
@@ -75,7 +75,7 @@ public class ScenePlayListActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initView() {
-        mTopImgIv = findViewById(R.id.play_top_img_iv);
+        mTopLayout = findViewById(R.id.play_top_rl);
         mBackIv = findViewById(R.id.play_back_iv);
         mFollowupIv = findViewById(R.id.play_followup_iv);
         mTitleTv = findViewById(R.id.play_title_tv);
@@ -180,7 +180,7 @@ public class ScenePlayListActivity extends BaseActivity implements View.OnClickL
             public void onSuccess(List<ScenePlayDataItem> result) {
                 if(result != null) {
                     // TODO 设置icon
-//                    GlideUtil.loadImage(mTopImgIv, mItem.iconUrl, null);
+//                    GlideUtil.loadTargetView(mTopLayout, url);
 //                    if(!TextUtils.isEmpty(info.favoritesId) && !"null".equals(info.favoritesId)) {
 //                        mIsFavorite = true;
 //                        mFavoriteId = info.favoritesId;

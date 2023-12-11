@@ -14,6 +14,8 @@ import androidx.annotation.Nullable;
 import com.android.speaker.base.component.BaseFragment;
 import com.android.speaker.favorite.FavoriteListActivity;
 import com.android.speaker.me.setting.SettingActivity;
+import com.android.speaker.me.vip.CouponListActivity;
+import com.android.speaker.me.vip.VipOpenActivity;
 import com.chinsion.SpeakEnglish.R;
 
 public class MeFragment extends BaseFragment implements View.OnClickListener {
@@ -36,6 +38,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     private TextView mFunctionScanTv;
     private TextView mFunctionClockTv;
     private TextView mFunctionHelpTv;
+    private ImageView mVipDetailIv;
 
     @Nullable
     @Override
@@ -71,6 +74,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         mFunctionScanTv = view.findViewById(R.id.me_function_scan_tv);
         mFunctionClockTv = view.findViewById(R.id.me_function_clock_tv);
         mFunctionHelpTv = view.findViewById(R.id.me_function_help_tv);
+        mVipDetailIv = view.findViewById(R.id.me_vip_detail_iv);
 
         mSettingIv.setOnClickListener(this);
         mCouponDetailTv.setOnClickListener(this);
@@ -86,6 +90,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         mFunctionScanTv.setOnClickListener(this);
         mFunctionClockTv.setOnClickListener(this);
         mFunctionHelpTv.setOnClickListener(this);
+        mVipDetailIv.setOnClickListener(this);
     }
 
     private void initData() {
@@ -110,7 +115,21 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
             case R.id.me_function_new_word_iv:
                 gotoNewWord();
                 break;
+            case R.id.me_vip_detail_iv:
+                gotoVipDetail();
+                break;
+            case R.id.me_function_coupon_tv:
+                gotoCouponListPage();
+                break;
         }
+    }
+
+    private void gotoVipDetail() {
+        startActivity(new Intent(getActivity(), VipOpenActivity.class));
+    }
+
+    private void gotoCouponListPage() {
+        startActivity(new Intent(getActivity(), CouponListActivity.class));
     }
 
     private void gotoSetting() {

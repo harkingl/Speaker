@@ -1,13 +1,16 @@
 package com.android.speaker.course;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -42,6 +45,7 @@ public class WordPracticeActivity extends BaseActivity implements View.OnClickLi
     private static final String TAG = "WordPracticeActivity";
 
     private static final int REQ_RECORD = 111;
+    private static final int REQ_MANAGE_ACCESS = 112;
 
     private TitleBarLayout mTitleBarLayout;
     private ProgressBar mProgressBar;
@@ -277,7 +281,13 @@ public class WordPracticeActivity extends BaseActivity implements View.OnClickLi
     }
 
     private boolean checkRecordPermission() {
-         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if(Environment.isExternalStorageManager()) {
+                return true;
+            }
+            startActivityForResult(new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION), REQ_MANAGE_ACCESS);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if(ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
                 return true;
@@ -334,7 +344,7 @@ public class WordPracticeActivity extends BaseActivity implements View.OnClickLi
         if(v == mTitleBarLayout.getLeftGroup()) {
             finish();
         } else if(v == mVoiceTv) {
-            if(!mPlayer.isPlaying()) {
+            if(!mPlayer.isPlaying() && mCurrentStep == 1) {
                 doPlay(false);
             }
         } else if(v == mWaveView) {
@@ -440,5 +450,14 @@ public class WordPracticeActivity extends BaseActivity implements View.OnClickLi
                 ToastUtil.toastLongMessage(e.getMessage());
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == REQ_MANAGE_ACCESS) {
+            updateBottomView();
+        }
     }
 }

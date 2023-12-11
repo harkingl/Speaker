@@ -24,11 +24,6 @@ public class GetBlogListRequest extends BaseRequest<List<BlogItem>> {
         this.pageSize = pageSize;
     }
     @Override
-    protected String url() {
-        return UrlManager.GET_BLOG_LIST;
-    }
-
-    @Override
     protected String body()  throws JSONException {
         JSONObject obj = new JSONObject();
         obj.put("pageNum", pageNum);
@@ -49,5 +44,10 @@ public class GetBlogListRequest extends BaseRequest<List<BlogItem>> {
         }
 
         return list;
+    }
+
+    @Override
+    protected String url() {
+        return UrlManager.GET_BLOG_LIST;
     }
 }
