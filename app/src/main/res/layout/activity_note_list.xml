@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/text_color_FCFCFC"
+    android:orientation="vertical">
+
+    <com.android.speaker.base.component.TitleBarLayout
+        android:id="@+id/note_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <com.android.speaker.base.component.PagedItemListView
+        android:id="@+id/note_list_lv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:paddingLeft="20dp"
+        android:divider="#F5F5F5"
+        android:dividerHeight="1dp"
+        android:scrollbars="none"
+        android:listSelector="@color/transparent"/>
+</LinearLayout>

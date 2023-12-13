@@ -212,4 +212,29 @@ public class UrlManager {
      * 优惠券列表
      */
     public static final String GET_COUPON_LIST = "/speakEnglish-ums/api/v1/product/coupons";
+
+    /**
+     * 笔记列表
+     */
+    public static final String GET_NOTE_LIST = "/speakEnglish-ums/app-api/v1/noteBook/list";
+
+    /**
+     * 更新笔记
+     */
+    public static final String UPDATE_NOTE_INFO = "/speakEnglish-ums/app-api/v1/updateNoteBook";
+
+    /**
+     * 订单列表
+     */
+    public static final String GET_ORDER_LIST = "/speakEnglish-ums/app-api/v1/order/info";
+
+    /**
+     * 课程记录
+     */
+    public static final String GET_COURSE_RECORD_LIST = "/speakEnglish-ums/app-api/v1/learn/record/project";
+
+    /**
+     * 博客记录
+     */
+    public static final String GET_BLOG_RECORD_LIST = "/speakEnglish-ums/app-api/v1/learn/record/blog";
 }

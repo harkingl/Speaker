@@ -121,6 +121,15 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
             case R.id.me_function_coupon_tv:
                 gotoCouponListPage();
                 break;
+            case R.id.me_function_laptop_iv:
+                gotoNotePage();
+                break;
+            case R.id.me_function_order_tv:
+                gotoOrderPage();
+                break;
+            case R.id.me_function_record_tv:
+                gotoRecordPage();
+                break;
         }
     }
 
@@ -142,5 +151,17 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
     private void gotoNewWord() {
         startActivity(new Intent(getActivity(), NewWordListActivity.class));
+    }
+
+    private void gotoNotePage() {
+        startActivity(new Intent(getActivity(), NoteListActivity.class));
+    }
+
+    private void gotoOrderPage() {
+        startActivity(new Intent(getActivity(), OrderListActivity.class));
+    }
+
+    private void gotoRecordPage() {
+        startActivity(new Intent(getActivity(), RecordListActivity.class));
     }
 }

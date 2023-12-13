@@ -31,6 +31,7 @@ public class NewWordListActivity extends BaseActivity implements View.OnClickLis
     // 当前播放的item
     private WordInfo mWordInfo;
     private boolean isEdit = false;
+    private boolean mIsLoadMore = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +85,7 @@ public class NewWordListActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void OnLoadMore(int currentPage) {
                 mPageNo = currentPage;
+                mIsLoadMore = true;
                 loadData();
             }
         });
@@ -96,6 +98,9 @@ public class NewWordListActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onSuccess(List<WordInfo> result) {
                 mListView.onLoadDone();
+                if(!mIsLoadMore) {
+                    mList.clear();
+                }
                 if(result != null) {
                     mList.addAll(result);
                 }
@@ -167,7 +172,7 @@ public class NewWordListActivity extends BaseActivity implements View.OnClickLis
 
     private void refresh() {
         mPageNo = 1;
-        mList.clear();
+        mIsLoadMore = false;
         loadData();
     }
 
