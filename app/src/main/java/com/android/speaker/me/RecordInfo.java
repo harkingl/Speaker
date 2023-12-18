@@ -10,14 +10,14 @@ import java.io.Serializable;
  */
 public class RecordInfo implements Serializable {
     public String id;
-    public String date;
+    public long date;
     public String des;
     public String title;
     public String type;
 
     public RecordInfo parse(JSONObject obj) throws JSONException {
         this.id = obj.optString("id");
-        this.date = obj.optString("date");
+        this.date = obj.optLong("date");
         this.des = obj.optString("des");
         this.title = obj.optString("title");
         this.type = obj.optString("type");

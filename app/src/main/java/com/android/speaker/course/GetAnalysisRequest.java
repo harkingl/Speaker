@@ -35,8 +35,6 @@ public class GetAnalysisRequest extends BaseRequest<ChatItem> {
         for(String content : list) {
             array.put(content);
         }
-//        array.put("Good morning! How are you today?");
-//        array.put("How about you?");
         obj.put("content", array);
         return obj.toString();
     }

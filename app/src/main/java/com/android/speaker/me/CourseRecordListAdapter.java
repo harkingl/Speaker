@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.android.speaker.base.component.BaseListItemAdapter;
 import com.android.speaker.course.CoursePreviewActivity;
 import com.android.speaker.course.CourseUtil;
+import com.android.speaker.util.TimeUtil;
 import com.chinsion.SpeakEnglish.R;
 
 import java.util.List;
@@ -44,7 +45,7 @@ public class CourseRecordListAdapter extends BaseListItemAdapter<RecordInfo> {
             holder.typeTv.setText("");
         }
         holder.titleTv.setText(info.title);
-        holder.dateTv.setText(info.date);
+        holder.dateTv.setText(TimeUtil.getStringFromDate(TimeUtil.FORMAT_YYYYMMDDHHMM, info.date));
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override

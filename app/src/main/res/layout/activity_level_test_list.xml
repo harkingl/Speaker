@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/text_color_FCFCFC"
+    android:orientation="vertical"
+    tools:ignore="MissingDefaultResource">
+
+    <com.android.speaker.base.component.TitleBarLayout
+        android:id="@+id/level_test_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:paddingHorizontal="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <ProgressBar
+            android:id="@+id/level_test_progress_bar"
+            android:layout_width="0dp"
+            android:layout_height="8dp"
+            android:layout_weight="1"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progressDrawable="@drawable/word_progress_bg"
+            android:max="100"
+            tools:progress="50"/>
+        <TextView
+            android:id="@+id/level_test_count_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="13dp"
+            android:textColor="@color/text_color_1"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:text="2/10"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/level_test_word_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="87dp"
+        android:layout_marginHorizontal="20dp"
+        android:textColor="@color/text_color_1"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:text="answer"/>
+
+    <View
+        android:layout_width="32dp"
+        android:layout_height="4dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginLeft="20dp"
+        android:background="@color/common_green_color"/>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <org.apmem.tools.layouts.FlowLayout
+        android:id="@+id/level_test_select_fl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="35dp"/>
+</LinearLayout>

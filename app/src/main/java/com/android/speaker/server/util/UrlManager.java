@@ -237,4 +237,14 @@ public class UrlManager {
      * 博客记录
      */
     public static final String GET_BLOG_RECORD_LIST = "/speakEnglish-ums/app-api/v1/learn/record/blog";
+
+    /**
+     * 等级自测
+     */
+    public static final String GET_LEVEL_TEST_LIST = "/speakEnglish-ums/app-api/v1/levelTest";
+
+    /**
+     * 测试结果
+     */
+    public static final String QUERY_TEST_RESULT = "/speakEnglish-ums/app-api/v1/queryResult";
 }

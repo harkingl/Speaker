@@ -130,6 +130,9 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
             case R.id.me_function_record_tv:
                 gotoRecordPage();
                 break;
+            case R.id.me_function_test_tv:
+                gotoLevelTestPage();
+                break;
         }
     }
 
@@ -163,5 +166,9 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
     private void gotoRecordPage() {
         startActivity(new Intent(getActivity(), RecordListActivity.class));
+    }
+
+    private void gotoLevelTestPage() {
+        startActivity(new Intent(getActivity(), LevelTestActivity.class));
     }
 }

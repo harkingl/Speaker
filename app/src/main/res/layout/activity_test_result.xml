@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/text_color_FCFCFC"
+    android:orientation="vertical"
+    tools:ignore="MissingDefaultResource">
+
+    <com.android.speaker.base.component.TitleBarLayout
+        android:id="@+id/test_result_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_level_report"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="47dp"
+        android:layout_marginHorizontal="20dp"
+        android:textColor="@color/text_color_1"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="你的英语等级为"/>
+
+    <TextView
+        android:id="@+id/test_result_level_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginHorizontal="20dp"
+        android:textColor="@color/text_color_00B49B"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        tools:text="L3. 初级"/>
+
+    <View
+        android:layout_width="32dp"
+        android:layout_height="4dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:background="@color/common_green_color"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginHorizontal="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:src="@drawable/ic_circle_green"/>
+        <TextView
+            android:id="@+id/test_result_level_des_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:textColor="@color/text_color_48496E"
+            android:textSize="16sp"
+            tools:text="能讨论更多生活话题，描述自己的想法"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#CCF7F7F7"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/test_result_finish_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="8dp"
+            android:paddingVertical="12dp"
+            android:gravity="center"
+            android:background="@drawable/btn_bg_shape_green"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:text="完成"/>
+    </LinearLayout>
+</LinearLayout>
