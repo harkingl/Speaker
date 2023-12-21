@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape >
+            <solid android:color="@android:color/transparent"/>
+        </shape>
+    </item>
+    <item>
+        <bitmap android:antialias="true"
+            android:src="@drawable/ic_wheel_line_divider"
+            android:gravity="top|fill_horizontal"/>
+    </item>
+    <item>
+        <bitmap android:antialias="true"
+            android:src="@drawable/ic_wheel_line_divider"
+            android:gravity="bottom|fill_horizontal"/>
+    </item>
+</layer-list>

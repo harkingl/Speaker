@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/dialog_common_view_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="45dp"
+        android:paddingBottom="30dp"
+        android:paddingHorizontal="30dp"
+        android:background="@drawable/white_bg_shape"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/dialog_common_view_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/text_color_1"
+            tools:text="标题"
+            android:textSize="17sp"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/dialog_common_view_message_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:maxLines="8"
+            android:ellipsize="end"
+            android:visibility="gone"
+            android:textColor="@color/text_color_2"
+            tools:text="内容爱啦啦啦啦啦啦啦我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:id="@+id/dialog_common_view_button_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/dialog_common_view_button_left"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:minWidth="200dp"
+                android:gravity="center"
+                android:paddingVertical="10dp"
+                android:background="@drawable/common_dialog_left_btn_bg_shape"
+                android:textColor="@color/black"
+                tools:text="取消"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/dialog_common_view_button_right"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:minWidth="200dp"
+                android:layout_marginLeft="20dp"
+                android:gravity="center"
+                android:paddingVertical="10dp"
+                android:background="@drawable/common_dialog_right_btn_bg_shape"
+                android:textColor="@color/white"
+                tools:text="发送朋友验证"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

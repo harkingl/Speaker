@@ -169,6 +169,12 @@
         <activity android:name="com.android.speaker.me.TestResultActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
+        <activity android:name="com.android.speaker.me.setting.AboutActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.android.speaker.me.setting.HelpActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

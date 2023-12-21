@@ -37,13 +37,24 @@
                 android:textStyle="bold"/>
         </RelativeLayout>
 
-        <NumberPicker
+        <com.android.speaker.base.component.wheel.WheelView
             android:id="@+id/dialog_common_np"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/dialog_btn_ok_tv"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:selectionDividerHeight="1dp"
-            android:background="@color/transparent"
-            android:gravity="center_horizontal"/>
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="22dp"
+            android:paddingVertical="12dp"
+            android:gravity="center"
+            android:background="@drawable/btn_bg_shape_purple"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:text="确定"/>
     </LinearLayout>
 </LinearLayout>

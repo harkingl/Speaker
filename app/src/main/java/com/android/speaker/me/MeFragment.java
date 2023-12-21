@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 
 import com.android.speaker.base.component.BaseFragment;
 import com.android.speaker.favorite.FavoriteListActivity;
+import com.android.speaker.me.setting.HelpActivity;
 import com.android.speaker.me.setting.SettingActivity;
 import com.android.speaker.me.vip.CouponListActivity;
 import com.android.speaker.me.vip.VipOpenActivity;
@@ -133,6 +134,9 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
             case R.id.me_function_test_tv:
                 gotoLevelTestPage();
                 break;
+            case R.id.me_function_help_tv:
+                gotoHelpPage();
+                break;
         }
     }
 
@@ -170,5 +174,9 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
     private void gotoLevelTestPage() {
         startActivity(new Intent(getActivity(), LevelTestActivity.class));
+    }
+
+    private void gotoHelpPage() {
+        startActivity(new Intent(getActivity(), HelpActivity.class));
     }
 }

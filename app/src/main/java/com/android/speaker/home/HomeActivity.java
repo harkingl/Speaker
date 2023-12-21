@@ -1,6 +1,8 @@
 package com.android.speaker.home;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -8,10 +10,13 @@ import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,9 +29,13 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.android.speaker.base.bean.UserInfo;
 import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.base.component.BaseFragment;
+import com.android.speaker.base.component.wheel.WheelView;
+import com.android.speaker.base.component.wheel.adapter.ArrayWheelAdapter;
 import com.android.speaker.course.CourseFragment;
 import com.android.speaker.listen.ListenFragment;
 import com.android.speaker.me.MeFragment;
+import com.android.speaker.me.SetTargetTimeRequest;
+import com.android.speaker.server.okhttp.RequestListener;
 import com.android.speaker.study.StudyFragment;
 import com.android.speaker.util.LogUtil;
 import com.android.speaker.util.ScreenUtil;
@@ -171,6 +180,7 @@ public class HomeActivity extends BaseActivity implements IHomeCallBack {
             @Override
             public void onTabSelected(TabBean tabBean) {
                 setTabSelected(tabBean);
+//                showTargetDialog(HomeActivity.this);
             }
 
             @Override
@@ -298,7 +308,11 @@ public class HomeActivity extends BaseActivity implements IHomeCallBack {
     public void callback(int tabIndex, Object value) {
         switch (tabIndex) {
             case TAB_STUDY:
-                setStudyStatusBar((String)value);
+                if("set_target_time".equals(value)) {
+                    showTargetDialog(this);
+                } else {
+                    setStudyStatusBar((String)value);
+                }
                 break;
         }
     }
@@ -452,5 +466,64 @@ public class HomeActivity extends BaseActivity implements IHomeCallBack {
             }
         }
         return channel;
+    }
+
+    private void showTargetDialog(final Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, AlertDialog.THEME_HOLO_LIGHT);
+        View layout = LayoutInflater.from(context).inflate(R.layout.dialog_set_target, null);
+        final AlertDialog dialog = builder.create();
+        dialog.setView(layout);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.show();
+        Window window = dialog.getWindow();
+        window.setContentView(R.layout.dialog_set_target);
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.gravity = Gravity.BOTTOM;
+        window.setAttributes(lp);
+        ImageView closeIv = (ImageView) window.findViewById(R.id.dialog_common_view_close_btn);
+        closeIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        int count = 24;
+        String[] values = new String[count];
+        for(int i = 0; i < count; i++) {
+            values[i] = (i+1)*5 + "分钟";
+        }
+        WheelView wheelView = window.findViewById(R.id.dialog_common_np);
+        ArrayWheelAdapter arrayWheelAdapter = new ArrayWheelAdapter(context, values);
+        arrayWheelAdapter.setItemResource(R.layout.wheelview_item);
+        arrayWheelAdapter.setItemTextResource(R.id.item_tv);
+        wheelView.setViewAdapter(arrayWheelAdapter);
+        wheelView.setCurrentItem(2);
+
+        TextView okTv = window.findViewById(R.id.dialog_btn_ok_tv);
+        okTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int index = wheelView.getCurrentItem();
+                setTargetTime((index+1)*5);
+            }
+        });
+    }
+
+    private void setTargetTime(int time) {
+        new SetTargetTimeRequest(this, time).schedule(true, new RequestListener<Boolean>() {
+            @Override
+            public void onSuccess(Boolean result) {
+
+            }
+
+            @Override
+            public void onFailed(Throwable e) {
+                ToastUtil.toastLongMessage(e.getMessage());
+            }
+        });
     }
 }

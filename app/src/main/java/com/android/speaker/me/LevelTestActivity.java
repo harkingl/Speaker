@@ -103,10 +103,10 @@ public class LevelTestActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void queryResult() {
-        new QueryTestResultRequest(this, mAnswerMap).schedule(true, new RequestListener<String>() {
+        new QueryTestResultRequest(this, mAnswerMap).schedule(true, new RequestListener<LevelInfo>() {
             @Override
-            public void onSuccess(String result) {
-                gotoResultPage();
+            public void onSuccess(LevelInfo result) {
+                gotoResultPage(result);
             }
 
             @Override
@@ -116,8 +116,10 @@ public class LevelTestActivity extends BaseActivity implements View.OnClickListe
         });
     }
 
-    private void gotoResultPage() {
-        startActivity(new Intent(this, TestResultActivity.class));
+    private void gotoResultPage(LevelInfo info) {
+        Intent i = new Intent(this, TestResultActivity.class);
+        i.putExtra("level_result", info);
+        startActivity(i);
 
         finish();
     }

@@ -247,4 +247,9 @@ public class UrlManager {
      * 测试结果
      */
     public static final String QUERY_TEST_RESULT = "/speakEnglish-ums/app-api/v1/queryResult";
+
+    /**
+     * 设置当日目标时间
+     */
+    public static final String SET_TARGET_TIME = "/speakEnglish-ums/app-api/v1/user/setTargetTime";
 }

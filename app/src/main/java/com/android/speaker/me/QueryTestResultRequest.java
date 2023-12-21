@@ -14,7 +14,7 @@ import java.util.Map;
 /***
  * 测试结果
  */
-public class QueryTestResultRequest extends BaseRequest<String> {
+public class QueryTestResultRequest extends BaseRequest<LevelInfo> {
     private Map map;
     public QueryTestResultRequest(Context context, Map map) {
         super(context);
@@ -39,8 +39,8 @@ public class QueryTestResultRequest extends BaseRequest<String> {
     }
 
     @Override
-    protected String result(JSONObject json) throws Exception {
+    protected LevelInfo result(JSONObject json) throws Exception {
 
-        return json.optString("data");
+        return new LevelInfo().parse(json.optJSONObject("data"));
     }
 }

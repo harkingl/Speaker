@@ -1,5 +1,6 @@
 package com.android.speaker.me.setting;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -50,7 +51,17 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         } else if(v == mSecurityLayout) {
         } else if(v == mPersonalLayout) {
         } else if(v == mHelpLayout) {
+            gotoHelpPage();
         } else if(v == mAboutLayout) {
+            gotoAboutPage();
         }
+    }
+
+    private void gotoAboutPage() {
+        startActivity(new Intent(this, AboutActivity.class));
+    }
+
+    private void gotoHelpPage() {
+        startActivity(new Intent(this, HelpActivity.class));
     }
 }

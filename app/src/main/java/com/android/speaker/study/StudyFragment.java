@@ -248,6 +248,11 @@ public class StudyFragment extends BaseFragment implements View.OnClickListener 
                 Intent intent = new Intent(getActivity(), AllSpeakerListActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.study_edit_iv:
+                if(mCallback != null) {
+                    mCallback.callback(IHomeCallBack.TAB_STUDY, "set_target_time");
+                }
+                break;
         }
     }
 
