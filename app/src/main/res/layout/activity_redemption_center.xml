@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/text_color_FCFCFC"
+    android:orientation="vertical">
+
+    <com.android.speaker.base.component.TitleBarLayout
+        android:id="@+id/redemption_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="18dp"
+        android:background="@color/white"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/text_color_1"
+            android:text="兑换码"/>
+        <EditText
+            android:id="@+id/redemption_code_et"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="45dp"
+            android:background="@color/transparent"
+            android:textColorHint="@color/text_color_CACACA"
+            android:textSize="14sp"
+            android:textColor="@color/text_color_1"
+            android:hint="请输入兑换码"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="12sp"
+        android:textColor="@color/text_color_2"
+        android:text="兑换提示"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="12sp"
+        android:textColor="@color/text_color_2"
+        android:text="1. 券码或兑换码只能兑换一次，不可重复使用。"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="12sp"
+        android:textColor="@color/text_color_2"
+        android:text="2. 输入时请使用英文输入法，区分大小写字母。"/>
+
+    <TextView
+        android:id="@+id/redemption_btn_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
+        android:layout_marginHorizontal="40dp"
+        android:gravity="center"
+        android:paddingVertical="12dp"
+        android:background="@drawable/btn_bg_shape_purple"
+        android:textColor="@color/white"
+        android:text="立即兑换"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+</LinearLayout>

@@ -61,6 +61,7 @@ public class StudyFragment extends BaseFragment implements View.OnClickListener 
     private ImageView mOpenOssIv;
     private IHomeCallBack mCallback;
     private OpenSpeakerInfo mInfo;
+    private LearnInfo mLearnInfo;
 
     @Nullable
     @Override
@@ -213,6 +214,8 @@ public class StudyFragment extends BaseFragment implements View.OnClickListener 
         mProgressBar.setMax(info.targetTime);
         mProgressBar.setProgress(info.currentLearnTime);
         mTotalTimeTv.setText(info.grantTotal + "");
+
+        this.mLearnInfo = info;
     }
 
     private void setOpenSpeakerInfo(OpenSpeakerInfo info) {
@@ -250,7 +253,7 @@ public class StudyFragment extends BaseFragment implements View.OnClickListener 
                 break;
             case R.id.study_edit_iv:
                 if(mCallback != null) {
-                    mCallback.callback(IHomeCallBack.TAB_STUDY, "set_target_time");
+                    mCallback.callback(IHomeCallBack.TAB_STUDY, "set_target_time", mLearnInfo == null ? 0 : mLearnInfo.targetTime);
                 }
                 break;
         }
@@ -263,15 +266,22 @@ public class StudyFragment extends BaseFragment implements View.OnClickListener 
             mClockTimesTv.setVisibility(View.INVISIBLE);
             mCalendarIv.setVisibility(View.INVISIBLE);
             mTitleLayout2.setVisibility(View.VISIBLE);
-            mCallback.callback(IHomeCallBack.TAB_STUDY, "up");
+            mCallback.callback(IHomeCallBack.TAB_STUDY, "status_bar", "up");
         } else {
             mUserTv.setVisibility(View.VISIBLE);
             mAiLabelTv.setVisibility(View.VISIBLE);
             mClockTimesTv.setVisibility(View.VISIBLE);
             mCalendarIv.setVisibility(View.VISIBLE);
             mTitleLayout2.setVisibility(View.GONE);
-            mCallback.callback(IHomeCallBack.TAB_STUDY, "down");
+            mCallback.callback(IHomeCallBack.TAB_STUDY, "status_bar", "down");
         }
+    }
+
+    public void setTargetTime(int targetTime) {
+        if(mLearnInfo != null) {
+            mLearnInfo.targetTime = targetTime;
+        }
+        mGoalTimeTv.setText(targetTime + "");
     }
 
     public void setCallback(IHomeCallBack callback) {

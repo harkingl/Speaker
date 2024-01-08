@@ -15,21 +15,23 @@ public class CouponInfo {
     public String name;
     public String code;
     public int faceValueType;
-    public double faceValue;
+    public String faceValue;
     public String validityBeginTime;
     public String validityEndTime;
     public String remark;
     public List<String> products;
+    public boolean isLQ;
 
     public CouponInfo parse(JSONObject obj) throws JSONException {
         this.id = obj.optString("id");
         this.name = obj.optString("name");
         this.code = obj.optString("code");
         this.faceValueType = obj.optInt("faceValueType");
-        this.faceValue = obj.optDouble("faceValue");
+        this.faceValue = obj.optString("faceValue");
         this.validityBeginTime = obj.optString("validityBeginTime");
         this.validityEndTime = obj.optString("validityEndTime");
         this.remark = obj.optString("remark");
+        this.isLQ = obj.optBoolean("isLQ", false);
         this.products = new ArrayList<>();
         JSONArray array = obj.optJSONArray("products");
         if(array != null) {

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SpeakerDetailInfo implements Serializable {
-    // 场景ID
     public String id;
     public String scenesId;
     public String sceneDes;

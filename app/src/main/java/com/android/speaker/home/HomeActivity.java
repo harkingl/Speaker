@@ -305,12 +305,12 @@ public class HomeActivity extends BaseActivity implements IHomeCallBack {
     }
 
     @Override
-    public void callback(int tabIndex, Object value) {
+    public void callback(int tabIndex, String key, Object value) {
         switch (tabIndex) {
             case TAB_STUDY:
-                if("set_target_time".equals(value)) {
-                    showTargetDialog(this);
-                } else {
+                if("set_target_time".equals(key)) {
+                    showTargetDialog(this, (int)value);
+                } else if("status_bar".equals(key)) {
                     setStudyStatusBar((String)value);
                 }
                 break;
@@ -468,7 +468,7 @@ public class HomeActivity extends BaseActivity implements IHomeCallBack {
         return channel;
     }
 
-    private void showTargetDialog(final Context context) {
+    private void showTargetDialog(final Context context, int value) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context, AlertDialog.THEME_HOLO_LIGHT);
         View layout = LayoutInflater.from(context).inflate(R.layout.dialog_set_target, null);
         final AlertDialog dialog = builder.create();
@@ -492,21 +492,27 @@ public class HomeActivity extends BaseActivity implements IHomeCallBack {
         });
 
         int count = 24;
+        // 默认
+        int currentIndex = 2;
         String[] values = new String[count];
         for(int i = 0; i < count; i++) {
             values[i] = (i+1)*5 + "分钟";
+            if((i+1)*5 == value) {
+                currentIndex = i;
+            }
         }
         WheelView wheelView = window.findViewById(R.id.dialog_common_np);
         ArrayWheelAdapter arrayWheelAdapter = new ArrayWheelAdapter(context, values);
         arrayWheelAdapter.setItemResource(R.layout.wheelview_item);
         arrayWheelAdapter.setItemTextResource(R.id.item_tv);
         wheelView.setViewAdapter(arrayWheelAdapter);
-        wheelView.setCurrentItem(2);
+        wheelView.setCurrentItem(currentIndex);
 
         TextView okTv = window.findViewById(R.id.dialog_btn_ok_tv);
         okTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialog.dismiss();
                 int index = wheelView.getCurrentItem();
                 setTargetTime((index+1)*5);
             }
@@ -517,7 +523,7 @@ public class HomeActivity extends BaseActivity implements IHomeCallBack {
         new SetTargetTimeRequest(this, time).schedule(true, new RequestListener<Boolean>() {
             @Override
             public void onSuccess(Boolean result) {
-
+                ((StudyFragment)studyBean.fragment).setTargetTime(time);
             }
 
             @Override

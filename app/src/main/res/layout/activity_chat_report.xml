@@ -32,6 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginHorizontal="20dp"
+                android:listSelector="@color/transparent"
                 android:divider="@color/transparent"
                 android:dividerHeight="12dp"/>
 
@@ -47,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginHorizontal="10dp"
+                android:listSelector="@color/transparent"
                 android:divider="@color/transparent"
                 android:dividerHeight="10dp"/>
 

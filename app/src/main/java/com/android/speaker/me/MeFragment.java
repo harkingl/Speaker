@@ -16,6 +16,8 @@ import com.android.speaker.favorite.FavoriteListActivity;
 import com.android.speaker.me.setting.HelpActivity;
 import com.android.speaker.me.setting.SettingActivity;
 import com.android.speaker.me.vip.CouponListActivity;
+import com.android.speaker.me.vip.RedemptionCenterActivity;
+import com.android.speaker.me.vip.VipDetailActivity;
 import com.android.speaker.me.vip.VipOpenActivity;
 import com.chinsion.SpeakEnglish.R;
 
@@ -23,12 +25,18 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     private ImageView mSettingIv;
     private ImageView mUserHeadIv;
     private TextView mUserNameTv;
+    private View mVipParentLayout;
     private TextView mVipValidateTv;
     private TextView mCourseSeriesTv;
     private TextView mChatFreelyTv;
     private TextView mCouponDetailTv;
     private TextView mVipRightsDetailTv;
     private TextView mVipRenewalTv;
+    private View mVipRenewalLayout;
+
+    // 非会员
+    private View mUnVipParentLayout;
+
     private ImageView mFunctionNewWordIv;
     private ImageView mFunctionLaptopIv;
     private TextView mFunctionRecordTv;
@@ -59,12 +67,15 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         mSettingIv = view.findViewById(R.id.me_setting_iv);
         mUserHeadIv = view.findViewById(R.id.me_user_head_iv);
         mUserNameTv = view.findViewById(R.id.me_user_name_tv);
+        mVipParentLayout = view.findViewById(R.id.me_vip_parent_ll);
         mVipValidateTv = view.findViewById(R.id.me_vip_validate_tv);
         mCourseSeriesTv = view.findViewById(R.id.me_course_series_tv);
         mChatFreelyTv = view.findViewById(R.id.me_ai_chat_freely_tv);
         mCouponDetailTv = view.findViewById(R.id.me_vip_coupon_detail_tv);
         mVipRightsDetailTv = view.findViewById(R.id.me_vip_rights_detail_tv);
         mVipRenewalTv = view.findViewById(R.id.me_vip_renewal_tv);
+        mVipRenewalLayout = view.findViewById(R.id.me_vip_renewal_ll);
+        mUnVipParentLayout = view.findViewById(R.id.me_unvip_parent_ll);
         mFunctionNewWordIv = view.findViewById(R.id.me_function_new_word_iv);
         mFunctionLaptopIv = view.findViewById(R.id.me_function_laptop_iv);
         mFunctionRecordTv = view.findViewById(R.id.me_function_record_tv);
@@ -78,7 +89,6 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         mVipDetailIv = view.findViewById(R.id.me_vip_detail_iv);
 
         mSettingIv.setOnClickListener(this);
-        mCouponDetailTv.setOnClickListener(this);
         mVipRightsDetailTv.setOnClickListener(this);
         mVipRenewalTv.setOnClickListener(this);
         mFunctionNewWordIv.setOnClickListener(this);
@@ -92,6 +102,9 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         mFunctionClockTv.setOnClickListener(this);
         mFunctionHelpTv.setOnClickListener(this);
         mVipDetailIv.setOnClickListener(this);
+        mVipParentLayout.setOnClickListener(this);
+        mUnVipParentLayout.setOnClickListener(this);
+        mVipRenewalLayout.setOnClickListener(this);
     }
 
     private void initData() {
@@ -101,6 +114,10 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 //            name = info.getName();
 //        }
         mUserNameTv.setText("185****7028");
+
+        //TODO
+        mUnVipParentLayout.setVisibility(View.GONE);
+        mVipParentLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -115,9 +132,6 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.me_function_new_word_iv:
                 gotoNewWord();
-                break;
-            case R.id.me_vip_detail_iv:
-                gotoVipDetail();
                 break;
             case R.id.me_function_coupon_tv:
                 gotoCouponListPage();
@@ -137,11 +151,25 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
             case R.id.me_function_help_tv:
                 gotoHelpPage();
                 break;
+            case R.id.me_unvip_parent_ll:
+            case R.id.me_vip_renewal_ll:
+                gotoVipOpenPage();
+                break;
+            case R.id.me_vip_parent_ll:
+                gotoVipDetailPage();
+                break;
+            case R.id.me_function_scan_tv:
+                gotoRedemptionPage();
+                break;
         }
     }
 
-    private void gotoVipDetail() {
+    private void gotoVipOpenPage() {
         startActivity(new Intent(getActivity(), VipOpenActivity.class));
+    }
+
+    private void gotoVipDetailPage() {
+        startActivity(new Intent(getActivity(), VipDetailActivity.class));
     }
 
     private void gotoCouponListPage() {
@@ -178,5 +206,9 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
     private void gotoHelpPage() {
         startActivity(new Intent(getActivity(), HelpActivity.class));
+    }
+
+    private void gotoRedemptionPage() {
+        startActivity(new Intent(getActivity(), RedemptionCenterActivity.class));
     }
 }

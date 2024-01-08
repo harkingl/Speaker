@@ -1,5 +1,6 @@
 package com.android.speaker.course;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,6 +12,8 @@ import com.android.speaker.base.ITitleBarLayout;
 import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.base.component.NoScrollListView;
 import com.android.speaker.base.component.TitleBarLayout;
+import com.android.speaker.me.ChatReportInfo;
+import com.android.speaker.me.NoteListActivity;
 import com.chinsion.SpeakEnglish.R;
 
 import java.util.ArrayList;
@@ -27,13 +30,14 @@ public class ChatReportActivity extends BaseActivity implements View.OnClickList
     private TextView mFinishTv;
     private ChatTipListAdapter mPointAdapter;
     private SpeakChatAdapter mHistoryAdapter;
-    private String mTitle;
+    private ChatReportInfo mInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_report);
 
+        mInfo = (ChatReportInfo) getIntent().getSerializableExtra(CourseUtil.KEY_CHAT_REPORT_INFO);
         initView();
         configTitleBar();
         initData();
@@ -49,10 +53,10 @@ public class ChatReportActivity extends BaseActivity implements View.OnClickList
     }
 
     private void configTitleBar() {
-        String title = getIntent().getStringExtra(CourseUtil.KEY_TITLE);
+        String title = "对话报告";
         mTitleBarLayout.getRightIcon().setImageResource(R.drawable.ic_note_black);
-        if(TextUtils.isEmpty(title)) {
-            title = "对话报告";
+        if(mInfo != null && !TextUtils.isEmpty(mInfo.title)) {
+            title = mInfo.title;
         }
         mTitleBarLayout.setTitle(title, ITitleBarLayout.Position.MIDDLE);
         mTitleBarLayout.setOnLeftClickListener(this);
@@ -60,22 +64,19 @@ public class ChatReportActivity extends BaseActivity implements View.OnClickList
     }
 
     private void initData() {
+        if(mInfo == null) {
+            return;
+        }
+
         List<String> pointList = new ArrayList<>();
-        pointList.add("你完成了一次很棒的英语对话！接下来，让我们来总结一下对话中的一些常用表达，来强化我们的记忆吧。");
-        pointList.add("当你电话的那端是你非常熟悉的人时，你可以用“Hey, it's me”来介绍你自己。电话常用的开始方式还有“Hey, What’s up?”");
-        pointList.add("当你电话的那端是你非常熟悉的人时，你可以用“Hey, it's me”来介绍你自己。电话常用的开始方式还有“Hey, What’s up?”");
-        pointList.add("当你电话的那端是你非常熟悉的人时，你可以用“Hey, it's me”来介绍你自己。电话常用的开始方式还有“Hey, What’s up?”");
+        if(mInfo.pointList != null) {
+            pointList.addAll(mInfo.pointList);
+        }
         mPointLv.setAdapter(new ChatTipListAdapter(this, pointList));
 
-        ArrayList<ChatItem> list = (ArrayList<ChatItem>) getIntent().getSerializableExtra(CourseUtil.KEY_CHAT_LIST);
-        if(list != null && list.size() > 0) {
-            mHistoryLv.setAdapter(new SpeakChatAdapter(this, list, true));
+        if(mInfo.chatList != null && mInfo.chatList.size() > 0) {
+            mHistoryLv.setAdapter(new SpeakChatAdapter(this, mInfo.chatList, true));
         }
-        loadPointList();
-    }
-
-    private void loadPointList() {
-
     }
 
     @Override
@@ -91,6 +92,6 @@ public class ChatReportActivity extends BaseActivity implements View.OnClickList
     }
 
     private void gotoNotePage() {
-
+        startActivity(new Intent(this, NoteListActivity.class));
     }
 }

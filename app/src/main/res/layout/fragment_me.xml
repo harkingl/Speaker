@@ -46,8 +46,11 @@
             android:text="AI"/>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/me_vip_parent_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="visible"
         android:background="@drawable/vip_bg_shape2"
         android:layout_marginRight="20dp"
         android:orientation="vertical">
@@ -154,7 +157,187 @@
                     android:paddingVertical="4dp"
                     android:text="立即查看"
                     android:textColor="@color/text_color_210091"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:drawableLeft="@drawable/ic_crown_small"
+                    android:drawablePadding="3dp"
+                    android:textColor="@color/text_color_210091"
                     android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:text="会员权益"/>
+                <TextView
+                    android:id="@+id/me_vip_rights_detail_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:drawableRight="@drawable/ic_vip_arrow_right"
+                    android:drawablePadding="3dp"
+                    android:alpha="0.5"
+                    android:textColor="@color/text_color_210091"
+                    android:textSize="11sp"
+                    android:text="详情"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginVertical="4dp"
+                android:background="@color/text_color_210091"/>
+
+            <LinearLayout
+                android:id="@+id/me_vip_renewal_ll"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:drawableLeft="@drawable/ic_time_circle"
+                    android:drawablePadding="3dp"
+                    android:textColor="@color/text_color_210091"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:text="立即续费"/>
+
+                <TextView
+                    android:id="@+id/me_vip_renewal_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:drawableRight="@drawable/ic_vip_arrow_right"
+                    android:drawablePadding="3dp"
+                    android:alpha="0.5"
+                    android:textColor="@color/text_color_210091"
+                    android:textSize="11sp"
+                    android:text="限时特惠"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/me_unvip_parent_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/me_unvip_bg_shape2"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/me_unvip_bg_shape"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="14dp"
+            android:paddingBottom="11dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+                    <ImageView
+                        android:id="@+id/me_unvip_crown_iv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_crown_big2"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/me_unvip_crown_iv"
+                        android:layout_alignBottom="@+id/me_unvip_crown_iv"
+                        android:layout_marginLeft="3dp"
+                        android:textSize="18sp"
+                        android:textColor="@color/text_color_002C91"
+                        android:textStyle="bold"
+                        android:text="开口说会员"/>
+                </RelativeLayout>
+                <TextView
+                    android:id="@+id/me_unvip_course_series_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="@drawable/ic_course_series2"
+                    android:drawablePadding="2dp"
+                    android:textSize="11sp"
+                    android:textColor="@color/text_color_002C91"
+                    android:text="课程畅听"/>
+                <TextView
+                    android:id="@+id/me_unvip_ai_chat_freely_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="13dp"
+                    android:drawableTop="@drawable/ic_ai_chat_freely2"
+                    android:drawablePadding="2dp"
+                    android:textSize="11sp"
+                    android:textColor="@color/text_color_002C91"
+                    android:text="AI畅聊"/>
+                <ImageView
+                    android:id="@+id/me_unvip_detail_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="5dp"
+                    android:paddingLeft="3dp"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/ic_arrow_right_blue"/>
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginTop="10dp"
+                android:background="@color/text_color_002C91"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:lines="1"
+                    android:ellipsize="end"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_color_002C91"
+                    android:text="月月领精品/专项课程会员折扣券"/>
+                <TextView
+                    android:id="@+id/me_unvip_coupon_detail_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/btn_view_bg_shape"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="4dp"
+                    android:text="立即开通"
+                    android:textColor="@color/text_color_002C91"
+                    android:textSize="11sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
@@ -169,9 +352,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:drawableLeft="@drawable/ic_crown_small"
+                android:drawableLeft="@drawable/ic_crown_small2"
                 android:drawablePadding="3dp"
-                android:textColor="@color/text_color_210091"
+                android:textColor="@color/text_color_002C91"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 android:text="会员权益"/>
@@ -180,14 +363,14 @@
                 android:layout_height="1px"
                 android:layout_weight="1"/>
             <TextView
-                android:id="@+id/me_vip_rights_detail_tv"
+                android:id="@+id/me_unvip_rights_detail_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:drawableRight="@drawable/ic_vip_arrow_right"
+                android:drawableRight="@drawable/ic_arrow_right_blue"
                 android:drawablePadding="3dp"
                 android:alpha="0.5"
-                android:textColor="@color/text_color_210091"
+                android:textColor="@color/text_color_002C91"
                 android:textSize="11sp"
                 android:text="详情"/>
             <View
@@ -198,25 +381,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:drawableLeft="@drawable/ic_time_circle"
+                android:drawableLeft="@drawable/ic_time_circle2"
                 android:drawablePadding="3dp"
-                android:textColor="@color/text_color_210091"
+                android:textColor="@color/text_color_002C91"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:text="立即续费"/>
+                android:text="立即开通"/>
             <View
                 android:layout_width="0dp"
                 android:layout_height="1px"
                 android:layout_weight="1"/>
             <TextView
-                android:id="@+id/me_vip_renewal_tv"
+                android:id="@+id/me_unvip_open_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:drawableRight="@drawable/ic_vip_arrow_right"
+                android:drawableRight="@drawable/ic_arrow_right_blue"
                 android:drawablePadding="3dp"
                 android:alpha="0.5"
-                android:textColor="@color/text_color_210091"
+                android:textColor="@color/text_color_002C91"
                 android:textSize="11sp"
                 android:text="限时特惠"/>
         </LinearLayout>

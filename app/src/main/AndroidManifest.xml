@@ -175,6 +175,15 @@
         <activity android:name="com.android.speaker.me.setting.HelpActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
+        <activity android:name="com.android.speaker.me.vip.VipDetailActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.android.speaker.me.ChatHistoryListActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.android.speaker.me.vip.RedemptionCenterActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

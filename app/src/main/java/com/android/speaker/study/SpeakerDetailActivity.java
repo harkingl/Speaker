@@ -12,9 +12,11 @@ import androidx.annotation.Nullable;
 
 import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.base.component.NoScrollListView;
+import com.android.speaker.course.ChatReportActivity;
 import com.android.speaker.course.CourseUtil;
 import com.android.speaker.course.SpeakChatActivity;
 import com.android.speaker.listen.GetSpeakerDetailRequest;
+import com.android.speaker.me.ChatHistoryListActivity;
 import com.android.speaker.server.okhttp.RequestListener;
 import com.android.speaker.util.GlideUtil;
 import com.android.speaker.util.StringUtil;
@@ -111,6 +113,10 @@ public class SpeakerDetailActivity extends BaseActivity implements View.OnClickL
         int id = v.getId();
         if(id == R.id.detail_back_iv) {
             finish();
+        } else if(id == R.id.detail_hostory_iv) {
+            Intent i = new Intent(this, ChatHistoryListActivity.class);
+            i.putExtra(CourseUtil.KEY_SCENE_ID, mInfo.scenesId);
+            startActivity(i);
         } else if(id == R.id.detail_btn_start_tv) {
             Intent i = new Intent(this, SpeakChatActivity.class);
             i.putExtra(CourseUtil.KEY_SPEAK_DETAIL, mInfo);

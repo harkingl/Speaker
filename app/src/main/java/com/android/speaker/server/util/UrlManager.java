@@ -252,4 +252,24 @@ public class UrlManager {
      * 设置当日目标时间
      */
     public static final String SET_TARGET_TIME = "/speakEnglish-ums/app-api/v1/user/setTargetTime";
+
+    /**
+     * 课程抵扣卷（是否领取列表）
+     */
+    public static final String GET_COUPON_RECEIVE_LIST = "/speakEnglish-ums/api/v1/product/coupons/list";
+
+    /**
+     * 课程抵扣卷领取
+     */
+    public static final String GET_COUPON_BY_ID = "/speakEnglish-ums/api/v1/product/coupons/queryId";
+
+    /**对话报告
+     *
+     */
+    public static final String GET_CHAT_REPORT = "/speakEnglish-ums/app-api/v1/openspeak/openSpeak/report";
+
+    /**
+     * 对话历史
+     */
+    public static final String GET_CHAT_HISTORY_LIST = "/speakEnglish-ums/app-api/v1/openspeak/openSpeak/history";
 }

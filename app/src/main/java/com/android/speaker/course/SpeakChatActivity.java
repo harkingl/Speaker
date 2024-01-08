@@ -21,6 +21,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.android.speaker.base.Constants;
 import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.base.component.BaseFragment;
 import com.android.speaker.base.component.NoScrollListView;
@@ -28,6 +29,7 @@ import com.android.speaker.chat.audio.AudioButton;
 import com.android.speaker.favorite.FavoriteItem;
 import com.android.speaker.favorite.GetFavoriteListRequest;
 import com.android.speaker.home.FragmentAdapter;
+import com.android.speaker.me.ChatReportInfo;
 import com.android.speaker.server.okhttp.RequestListener;
 import com.android.speaker.server.okhttp.WebSocketUtil;
 import com.android.speaker.study.SpeakerDetailInfo;
@@ -39,6 +41,7 @@ import com.android.speaker.util.ToastUtil;
 import com.chinsion.SpeakEnglish.R;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
+import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
@@ -89,8 +92,9 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
     private SpeakChatDetail mDetail;
     private long mEndTimeMs;
     private WebSocketUtil mSocketUtil;
-    private List<String> mContentList;
+    private ArrayList<String> mContentList;
     private int mProgress;
+    private ChatReportInfo mReportInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -372,9 +376,11 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void gotoReportPage() {
+        if(mReportInfo == null) {
+            return;
+        }
         Intent i = new Intent(this, ChatReportActivity.class);
-        i.putExtra(CourseUtil.KEY_TITLE, mInfo.title);
-        i.putExtra(CourseUtil.KEY_CHAT_LIST, mList);
+        i.putExtra(CourseUtil.KEY_CHAT_REPORT_INFO, mReportInfo);
         startActivity(i);
         finish();
     }
@@ -406,12 +412,15 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
+    private int count = 0;
     private void updateProgress(boolean isEnd) {
-        if(isEnd) {
+        count++;
+        if(isEnd || count>=3) {
             mProgress = MAX_PROGRESS;
             mProgressBar.setProgress(mProgress);
             mBottomLayout.setVisibility(View.GONE);
             mPointTv.setVisibility(View.VISIBLE);
+            generateReport();
             return;
         }
         if(mProgress < 50) {
@@ -504,5 +513,20 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
         lv.setMaxHeight((int)(ScreenUtil.getScreenHeight(this)*0.34));
 
         lv.setAdapter(new ChatTipListAdapter(this, mDetail.showTitles));
+    }
+
+    private void generateReport() {
+        String data = new Gson().toJson(mList);
+        new GetChatReportRequest(this, mInfo.scenesId, mContentList, data, mInfo.title).schedule(true, new RequestListener<ChatReportInfo>() {
+            @Override
+            public void onSuccess(ChatReportInfo result) {
+                mReportInfo = result;
+            }
+
+            @Override
+            public void onFailed(Throwable e) {
+                ToastUtil.toastLongMessage(e.getMessage());
+            }
+        });
     }
 }
