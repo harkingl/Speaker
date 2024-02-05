@@ -60,7 +60,7 @@ public class LoginRequest extends BaseRequest<UserInfo> {
         JSONObject data = json.optJSONObject("data");
         UserInfo info = UserInfo.getInstance();
         if(data != null) {
-            info.setPhone(mobile);
+            info.setPhone(data.optString("mobile"));
             info.setUserId(data.optString("memberId"));
             info.setToken(data.optString("access_token"));
 //            info.setName(data.optString("username"));

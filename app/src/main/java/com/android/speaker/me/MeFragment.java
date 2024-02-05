@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.android.speaker.base.bean.UserInfo;
 import com.android.speaker.base.component.BaseFragment;
 import com.android.speaker.favorite.FavoriteListActivity;
 import com.android.speaker.me.setting.HelpActivity;
@@ -113,11 +114,16 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 //        if(!TextUtils.isEmpty(info.getToken())) {
 //            name = info.getName();
 //        }
-        mUserNameTv.setText("185****7028");
+        UserInfo info = UserInfo.getInstance();
+        mUserNameTv.setText(info.getName());
 
-        //TODO
-        mUnVipParentLayout.setVisibility(View.GONE);
-        mVipParentLayout.setVisibility(View.VISIBLE);
+        if(info.isVip()) {
+            mUnVipParentLayout.setVisibility(View.GONE);
+            mVipParentLayout.setVisibility(View.VISIBLE);
+        } else {
+            mUnVipParentLayout.setVisibility(View.VISIBLE);
+            mVipParentLayout.setVisibility(View.GONE);
+        }
     }
 
     @Override

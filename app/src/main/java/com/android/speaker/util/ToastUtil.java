@@ -21,7 +21,8 @@ public class ToastUtil {
     private static Toast toast;
 
     public static void toastLongMessage(final String message) {
-        toastMessage(message, true);
+//        toastMessage(message, true);
+        toastMessage(message, false);
     }
 
     public static void toastShortMessage(final String message) {

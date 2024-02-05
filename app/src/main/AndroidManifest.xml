@@ -184,6 +184,13 @@
         <activity android:name="com.android.speaker.me.vip.RedemptionCenterActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
+        <activity android:name="com.android.speaker.me.setting.SecurityActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name="com.android.speaker.me.setting.BindPhoneActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

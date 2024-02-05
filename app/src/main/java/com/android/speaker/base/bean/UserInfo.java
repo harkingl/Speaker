@@ -29,6 +29,10 @@ public class UserInfo implements Serializable {
     private String birthday;
     private boolean isVip;
     private String level;
+    // 是否第三方登录
+    private boolean isThirdLogin;
+    // 微信是否绑定
+    private boolean wx;
 
     public synchronized static UserInfo getInstance() {
         if (sUserInfo == null) {
@@ -149,6 +153,22 @@ public class UserInfo implements Serializable {
         this.level = level;
     }
 
+    public boolean isThirdLogin() {
+        return isThirdLogin;
+    }
+
+    public void setThirdLogin(boolean thirdLogin) {
+        isThirdLogin = thirdLogin;
+    }
+
+    public boolean isWx() {
+        return wx;
+    }
+
+    public void setWx(boolean wx) {
+        this.wx = wx;
+    }
+
     public void cleanUserInfo() {
         token = "";
         userId = "";
@@ -161,6 +181,8 @@ public class UserInfo implements Serializable {
         birthday = "";
         isVip = false;
         level = "";
+        isThirdLogin = false;
+        wx = false;
         storeUserInfo();
     }
 

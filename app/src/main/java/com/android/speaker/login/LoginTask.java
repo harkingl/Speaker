@@ -1,6 +1,7 @@
 package com.android.speaker.login;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.speaker.base.bean.UserInfo;
@@ -40,7 +41,8 @@ public class LoginTask implements Runnable {
         try {
             new LoginRequest(context, code, mobile, loginToken, exID, openId, grant_type).execute(true);
 
-            new GetUserInfoRequest(context).schedule(false, requestListener);
+            boolean isThirdLogin = !TextUtils.isEmpty(openId);
+            new GetUserInfoRequest(context, isThirdLogin).schedule(false, requestListener);
         } catch (Exception e) {
             if(requestListener != null) {
                 requestListener.onFailed(e);

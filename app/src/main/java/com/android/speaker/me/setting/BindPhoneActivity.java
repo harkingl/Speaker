@@ -1,50 +1,39 @@
-package com.android.speaker.login;
+package com.android.speaker.me.setting;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.android.speaker.base.Constants;
 import com.android.speaker.base.bean.UserInfo;
 import com.android.speaker.base.component.BaseActivity;
-import com.android.speaker.home.HomeActivity;
+import com.android.speaker.login.GetCaptchaRequest;
 import com.android.speaker.server.okhttp.RequestListener;
 import com.android.speaker.util.LogUtil;
-import com.android.speaker.util.ThreadUtils;
 import com.android.speaker.util.ToastUtil;
-import com.android.speaker.web.WebActivity;
 import com.chinsion.SpeakEnglish.R;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 /***
- * 验证码登录页面
+ * 绑定手机号页面
  */
-public class LoginCaptchaActivity extends BaseActivity implements View.OnClickListener {
+public class BindPhoneActivity extends BaseActivity implements View.OnClickListener {
 
-    private static final String TAG = LoginCaptchaActivity.class.getSimpleName();
+    private static final String TAG = BindPhoneActivity.class.getSimpleName();
 
     private static final int DEFAULT_CAPTCHA_COUNT = 60;
 
     private ImageView mCloseIv;
-    private EditText mAccountEt;
+    private EditText mPhoneEt;
     private EditText mCaptchaEt;
     private TextView mBtnCaptchaTv;
-    private TextView mLoginTv;
-    private CheckBox mProtocolCb;
-    private TextView mServiceProtocolTv;
-    private TextView mPrivateProtocolTv;
-    private ImageView mOneKeyIv;
-    private ImageView mWxIv;
-    private TextView mProblemTv;
+    private TextView mBindTv;
 
     private Timer mTimer;
     private SendCodeTimerTask mTimerTask;
@@ -58,61 +47,32 @@ public class LoginCaptchaActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void initActivity() {
-        setContentView(R.layout.activity_login_captcha);
+        setContentView(R.layout.activity_bind_phone);
 
-        mCloseIv = findViewById(R.id.login_captcha_close_iv);
-        mAccountEt = findViewById(R.id.login_captcha_phone_et);
-        mCaptchaEt = findViewById(R.id.login_captcha_et);
-        mBtnCaptchaTv = findViewById(R.id.login_captcha_send_tv);
-        mLoginTv = findViewById(R.id.login_captcha_login_btn_tv);
-        mProtocolCb = findViewById(R.id.login_captcha_protocol_cb);
-        mServiceProtocolTv = findViewById(R.id.login_captcha_service_protocol_tv);
-        mPrivateProtocolTv = findViewById(R.id.login_captcha_private_protocol_tv);
-        mOneKeyIv = findViewById(R.id.login_captcha_onekey_iv);
-        mWxIv = findViewById(R.id.login_captcha_wx_iv);
-        mProblemTv = findViewById(R.id.login_captcha_problem_tv);
+        mPhoneEt = findViewById(R.id.bind_phone_et);
+        mCaptchaEt = findViewById(R.id.bind_captcha_et);
+        mBtnCaptchaTv = findViewById(R.id.bind_captcha_send_tv);
+        mBindTv = findViewById(R.id.bind_btn_tv);
 
-        mCloseIv.setOnClickListener(this);
         mBtnCaptchaTv.setOnClickListener(this);
-        mLoginTv.setOnClickListener(this);
-        mServiceProtocolTv.setOnClickListener(this);
-        mPrivateProtocolTv.setOnClickListener(this);
-        mOneKeyIv.setOnClickListener(this);
-        mWxIv.setOnClickListener(this);
-        mProblemTv.setOnClickListener(this);
-
-        String phone = UserInfo.getInstance().getPhone();
-        if(!TextUtils.isEmpty(phone)) {
-            mAccountEt.setText(phone);
-        }
-        mAccountEt.setText("13777874306");
-        mCaptchaEt.setText("666666");
+        mBindTv.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         int id = view.getId();
         switch(id) {
-            case R.id.login_captcha_close_iv:
-                finish();
-                break;
-            case R.id.login_captcha_send_tv:
+            case R.id.bind_captcha_send_tv:
                 sendCaptcha();
                 break;
-            case R.id.login_captcha_login_btn_tv:
-                doLogin();
-                break;
-            case R.id.login_captcha_service_protocol_tv:
-                gotoServiceProtocol();
-                break;
-            case R.id.login_captcha_private_protocol_tv:
-                gotoPrivateProtocol();
+            case R.id.bind_btn_tv:
+                doBind();
                 break;
         }
     }
 
     private void sendCaptcha() {
-        String phone = mAccountEt.getText().toString();
+        String phone = mPhoneEt.getText().toString();
         if(TextUtils.isEmpty(phone)) {
             ToastUtil.toastLongMessage("请输入手机号");
             return;
@@ -135,8 +95,8 @@ public class LoginCaptchaActivity extends BaseActivity implements View.OnClickLi
         });
     }
 
-    private void doLogin() {
-        String phone = mAccountEt.getText().toString();
+    private void doBind() {
+        String phone = mPhoneEt.getText().toString();
         String captcha = mCaptchaEt.getText().toString();
         if(TextUtils.isEmpty(phone)) {
             ToastUtil.toastLongMessage("请输入手机号");
@@ -150,53 +110,25 @@ public class LoginCaptchaActivity extends BaseActivity implements View.OnClickLi
             ToastUtil.toastLongMessage("请输入验证码");
             return;
         }
-        if(!mProtocolCb.isChecked()) {
-            ToastUtil.toastLongMessage("请先同意隐私政策和服务协议");
-            return;
-        }
 
-        ThreadUtils.execute(new LoginTask(this, captcha, phone, "sms_code", mListener));
-    }
+        new BindPhoneRequest(this, phone, captcha).schedule(true, new RequestListener<Boolean>() {
+            @Override
+            public void onSuccess(Boolean result) {
+                UserInfo info = UserInfo.getInstance();
+                info.setPhone(phone);
+                info.storeUserInfo();
+                ToastUtil.toastLongMessage("绑定成功");
 
-    private RequestListener<UserInfo> mListener = new RequestListener<UserInfo>() {
-        @Override
-        public void onSuccess(UserInfo result) {
-            ToastUtil.toastLongMessage("登录成功");
-            loginSuccess();
-            finish();
-        }
+                setResult(RESULT_OK);
+                finish();
+            }
 
-        @Override
-        public void onFailed(Throwable e) {
-            ToastUtil.toastLongMessage(e.getMessage());
-            LogUtil.e(TAG, "Login failed：" + e.getMessage());
-        }
-    };
+            @Override
+            public void onFailed(Throwable e) {
+                ToastUtil.toastLongMessage(e.getMessage());
+            }
+        });
 
-    private void loginSuccess() {
-        startActivity(new Intent(this, HomeActivity.class));
-    }
-
-    private void gotoServiceProtocol() {
-        Intent i = new Intent(this, WebActivity.class);
-        i.putExtra("url", Constants.USER_AGREEMENT);
-        startActivity(i);
-    }
-
-    private void gotoPrivateProtocol() {
-        Intent i = new Intent(this, WebActivity.class);
-        i.putExtra("url", Constants.PRIVACY_PROTECTION);
-        startActivity(i);
-    }
-
-    private void loginSuccess(UserInfo info) {
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        stopTimer();
-        super.onDestroy();
     }
 
     // 开始倒计时
@@ -216,6 +148,12 @@ public class LoginCaptchaActivity extends BaseActivity implements View.OnClickLi
             mTimerTask.cancel();
             mTimerTask = null;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        stopTimer();
+        super.onDestroy();
     }
 
     private class SendCodeTimerTask extends TimerTask {

@@ -272,4 +272,14 @@ public class UrlManager {
      * 对话历史
      */
     public static final String GET_CHAT_HISTORY_LIST = "/speakEnglish-ums/app-api/v1/openspeak/openSpeak/history";
+
+    /**
+     * 绑定手机号
+     */
+    public static final String BIND_PHONE = "/speakEnglish-ums/app-api/v1/user/mobileBd";
+
+    /**
+     * 绑定微信
+     */
+    public static final String BIND_WX = "/speakEnglish-auth/user/wxBd";
 }

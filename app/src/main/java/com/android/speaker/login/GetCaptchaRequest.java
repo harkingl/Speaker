@@ -13,7 +13,7 @@ import org.json.JSONObject;
  */
 public class GetCaptchaRequest extends BaseRequest<Boolean> {
     private String phoneNumber;
-    protected GetCaptchaRequest(Context context, String phoneNumber) {
+    public GetCaptchaRequest(Context context, String phoneNumber) {
         super(context);
 
         this.phoneNumber = phoneNumber;

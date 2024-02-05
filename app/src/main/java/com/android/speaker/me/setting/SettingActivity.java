@@ -49,6 +49,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         if(v == titleBarLayout.getLeftGroup()) {
             finish();
         } else if(v == mSecurityLayout) {
+            gotoSecurityPage();
         } else if(v == mPersonalLayout) {
         } else if(v == mHelpLayout) {
             gotoHelpPage();
@@ -63,5 +64,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
     private void gotoHelpPage() {
         startActivity(new Intent(this, HelpActivity.class));
+    }
+
+    private void gotoSecurityPage() {
+        startActivity(new Intent(this, SecurityActivity.class));
     }
 }

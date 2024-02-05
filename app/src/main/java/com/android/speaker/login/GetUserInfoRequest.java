@@ -10,7 +10,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class GetUserInfoRequest extends BaseRequest<UserInfo> {
-    public GetUserInfoRequest(Context context) {
+    private boolean isThirdLogin;
+    public GetUserInfoRequest(Context context, boolean isThirdLogin) {
         super(context);
     }
     @Override
@@ -29,8 +30,11 @@ public class GetUserInfoRequest extends BaseRequest<UserInfo> {
         JSONObject data = json.optJSONObject("data");
         UserInfo info = UserInfo.getInstance();
         if(data != null) {
+            info.setThirdLogin(isThirdLogin);
             info.setAvatar(data.optString("avatarUrl"));
             info.setName(data.optString("nickName"));
+            info.setVip(data.optBoolean("isVip", false));
+
             info.storeUserInfo();
         }
         return info;

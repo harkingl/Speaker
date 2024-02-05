@@ -100,7 +100,9 @@ public class LoginUtil {
     };
 
     private void gotoHomePage() {
-        mContext.startActivity(new Intent(mContext, HomeActivity.class));
+        Intent i = new Intent(mContext, HomeActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mContext.startActivity(i);
     }
 
     private void gotoCaptchaLoginPage() {
