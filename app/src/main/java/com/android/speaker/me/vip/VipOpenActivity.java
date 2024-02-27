@@ -21,10 +21,10 @@ import com.android.speaker.base.component.TitleBarLayout;
 import com.android.speaker.server.okhttp.RequestListener;
 import com.android.speaker.util.ScreenUtil;
 import com.android.speaker.util.ThreadUtils;
+import com.android.speaker.util.TimeUtil;
 import com.android.speaker.util.ToastUtil;
 import com.android.speaker.web.WebActivity;
 import com.chinsion.SpeakEnglish.R;
-import com.tencent.mm.opensdk.modelmsg.WXTextObject;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -206,10 +206,24 @@ public class VipOpenActivity extends BaseActivity implements View.OnClickListene
         if(mCouponInfo == null) {
             mValidateLayout.setVisibility(View.GONE);
         } else {
-            // TODO
-            mValidateLayout.setVisibility(View.VISIBLE);
+            long timeDifference = TimeUtil.getValidateTime(mCouponInfo.validityEndTime, TimeUtil.FORMAT_YYYYMMDDHHMMSS)/1000;
+            setValidateTime((int) (timeDifference/1000));
         }
         mAdapter.setSelectIndex(position);
+    }
+
+    private void setValidateTime(int timeDifference) {
+        if(timeDifference <= 0) {
+            mValidateLayout.setVisibility(View.GONE);
+        } else {
+            mTimeHourTv.setText(String.format("%02d", timeDifference/3600));
+            mTimeMinuteTv.setText(String.format("%02d", (timeDifference/60) % 60));
+            mTimeSecondTv.setText(String.format("%02d", timeDifference % 60));
+            mValidateLayout.setVisibility(View.VISIBLE);
+            Message msg = mHandler.obtainMessage(WHAT_DOWN_COUNT);
+            msg.arg1 = timeDifference - 1;
+            mHandler.sendMessageDelayed(msg, 1000);
+        }
     }
 
     @Override
@@ -282,13 +296,24 @@ public class VipOpenActivity extends BaseActivity implements View.OnClickListene
     }
 
     private static final int WHAT_SDK_PAY = 1;
+    private static final int WHAT_DOWN_COUNT = 2;
     private Handler mHandler = new Handler(Looper.getMainLooper()) {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case WHAT_SDK_PAY:
                     Object obj = msg.obj;
                     break;
+                case WHAT_DOWN_COUNT:
+                    setValidateTime(msg.arg1);
+                    break;
             }
         };
     };
+
+    @Override
+    protected void onDestroy() {
+        mHandler.removeMessages(WHAT_DOWN_COUNT);
+        mHandler.removeMessages(WHAT_SDK_PAY);
+        super.onDestroy();
+    }
 }

@@ -15,6 +15,7 @@ public class TimeUtil {
 
     private static final String FORMAT_DURATION_TIME = "mm:ss";
     public static final String FORMAT_YYYYMMDDHHMM = "yyyy-MM-dd HH:mm";
+    public static final String FORMAT_YYYYMMDDHHMMSS = "yyyy-MM-dd HH:mm:ss";
 
     public static String formatTimeDuration(int duration) {
         return new SimpleDateFormat(FORMAT_DURATION_TIME).format(duration);
@@ -47,5 +48,26 @@ public class TimeUtil {
         }
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
         return simpleDateFormat.format(new Date(timestamp));
+    }
+
+    /**
+     * 获取有效期时间（跟当前系统时间比较）
+     * @param time
+     * @param format
+     * @return 时间差（ms）
+     */
+    public static long getValidateTime(String time, String format) {
+        if(TextUtils.isEmpty(time) || TextUtils.isEmpty(format)) {
+            return 0;
+        }
+
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+            return dateFormat.parse(time).getTime() - System.currentTimeMillis();
+        } catch (Exception e) {
+            LogUtil.e(TAG, e.getMessage());
+        }
+
+        return 0;
     }
 }
