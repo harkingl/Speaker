@@ -50,7 +50,7 @@
                 android:textSize="11sp"
                 android:textColor="@color/common_green_color"
                 android:textStyle="bold"
-                android:text="AI"/>
+                tools:text="A1"/>
             <TextView
                 android:id="@+id/course_item_title_tv"
                 android:layout_width="0dp"

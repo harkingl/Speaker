@@ -240,7 +240,7 @@
                                 android:textStyle="bold"
                                 android:text="场景对话"/>
                             <TextView
-                                android:id="@+id/preview_scenes_tv"
+                                android:id="@+id/preview_scenes_title_tv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/text_color_1"
@@ -253,6 +253,7 @@
                             android:src="@drawable/arrow_right_gray"/>
                     </LinearLayout>
                     <TextView
+                        android:id="@+id/preview_scenes_desc_tv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"

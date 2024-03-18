@@ -282,4 +282,9 @@ public class UrlManager {
      * 绑定微信
      */
     public static final String BIND_WX = "/speakEnglish-auth/user/wxBd";
+
+    /**
+     * 检查版本
+     */
+    public static final String CHECK_VERSION = "/speakEnglish-ums/systemInfo/checkUpdate/androidVersion";
 }

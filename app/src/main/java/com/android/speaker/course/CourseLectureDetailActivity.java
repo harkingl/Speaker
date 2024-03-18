@@ -1,6 +1,7 @@
 package com.android.speaker.course;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -25,6 +26,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.base.component.BaseFragment;
 import com.android.speaker.home.FragmentAdapter;
+import com.android.speaker.me.NoteListActivity;
 import com.android.speaker.server.okhttp.RequestListener;
 import com.android.speaker.util.LogUtil;
 import com.android.speaker.util.ScreenUtil;
@@ -106,6 +108,7 @@ public class CourseLectureDetailActivity extends BaseActivity implements View.On
         mJumpPrevIv.setOnClickListener(this);
         mPlayIv.setOnClickListener(this);
         mJumpNextIv.setOnClickListener(this);
+        mScrollSelectLayout.setOnClickListener(this);
         mViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -123,7 +126,7 @@ public class CourseLectureDetailActivity extends BaseActivity implements View.On
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                jumpToPosition(position);
+//                jumpToPosition(position);
             }
         });
 
@@ -413,7 +416,15 @@ public class CourseLectureDetailActivity extends BaseActivity implements View.On
                 return;
             }
             jumpToPosition(currentIndex+1);
+        } else if(id == R.id.lecture_scroll_select_ll) {
+            jumpToPosition(mCurrSelectPosition);
+        } else if(id == R.id.lecture_note_iv) {
+            gotoNotePage();
         }
+    }
+
+    private void gotoNotePage() {
+        startActivity(new Intent(this, NoteListActivity.class));
     }
 
     private void jumpToPosition(int position) {

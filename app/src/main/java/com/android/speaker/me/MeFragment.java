@@ -38,6 +38,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     // 非会员
     private View mUnVipParentLayout;
 
+    private View mFunctionNewWordLl;
+    private View mFunctionLaptopLl;
     private ImageView mFunctionNewWordIv;
     private ImageView mFunctionLaptopIv;
     private TextView mFunctionRecordTv;
@@ -88,12 +90,14 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         mFunctionClockTv = view.findViewById(R.id.me_function_clock_tv);
         mFunctionHelpTv = view.findViewById(R.id.me_function_help_tv);
         mVipDetailIv = view.findViewById(R.id.me_vip_detail_iv);
+        mFunctionNewWordLl = view.findViewById(R.id.me_function_new_word_ll);
+        mFunctionLaptopLl = view.findViewById(R.id.me_function_laptop_ll);
 
         mSettingIv.setOnClickListener(this);
         mVipRightsDetailTv.setOnClickListener(this);
         mVipRenewalTv.setOnClickListener(this);
-        mFunctionNewWordIv.setOnClickListener(this);
-        mFunctionLaptopIv.setOnClickListener(this);
+        mFunctionNewWordLl.setOnClickListener(this);
+        mFunctionLaptopLl.setOnClickListener(this);
         mFunctionRecordTv.setOnClickListener(this);
         mFunctionCollectTv.setOnClickListener(this);
         mFunctionTestTv.setOnClickListener(this);
@@ -136,13 +140,13 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
             case R.id.me_function_collect_tv:
                 gotoFavorite();
                 break;
-            case R.id.me_function_new_word_iv:
+            case R.id.me_function_new_word_ll:
                 gotoNewWord();
                 break;
             case R.id.me_function_coupon_tv:
                 gotoCouponListPage();
                 break;
-            case R.id.me_function_laptop_iv:
+            case R.id.me_function_laptop_ll:
                 gotoNotePage();
                 break;
             case R.id.me_function_order_tv:

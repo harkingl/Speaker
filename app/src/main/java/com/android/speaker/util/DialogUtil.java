@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.speaker.update.VersionInfo;
 import com.chinsion.SpeakEnglish.R;
 
 
@@ -127,6 +128,42 @@ public class DialogUtil {
                 dialog.dismiss();
                 if(listener != null) {
                     listener.onRightClick("");
+                }
+            }
+        });
+    }
+
+    public static void showUpdateDialog(final Context context, VersionInfo info, IDialogListener listener) {
+        Builder builder = new Builder(context, R.style.CommonDialogStyle);
+        final AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.show();
+        Window window = dialog.getWindow();
+        window.setContentView(R.layout.dialog_update_version);
+
+        TextView versionTv = window.findViewById(R.id.dialog_version_tv);
+        if(info != null && !TextUtils.isEmpty(info.versionName)) {
+            versionTv.setText(info.versionName);
+        }
+
+        TextView updateBtn = window.findViewById(R.id.dialog_update_tv);
+        updateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                if(listener != null) {
+                    listener.onRightClick(info.updateUrl);
+                }
+            }
+        });
+        TextView cancelBtn = window.findViewById(R.id.dialog_cancel_tv);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                if(listener != null) {
+                    listener.onLeftClick();
                 }
             }
         });

@@ -25,6 +25,7 @@ public class CoursePreviewInfo implements Serializable {
     public String[] tips;
     public String favoritesId;
     public String openSpeakId;
+    public String sceneSpeakTitle;
 
     public CoursePreviewInfo parse(JSONObject obj) throws JSONException {
         id = obj.optString("id");
@@ -49,6 +50,7 @@ public class CoursePreviewInfo implements Serializable {
         }
         favoritesId = obj.optString("favoritesId");
         openSpeakId = obj.optString("openSpeakId");
+        sceneSpeakTitle = obj.optString("sceneSpeakTitle");
 
         return this;
     }

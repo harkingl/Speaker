@@ -49,6 +49,7 @@ public class CourseAdapter extends BaseListItemAdapter<CourseItem> {
         holder.freeLabelTv.setVisibility(freeLabelVisible);
         holder.titleTv.setText(info.title);
         holder.descTv.setText(info.des);
+        holder.aiLabelTv.setText(info.leveName);
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -8,8 +8,11 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -37,6 +40,10 @@ import com.android.speaker.me.MeFragment;
 import com.android.speaker.me.SetTargetTimeRequest;
 import com.android.speaker.server.okhttp.RequestListener;
 import com.android.speaker.study.StudyFragment;
+import com.android.speaker.update.CheckVersionRequest;
+import com.android.speaker.update.DownloadService;
+import com.android.speaker.update.VersionInfo;
+import com.android.speaker.util.DialogUtil;
 import com.android.speaker.util.LogUtil;
 import com.android.speaker.util.ScreenUtil;
 import com.android.speaker.util.ToastUtil;
@@ -91,6 +98,7 @@ public class HomeActivity extends BaseActivity implements IHomeCallBack {
 //        }
         initView();
         initUnreadCountReceiver();
+        checkVersion();
     }
 
     private void initUnreadCountReceiver() {
@@ -105,6 +113,60 @@ public class HomeActivity extends BaseActivity implements IHomeCallBack {
 //        IntentFilter unreadCountFilter = new IntentFilter();
 //        unreadCountFilter.addAction(TUIConstants.CONVERSATION_UNREAD_COUNT_ACTION);
 //        LocalBroadcastManager.getInstance(this).registerReceiver(unreadCountReceiver, unreadCountFilter);
+    }
+
+    private void checkVersion() {
+        new CheckVersionRequest(this, getVersion()).schedule(false, new RequestListener<VersionInfo>() {
+            @Override
+            public void onSuccess(VersionInfo result) {
+                if(result.isNew && !TextUtils.isEmpty(result.updateUrl)) {
+                    DialogUtil.showUpdateDialog(HomeActivity.this, result, mUpdateListener);
+                }
+            }
+
+            @Override
+            public void onFailed(Throwable e) {
+
+            }
+        });
+    }
+
+    private DialogUtil.IDialogListener mUpdateListener = new DialogUtil.IDialogListener() {
+        @Override
+        public void onLeftClick() {
+
+        }
+
+        @Override
+        public void onRightClick(String s) {
+            if(TextUtils.isEmpty(s) || !checkInstallPermission()) {
+                return;
+            }
+            Intent intent = new Intent(HomeActivity.this, DownloadService.class);
+            intent.putExtra(DownloadService.DOWNLOAD_LINK, s);
+            startService(intent);
+        }
+    };
+
+    private boolean checkInstallPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            boolean hasPermission = getPackageManager().canRequestPackageInstalls();
+            //pm.canRequestPackageInstalls() 返回用户是否授予了安装apk的权限
+            if(hasPermission){
+                return true;
+            }else{
+                ToastUtil.toastLongMessage("请先打开未知应用的安装权限");
+                Uri packageURI =
+                        Uri.parse("package:" + getPackageName());
+                //注意这个是8.0新API
+                Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, packageURI);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                return false;
+            }
+        } else {
+            return true;
+        }
     }
 
     @Override

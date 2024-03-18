@@ -22,6 +22,7 @@ import com.android.speaker.course.CourseAdapter;
 import com.android.speaker.course.CourseItem;
 import com.android.speaker.course.CourseUtil;
 import com.android.speaker.course.GetRecommendCourseListRequest;
+import com.android.speaker.course.SceneCourseActivity;
 import com.android.speaker.home.IHomeCallBack;
 import com.android.speaker.server.okhttp.RequestListener;
 import com.android.speaker.util.FormatUtil;
@@ -255,6 +256,9 @@ public class StudyFragment extends BaseFragment implements View.OnClickListener 
                 if(mCallback != null) {
                     mCallback.callback(IHomeCallBack.TAB_STUDY, "set_target_time", mLearnInfo == null ? 0 : mLearnInfo.targetTime);
                 }
+                break;
+            case R.id.study_course_more_tv:
+                startActivity(new Intent(getActivity(), SceneCourseActivity.class));
                 break;
         }
     }

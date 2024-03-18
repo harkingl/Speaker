@@ -1,5 +1,6 @@
 package com.android.speaker.course;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,6 +20,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.base.component.BaseFragment;
 import com.android.speaker.home.FragmentAdapter;
+import com.android.speaker.me.NoteListActivity;
 import com.android.speaker.server.okhttp.RequestListener;
 import com.android.speaker.util.LogUtil;
 import com.android.speaker.util.ScreenUtil;
@@ -101,6 +103,7 @@ public class SceneSpeakActivity extends BaseActivity implements View.OnClickList
         mJumpPrevIv.setOnClickListener(this);
         mPlayIv.setOnClickListener(this);
         mJumpNextIv.setOnClickListener(this);
+        mScrollSelectLayout.setOnClickListener(this);
         mViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -118,7 +121,7 @@ public class SceneSpeakActivity extends BaseActivity implements View.OnClickList
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                jumpToPosition(position);
+//                jumpToPosition(position);
             }
         });
 
@@ -157,6 +160,10 @@ public class SceneSpeakActivity extends BaseActivity implements View.OnClickList
 
     private void setScrollDuration() {
         View firstItem = mListView.getChildAt(0);
+        // 三星手机有时会报错
+        if(firstItem == null) {
+            return;
+        }
         int scrollSelectViewTop = mScrollSelectLayout.getTop();
         int position = -1;
         if(firstItem.getBottom() > scrollSelectViewTop) {
@@ -402,7 +409,15 @@ public class SceneSpeakActivity extends BaseActivity implements View.OnClickList
                 return;
             }
             jumpToPosition(currentIndex+1);
+        } else if(id == R.id.scene_speak_scroll_select_ll) {
+            jumpToPosition(mCurrSelectPosition);
+        } else if(id == R.id.scene_speak_note_iv) {
+            gotoNotePage();
         }
+    }
+
+    private void gotoNotePage() {
+        startActivity(new Intent(this, NoteListActivity.class));
     }
 
     private void jumpToPosition(int position) {

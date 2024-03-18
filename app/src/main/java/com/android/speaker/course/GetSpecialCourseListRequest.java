@@ -18,7 +18,7 @@ import java.util.List;
 public class GetSpecialCourseListRequest extends BaseRequest<List<CourseItem>> {
     private int pageNum;
     private int pageSize;
-    public GetSpecialCourseListRequest(Context context, int pageNum, int pageSize) {
+        public GetSpecialCourseListRequest(Context context, int pageNum, int pageSize) {
         super(context);
         this.pageNum = pageNum;
         this.pageSize = pageSize;

@@ -184,6 +184,7 @@ public class WordPracticeActivity extends BaseActivity implements View.OnClickLi
         updateRightButton(info.hasFav);
 
         mCurrInfo = info;
+        doPlay(false);
     }
 
     private void updateRightButton(boolean hasFav) {
@@ -221,6 +222,9 @@ public class WordPracticeActivity extends BaseActivity implements View.OnClickLi
             mWaveView.setVisibility(View.GONE);
             mLoadingBar.setVisibility(View.GONE);
             mBottomView.setVisibility(View.VISIBLE);
+            if(mList.indexOf(mCurrInfo) == mList.size()-1) {
+                mNextTv.setText("完成");
+            }
         }
     }
 
@@ -363,6 +367,8 @@ public class WordPracticeActivity extends BaseActivity implements View.OnClickLi
                 mCurrentStep = 1;
                 updateBottomView();
                 setView(mList.get(index+1), index+1);
+            } else {
+                finish();
             }
         } else if(v == mTitleBarLayout.getRightGroup()) {
             addNewWord();

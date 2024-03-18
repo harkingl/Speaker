@@ -412,10 +412,8 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
-    private int count = 0;
     private void updateProgress(boolean isEnd) {
-        count++;
-        if(isEnd || count>=3) {
+        if(isEnd) {
             mProgress = MAX_PROGRESS;
             mProgressBar.setProgress(mProgress);
             mBottomLayout.setVisibility(View.GONE);
@@ -456,10 +454,13 @@ public class SpeakChatActivity extends BaseActivity implements View.OnClickListe
             try {
                 JSONObject obj = new JSONObject(message);
 
+                boolean isEnd = obj.optBoolean("ISEnd", false);
                 String id = obj.optString("id");
                 String content = obj.optString("content");
 
-                if(!TextUtils.isEmpty(id)) {
+                if(isEnd) {
+                    // do nothing
+                } else if(!TextUtils.isEmpty(id)) {
                     mAudioBtn.analysisFinish(content);
 //                    sendMessage(content);
                 } else if(!TextUtils.isEmpty(content)) {

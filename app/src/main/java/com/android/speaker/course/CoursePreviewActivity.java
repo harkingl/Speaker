@@ -33,7 +33,8 @@ public class CoursePreviewActivity extends BaseActivity implements View.OnClickL
     private TextView mDescTv;
     private FlowLayout mTagLayout;
     private TextView mWordsTv;
-    private TextView mSceneTv;
+    private TextView mSceneTitleTv;
+    private TextView mSceneDescTv;
     private TextView mCourseInstructionTv;
     private TextView mRolePlayTv;
     private TextView mStartTv;
@@ -65,7 +66,8 @@ public class CoursePreviewActivity extends BaseActivity implements View.OnClickL
         mDescTv = findViewById(R.id.preview_desc_tv);
         mTagLayout = findViewById(R.id.preview_tags_fl);
         mWordsTv = findViewById(R.id.preview_words_tv);
-        mSceneTv = findViewById(R.id.preview_scenes_tv);
+        mSceneTitleTv = findViewById(R.id.preview_scenes_title_tv);
+        mSceneDescTv = findViewById(R.id.preview_scenes_desc_tv);
         mCourseInstructionTv = findViewById(R.id.preview_course_instruction_tv);
         mRolePlayTv = findViewById(R.id.preview_roleplay_tv);
         mStartTv = findViewById(R.id.preview_btn_start_tv);
@@ -127,7 +129,8 @@ public class CoursePreviewActivity extends BaseActivity implements View.OnClickL
         }
         String words = info.words == null ? "" : TextUtils.join(", ", info.words);
         mWordsTv.setText("词汇：" + words);
-        mSceneTv.setText("场景：" + info.sceneSpeak);
+        mSceneTitleTv.setText(info.sceneSpeakTitle);
+        mSceneDescTv.setText("场景：" + info.sceneSpeak);
         mCourseInstructionTv.setText("语法点：" + info.sceneProject);
         mRolePlayTv.setText("场景描述：" + info.openSpeak);
 
