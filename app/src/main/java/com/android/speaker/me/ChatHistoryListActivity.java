@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.android.speaker.base.ITitleBarLayout;
+import com.android.speaker.base.bean.PagedListEntity;
 import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.base.component.PagedItemListView;
 import com.android.speaker.base.component.TitleBarLayout;
@@ -75,15 +76,17 @@ public class ChatHistoryListActivity extends BaseActivity implements View.OnClic
     }
 
     private void loadData() {
-        new GetChatHistoryListRequest(this, mSceneId, mPageNo, PAGE_SIZE).schedule(false, new RequestListener<List<ChatReportInfo>>() {
+        new GetChatHistoryListRequest(this, mSceneId, mPageNo, PAGE_SIZE).schedule(false, new RequestListener<PagedListEntity<ChatReportInfo>>() {
             @Override
-            public void onSuccess(List<ChatReportInfo> result) {
+            public void onSuccess(PagedListEntity<ChatReportInfo> result) {
+                mListView.setTotalPageNumber(result.getPageCount());
+                mListView.setRecordCount(result.getRecordCount());
                 mListView.onLoadDone();
                 if(!mIsLoadMore) {
                     mList.clear();
                 }
-                if(result != null) {
-                    mList.addAll(result);
+                if(result.getList() != null) {
+                    mList.addAll(result.getList());
                 }
                 mAdapter.notifyDataSetChanged();
             }

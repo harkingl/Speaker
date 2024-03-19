@@ -15,12 +15,13 @@ public class PagedItemListView extends ListView implements OnScrollListener{
    
  	private volatile int currentPage = 0;
 	private volatile int totalPageNumber = 1;
-	private volatile int recordCount = 0;
+	private volatile int recordCount = -1;
  
 	private boolean isLoading = false;
 	private LoadMoreListener loadMoreListener;
 	private OnListScrollListener mListOnScrollListener;
 	private View footerView;
+	private View headerView;
 	private ScrollStateChangedListener mScrollStateChangedListener;
 
 	public PagedItemListView(Context context) {
@@ -46,7 +47,10 @@ public class PagedItemListView extends ListView implements OnScrollListener{
 	private void init(Context context) {
 		footerView = LayoutInflater.from(context).inflate(
 				R.layout.base_loading_item, null);
+		headerView = LayoutInflater.from(context).inflate(
+				R.layout.view_empty_data, null);
  		addFooterView(footerView, null, false);
+		addHeaderView(headerView, null, false);
 		super.setOnScrollListener(this);
 	}
 	
@@ -78,6 +82,10 @@ public class PagedItemListView extends ListView implements OnScrollListener{
 			removeFooterView(footerView);
 		} else if (currentPage < totalPageNumber && getFooterViewsCount() == 0) {
 			addFooterView(footerView, null, false);
+		}
+		// -1代表没有设置
+		if(recordCount > 0 || recordCount == -1) {
+			removeHeaderView(headerView);
 		}
 	}
 

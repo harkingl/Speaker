@@ -2,6 +2,7 @@ package com.android.speaker.me;
 
 import android.content.Context;
 
+import com.android.speaker.base.bean.PagedListEntity;
 import com.android.speaker.server.okhttp.BaseRequest;
 import com.android.speaker.server.util.UrlManager;
 
@@ -15,7 +16,7 @@ import java.util.List;
 /***
  * 获取订单列表
  */
-public class GetOrderListRequest extends BaseRequest<List<OrderInfo>> {
+public class GetOrderListRequest extends BaseRequest<PagedListEntity<OrderInfo>> {
     private int pageNum;
     private int pageSize;
     public GetOrderListRequest(Context context, int pageNum, int pageSize) {
@@ -37,7 +38,7 @@ public class GetOrderListRequest extends BaseRequest<List<OrderInfo>> {
     }
 
     @Override
-    protected List<OrderInfo> result(JSONObject json) throws Exception {
+    protected PagedListEntity<OrderInfo> result(JSONObject json) throws Exception {
         List<OrderInfo> list = new ArrayList<>();
         JSONObject dataObj = json.optJSONObject("data");
         JSONArray array = dataObj.optJSONArray("list");
@@ -46,7 +47,13 @@ public class GetOrderListRequest extends BaseRequest<List<OrderInfo>> {
                 list.add(new OrderInfo().parse(array.getJSONObject(i)));
             }
         }
+        PagedListEntity entity = new PagedListEntity();
+        entity.setList(list);
+        int count = dataObj.optInt("total", list.size());
+        int pageCount = count%pageSize == 0 ? count/pageSize : count/pageSize+1;
+        entity.setRecordCount(count);
+        entity.setPageCount(pageCount);
 
-        return list;
+        return entity;
     }
 }

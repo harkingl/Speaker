@@ -49,10 +49,10 @@ public class DialogPlayListAdapter extends BaseListItemAdapter<ScenePlayDataItem
 
         if(position == selectIndex) {
             holder.titleTv.setTextColor(context.getColor(R.color.common_green_color));
-//            holder.descTv.setTextColor(context.getColor(R.color.common_green_color));
+            holder.descTv.setTextColor(context.getColor(R.color.common_green_color));
         } else {
             holder.titleTv.setTextColor(context.getColor(R.color.text_color_1));
-//            holder.descTv.setTextColor(context.getColor(R.color.text_color_1));
+            holder.descTv.setTextColor(context.getColor(R.color.text_color_1));
         }
 
         return convertView;
@@ -60,6 +60,7 @@ public class DialogPlayListAdapter extends BaseListItemAdapter<ScenePlayDataItem
 
     public void setSelectIndex(int index) {
         this.selectIndex = index;
+        notifyDataSetChanged();
     }
 
     class ViewHolder {

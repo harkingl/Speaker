@@ -2,6 +2,7 @@ package com.android.speaker.me;
 
 import android.content.Context;
 
+import com.android.speaker.base.bean.PagedListEntity;
 import com.android.speaker.course.WordInfo;
 import com.android.speaker.server.okhttp.BaseRequest;
 import com.android.speaker.server.util.UrlManager;
@@ -16,7 +17,7 @@ import java.util.List;
 /***
  * 获取生词列表
  */
-public class GetNewWordListRequest extends BaseRequest<List<WordInfo>> {
+public class GetNewWordListRequest extends BaseRequest<PagedListEntity<WordInfo>> {
     private int pageNum;
     private int pageSize;
     public GetNewWordListRequest(Context context, int pageNum, int pageSize) {
@@ -38,15 +39,23 @@ public class GetNewWordListRequest extends BaseRequest<List<WordInfo>> {
     }
 
     @Override
-    protected List<WordInfo> result(JSONObject json) throws Exception {
+    protected PagedListEntity<WordInfo> result(JSONObject json) throws Exception {
         List<WordInfo> list = new ArrayList<>();
-        JSONArray array = json.optJSONArray("data");
+        JSONObject data = json.optJSONObject("data");
+        JSONArray array = data.optJSONArray("list");
         if(array != null && array.length() > 0) {
             for(int i = 0; i < array.length(); i++) {
                 list.add(new WordInfo().parse(array.getJSONObject(i)));
             }
         }
 
-        return list;
+        PagedListEntity entity = new PagedListEntity();
+        entity.setList(list);
+        int count = data.optInt("total", list.size());
+        int pageCount = count%pageSize == 0 ? count/pageSize : count/pageSize+1;
+        entity.setRecordCount(count);
+        entity.setPageCount(pageCount);
+
+        return entity;
     }
 }

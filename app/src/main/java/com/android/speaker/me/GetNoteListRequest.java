@@ -2,6 +2,7 @@ package com.android.speaker.me;
 
 import android.content.Context;
 
+import com.android.speaker.base.bean.PagedListEntity;
 import com.android.speaker.server.okhttp.BaseRequest;
 import com.android.speaker.server.util.UrlManager;
 
@@ -15,7 +16,7 @@ import java.util.List;
 /***
  * 获取笔记列表
  */
-public class GetNoteListRequest extends BaseRequest<List<NoteInfo>> {
+public class GetNoteListRequest extends BaseRequest<PagedListEntity<NoteInfo>> {
     private int pageNum;
     private int pageSize;
     public GetNoteListRequest(Context context, int pageNum, int pageSize) {
@@ -37,7 +38,7 @@ public class GetNoteListRequest extends BaseRequest<List<NoteInfo>> {
     }
 
     @Override
-    protected List<NoteInfo> result(JSONObject json) throws Exception {
+    protected PagedListEntity<NoteInfo> result(JSONObject json) throws Exception {
         List<NoteInfo> list = new ArrayList<>();
         JSONObject dataObj = json.optJSONObject("data");
         JSONArray array = dataObj.optJSONArray("list");
@@ -46,7 +47,13 @@ public class GetNoteListRequest extends BaseRequest<List<NoteInfo>> {
                 list.add(new NoteInfo().parse(array.getJSONObject(i)));
             }
         }
+        PagedListEntity entity = new PagedListEntity();
+        entity.setList(list);
+        int count = dataObj.optInt("total", list.size());
+        int pageCount = count%pageSize == 0 ? count/pageSize : count/pageSize+1;
+        entity.setRecordCount(count);
+        entity.setPageCount(pageCount);
 
-        return list;
+        return entity;
     }
 }

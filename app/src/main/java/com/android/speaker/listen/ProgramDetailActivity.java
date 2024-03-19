@@ -110,9 +110,10 @@ public class ProgramDetailActivity extends BaseActivity implements View.OnClickL
         new GetBlogListForCategoryRequest(this, mItem.id, mPageNo, PAGE_SIZE).schedule(false, new RequestListener<PagedListEntity<BlogItem>>() {
             @Override
             public void onSuccess(PagedListEntity<BlogItem> result) {
+                mListView.setTotalPageNumber(result.getPageCount());
+                mListView.setRecordCount(result.getRecordCount());
                 mListView.onLoadDone();
 //                mListView.setCurrentPage(result.getPageNo());
-                mListView.setTotalPageNumber(result.getPageCount());
                 if(result.getList() != null) {
                     mList.addAll(result.getList());
                     mAdapter.notifyDataSetChanged();

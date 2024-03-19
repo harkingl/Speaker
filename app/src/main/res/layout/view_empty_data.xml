@@ -6,22 +6,11 @@
     android:padding="20dp"
     android:orientation="vertical">
 
-    <com.android.speaker.base.component.PagedItemListView
-        android:id="@+id/lv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:paddingLeft="20dp"
-        android:divider="#F5F5F5"
-        android:dividerHeight="1dp"
-        android:scrollbars="none"
-        android:listSelector="@color/transparent"/>
     <ImageView
-        android:id="@+id/empty_iv"
+        android:id="@+id/coupon_empty_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="210dp"
-        android:visibility="gone"
         android:src="@drawable/ic_no_data"/>
 </LinearLayout>

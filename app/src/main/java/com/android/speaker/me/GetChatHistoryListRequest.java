@@ -2,6 +2,7 @@ package com.android.speaker.me;
 
 import android.content.Context;
 
+import com.android.speaker.base.bean.PagedListEntity;
 import com.android.speaker.server.okhttp.BaseRequest;
 import com.android.speaker.server.util.UrlManager;
 
@@ -15,7 +16,7 @@ import java.util.List;
 /***
  * 获取对话历史列表
  */
-public class GetChatHistoryListRequest extends BaseRequest<List<ChatReportInfo>> {
+public class GetChatHistoryListRequest extends BaseRequest<PagedListEntity<ChatReportInfo>> {
     private String id;
     private int pageNum;
     private int pageSize;
@@ -40,7 +41,7 @@ public class GetChatHistoryListRequest extends BaseRequest<List<ChatReportInfo>>
     }
 
     @Override
-    protected List<ChatReportInfo> result(JSONObject json) throws Exception {
+    protected PagedListEntity<ChatReportInfo> result(JSONObject json) throws Exception {
         List<ChatReportInfo> list = new ArrayList<>();
         JSONObject dataObj = json.optJSONObject("data");
         JSONArray array = dataObj.optJSONArray("list");
@@ -49,7 +50,13 @@ public class GetChatHistoryListRequest extends BaseRequest<List<ChatReportInfo>>
                 list.add(new ChatReportInfo().parseHistory(array.getJSONObject(i)));
             }
         }
+        PagedListEntity entity = new PagedListEntity();
+        entity.setList(list);
+        int count = dataObj.optInt("total", list.size());
+        int pageCount = count%pageSize == 0 ? count/pageSize : count/pageSize+1;
+        entity.setRecordCount(count);
+        entity.setPageCount(pageCount);
 
-        return list;
+        return entity;
     }
 }

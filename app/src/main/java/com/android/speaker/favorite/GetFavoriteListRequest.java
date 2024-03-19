@@ -2,6 +2,8 @@ package com.android.speaker.favorite;
 
 import android.content.Context;
 
+import com.android.speaker.base.bean.PagedListEntity;
+import com.android.speaker.listen.BlogItem;
 import com.android.speaker.server.okhttp.BaseRequest;
 import com.android.speaker.server.util.UrlManager;
 
@@ -15,7 +17,7 @@ import java.util.List;
 /***
  * 获取收藏列表
  */
-public class GetFavoriteListRequest extends BaseRequest<List<FavoriteItem>> {
+public class GetFavoriteListRequest extends BaseRequest<PagedListEntity<FavoriteItem>> {
     private int pageNum;
     private int pageSize;
     public GetFavoriteListRequest(Context context, int pageNum, int pageSize) {
@@ -37,7 +39,7 @@ public class GetFavoriteListRequest extends BaseRequest<List<FavoriteItem>> {
     }
 
     @Override
-    protected List<FavoriteItem> result(JSONObject json) throws Exception {
+    protected PagedListEntity<FavoriteItem> result(JSONObject json) throws Exception {
         JSONObject data = json.optJSONObject("data");
         List<FavoriteItem> list = new ArrayList<>();
         JSONArray array = data.optJSONArray("list");
@@ -47,6 +49,13 @@ public class GetFavoriteListRequest extends BaseRequest<List<FavoriteItem>> {
             }
         }
 
-        return list;
+        PagedListEntity entity = new PagedListEntity();
+        entity.setList(list);
+        int count = data.optInt("total", list.size());
+        int pageCount = count%pageSize == 0 ? count/pageSize : count/pageSize+1;
+        entity.setRecordCount(count);
+        entity.setPageCount(pageCount);
+
+        return entity;
     }
 }

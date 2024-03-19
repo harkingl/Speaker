@@ -327,6 +327,9 @@ public class ScenePlayListActivity extends BaseActivity implements View.OnClickL
                     mPlayer.removeMediaItem(position);
                     mDialogAdapter.notifyDataSetChanged();
                 }
+                if(mPlayList.size() == 0) {
+                    mBottomLayout.setVisibility(View.GONE);
+                }
             }
         });
         lv.setAdapter(mDialogAdapter);

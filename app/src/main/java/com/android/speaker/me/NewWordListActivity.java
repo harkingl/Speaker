@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.android.speaker.base.ITitleBarLayout;
+import com.android.speaker.base.bean.PagedListEntity;
 import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.base.component.PagedItemListView;
 import com.android.speaker.base.component.TitleBarLayout;
@@ -94,15 +95,17 @@ public class NewWordListActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void loadData() {
-        new GetNewWordListRequest(this, mPageNo, PAGE_SIZE).schedule(false, new RequestListener<List<WordInfo>>() {
+        new GetNewWordListRequest(this, mPageNo, PAGE_SIZE).schedule(false, new RequestListener<PagedListEntity<WordInfo>>() {
             @Override
-            public void onSuccess(List<WordInfo> result) {
+            public void onSuccess(PagedListEntity<WordInfo> result) {
+                mListView.setTotalPageNumber(result.getPageCount());
+                mListView.setRecordCount(result.getRecordCount());
                 mListView.onLoadDone();
                 if(!mIsLoadMore) {
                     mList.clear();
                 }
-                if(result != null) {
-                    mList.addAll(result);
+                if(result.getList() != null) {
+                    mList.addAll(result.getList());
                 }
                 mAdapter.notifyDataSetChanged();
             }
@@ -113,21 +116,6 @@ public class NewWordListActivity extends BaseActivity implements View.OnClickLis
                 ToastUtil.toastLongMessage(e.getMessage());
             }
         });
-
-//        new GetWordsRequest(this, "40").schedule(false, new RequestListener<List<WordInfo>>() {
-//            @Override
-//            public void onSuccess(List<WordInfo> result) {
-//                if(result != null && result.size() > 0) {
-//                    mList.addAll(result);
-//                }
-//                mAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onFailed(Throwable e) {
-//                ToastUtil.toastLongMessage(e.getMessage());
-//            }
-//        });
     }
 
     @Override

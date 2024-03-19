@@ -20,5 +20,5 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="210dp"
         android:visibility="gone"
-        android:src="@drawable/ic_coupon_empty"/>
+        android:src="@drawable/ic_no_data"/>
 </LinearLayout>

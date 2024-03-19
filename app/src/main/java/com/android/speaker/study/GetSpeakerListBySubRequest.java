@@ -2,6 +2,7 @@ package com.android.speaker.study;
 
 import android.content.Context;
 
+import com.android.speaker.base.bean.PagedListEntity;
 import com.android.speaker.course.CourseItem;
 import com.android.speaker.server.okhttp.BaseRequest;
 import com.android.speaker.server.util.UrlManager;
@@ -16,7 +17,7 @@ import java.util.List;
 /***
  * 通过子类获取开口说列表
  */
-public class GetSpeakerListBySubRequest extends BaseRequest<List<OpenSpeakerInfo>> {
+public class GetSpeakerListBySubRequest extends BaseRequest<PagedListEntity<OpenSpeakerInfo>> {
     private int pageNum;
     private int pageSize;
     private int subId;
@@ -41,7 +42,7 @@ public class GetSpeakerListBySubRequest extends BaseRequest<List<OpenSpeakerInfo
     }
 
     @Override
-    protected List<OpenSpeakerInfo> result(JSONObject json) throws Exception {
+    protected PagedListEntity<OpenSpeakerInfo> result(JSONObject json) throws Exception {
         JSONObject data = json.optJSONObject("data");
         List<OpenSpeakerInfo> list = new ArrayList<>();
         JSONArray array = data.optJSONArray("list");
@@ -50,7 +51,13 @@ public class GetSpeakerListBySubRequest extends BaseRequest<List<OpenSpeakerInfo
                 list.add(new OpenSpeakerInfo().parse(array.getJSONObject(i)));
             }
         }
+        PagedListEntity entity = new PagedListEntity();
+        entity.setList(list);
+        int count = data.optInt("total", list.size());
+        int pageCount = count%pageSize == 0 ? count/pageSize : count/pageSize+1;
+        entity.setRecordCount(count);
+        entity.setPageCount(pageCount);
 
-        return list;
+        return entity;
     }
 }

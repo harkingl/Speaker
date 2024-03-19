@@ -2,6 +2,7 @@ package com.android.speaker.course;
 
 import android.content.Context;
 
+import com.android.speaker.base.bean.PagedListEntity;
 import com.android.speaker.server.okhttp.BaseRequest;
 import com.android.speaker.server.util.UrlManager;
 
@@ -15,7 +16,7 @@ import java.util.List;
 /***
  * 通过子类获取课堂信息
  */
-public class GetCourseListBySubRequest extends BaseRequest<List<CourseItem>> {
+public class GetCourseListBySubRequest extends BaseRequest<PagedListEntity<CourseItem>> {
     private int pageNum;
     private int pageSize;
     private int subId;
@@ -40,7 +41,7 @@ public class GetCourseListBySubRequest extends BaseRequest<List<CourseItem>> {
     }
 
     @Override
-    protected List<CourseItem> result(JSONObject json) throws Exception {
+    protected PagedListEntity<CourseItem> result(JSONObject json) throws Exception {
         JSONObject data = json.optJSONObject("data");
         List<CourseItem> list = new ArrayList<>();
         JSONArray array = data.optJSONArray("list");
@@ -49,7 +50,13 @@ public class GetCourseListBySubRequest extends BaseRequest<List<CourseItem>> {
                 list.add(new CourseItem().parse(array.getJSONObject(i)));
             }
         }
+        PagedListEntity entity = new PagedListEntity();
+        entity.setList(list);
+        int count = data.optInt("total", list.size());
+        int pageCount = count%pageSize == 0 ? count/pageSize : count/pageSize+1;
+        entity.setRecordCount(count);
+        entity.setPageCount(pageCount);
 
-        return list;
+        return entity;
     }
 }

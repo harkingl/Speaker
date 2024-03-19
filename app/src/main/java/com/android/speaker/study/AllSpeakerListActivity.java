@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
+import com.android.speaker.base.bean.PagedListEntity;
 import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.base.component.NoScrollGridView;
 import com.android.speaker.base.component.NoScrollListView;
@@ -152,14 +153,14 @@ public class AllSpeakerListActivity extends BaseActivity implements View.OnClick
             mPageNo = 1;
             mList.clear();
         }
-        new GetSpeakerListBySubRequest(this, mPageNo, PAGE_SIZE, mCurrSubItem.id).schedule(false, new RequestListener<List<OpenSpeakerInfo>>() {
+        new GetSpeakerListBySubRequest(this, mPageNo, PAGE_SIZE, mCurrSubItem.id).schedule(false, new RequestListener<PagedListEntity<OpenSpeakerInfo>>() {
             @Override
-            public void onSuccess(List<OpenSpeakerInfo> result) {
+            public void onSuccess(PagedListEntity<OpenSpeakerInfo> result) {
+                mCourseLv.setTotalPageNumber(result.getPageCount());
+                mCourseLv.setRecordCount(result.getRecordCount());
                 mCourseLv.onLoadDone();
-//                mCourseLv.setCurrentPage(result.pageNo);
-//                mCourseLv.setTotalPageNumber(result.pageCount);
-                if(result != null) {
-                    mList.addAll(result);
+                if(result.getList() != null) {
+                    mList.addAll(result.getList());
                 }
                 mCourseAdapter.notifyDataSetChanged();
             }

@@ -120,6 +120,7 @@
             android:layout_weight="1"
             android:divider="@color/transparent"
             android:dividerHeight="12dp"
+            android:listSelector="@color/transparent"
             android:scrollbars="none" />
     </LinearLayout>
 

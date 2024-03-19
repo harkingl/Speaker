@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.android.speaker.base.ITitleBarLayout;
+import com.android.speaker.base.bean.PagedListEntity;
 import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.base.component.PagedItemListView;
 import com.android.speaker.base.component.TitleBarLayout;
@@ -43,6 +44,18 @@ public class FavoriteListActivity extends BaseActivity implements View.OnClickLi
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        refresh();
+    }
+
+    private void refresh() {
+        mPageNo = 1;
+        loadData();
+    }
+
     private void initData() {
         mList = new ArrayList<>();
         mAdapter = new FavoriteListAdapter(this, mList);
@@ -54,17 +67,17 @@ public class FavoriteListActivity extends BaseActivity implements View.OnClickLi
                 loadData();
             }
         });
-
-        loadData();
     }
 
     private void loadData() {
-        new GetFavoriteListRequest(this, mPageNo, PAGE_SIZE).schedule(false, new RequestListener<List<FavoriteItem>>() {
+        new GetFavoriteListRequest(this, mPageNo, PAGE_SIZE).schedule(false, new RequestListener<PagedListEntity<FavoriteItem>>() {
             @Override
-            public void onSuccess(List<FavoriteItem> result) {
+            public void onSuccess(PagedListEntity<FavoriteItem> result) {
+                mListView.setTotalPageNumber(result.getPageCount());
+                mListView.setRecordCount(result.getRecordCount());
                 mListView.onLoadDone();
-                if(result != null) {
-                    mList.addAll(result);
+                if(result.getList() != null) {
+                    mList.addAll(result.getList());
                 }
                 mAdapter.notifyDataSetChanged();
             }

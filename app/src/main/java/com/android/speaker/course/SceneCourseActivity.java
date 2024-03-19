@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
+import com.android.speaker.base.bean.PagedListEntity;
 import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.base.component.NoScrollGridView;
 import com.android.speaker.base.component.NoScrollListView;
@@ -148,14 +149,14 @@ public class SceneCourseActivity extends BaseActivity implements View.OnClickLis
             mPageNo = 1;
             mList.clear();
         }
-        new GetCourseListBySubRequest(this, mPageNo, PAGE_SIZE, mCurrSubItem.id).schedule(false, new RequestListener<List<CourseItem>>() {
+        new GetCourseListBySubRequest(this, mPageNo, PAGE_SIZE, mCurrSubItem.id).schedule(false, new RequestListener<PagedListEntity<CourseItem>>() {
             @Override
-            public void onSuccess(List<CourseItem> result) {
+            public void onSuccess(PagedListEntity<CourseItem> result) {
+                mCourseLv.setTotalPageNumber(result.getPageCount());
+                mCourseLv.setRecordCount(result.getRecordCount());
                 mCourseLv.onLoadDone();
-//                mCourseLv.setCurrentPage(result.pageNo);
-//                mCourseLv.setTotalPageNumber(result.pageCount);
-                if(result != null) {
-                    mList.addAll(result);
+                if(result.getList() != null) {
+                    mList.addAll(result.getList());
                 }
                 mCourseAdapter.notifyDataSetChanged();
             }

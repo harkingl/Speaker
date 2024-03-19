@@ -61,7 +61,7 @@ public class NewWordListAdapter extends BaseListItemAdapter<WordInfo> {
             holder.voiceIv.setVisibility(View.VISIBLE);
             holder.checkIv.setVisibility(View.GONE);
         }
-        if(info.isPlaying || isEdit) {
+        if(info.showExplain || isEdit) {
             if(info.wordExplain != null) {
                 holder.featureTv.setText(info.wordExplain.pos + ". ");
                 holder.explainTv.setText(info.wordExplain.meaning);
@@ -93,6 +93,14 @@ public class NewWordListAdapter extends BaseListItemAdapter<WordInfo> {
             @Override
             public void onClick(View v) {
                 info.isChecked = !info.isChecked;
+                notifyDataSetChanged();
+            }
+        });
+
+        holder.rectView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                info.showExplain = true;
                 notifyDataSetChanged();
             }
         });

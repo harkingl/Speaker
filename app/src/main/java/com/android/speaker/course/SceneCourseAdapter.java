@@ -1,6 +1,7 @@
 package com.android.speaker.course;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -46,6 +47,16 @@ public class SceneCourseAdapter extends BaseListItemAdapter<CourseItem> {
         holder.aiLabelTv.setText(info.leveName);
         holder.titleTv.setText(info.title);
         holder.descTv.setText(info.des);
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, CoursePreviewActivity.class);
+                i.putExtra(CourseUtil.KEY_COURSE_ID, info.id);
+                i.putExtra(CourseUtil.KEY_COURSE_TYPE, CourseUtil.TYPE_COURSE_PROJECT);
+                context.startActivity(i);
+            }
+        });
 
         return convertView;
     }

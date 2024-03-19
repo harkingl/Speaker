@@ -19,6 +19,8 @@ public class WordInfo implements Serializable {
     public boolean hasFav;
     public boolean isChecked;
     public boolean isPlaying;
+    // 是否显示词义
+    public boolean showExplain;
 
     public WordInfo parse(JSONObject obj) throws JSONException {
         id = obj.optString("id");

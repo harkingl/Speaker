@@ -348,7 +348,7 @@ public class WordPracticeActivity extends BaseActivity implements View.OnClickLi
         if(v == mTitleBarLayout.getLeftGroup()) {
             finish();
         } else if(v == mVoiceTv) {
-            if(!mPlayer.isPlaying() && mCurrentStep == 1) {
+            if(!mPlayer.isPlaying()) {
                 doPlay(false);
             }
         } else if(v == mWaveView) {

@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import androidx.annotation.Nullable;
 
 import com.android.speaker.base.ITitleBarLayout;
+import com.android.speaker.base.bean.PagedListEntity;
 import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.base.component.PagedItemListView;
 import com.android.speaker.base.component.TitleBarLayout;
@@ -71,12 +72,14 @@ public class OrderListActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void loadData() {
-        new GetOrderListRequest(this, mPageNo, PAGE_SIZE).schedule(false, new RequestListener<List<OrderInfo>>() {
+        new GetOrderListRequest(this, mPageNo, PAGE_SIZE).schedule(false, new RequestListener<PagedListEntity<OrderInfo>>() {
             @Override
-            public void onSuccess(List<OrderInfo> result) {
+            public void onSuccess(PagedListEntity<OrderInfo> result) {
+                mListView.setTotalPageNumber(result.getPageCount());
+                mListView.setRecordCount(result.getRecordCount());
                 mListView.onLoadDone();
-                if(result != null) {
-                    mList.addAll(result);
+                if(result.getList() != null) {
+                    mList.addAll(result.getList());
                 }
                 mAdapter.notifyDataSetChanged();
             }
