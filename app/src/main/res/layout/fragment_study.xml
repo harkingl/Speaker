@@ -40,6 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:src="@drawable/ic_calendar2"
+            android:visibility="gone"
             android:layout_centerVertical="true"/>
         <TextView
             android:id="@+id/study_total_clock_times_tv2"
@@ -102,6 +103,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignBottom="@+id/study_user_tv"
                 android:layout_marginRight="20dp"
+                android:visibility="invisible"
                 android:src="@drawable/ic_calendar"/>
             <TextView
                 android:id="@+id/study_total_clock_times_tv"
@@ -118,6 +120,7 @@
                 android:paddingRight="9dp"
                 android:textColor="@color/common_purple_color"
                 android:textSize="11sp"
+                android:visibility="invisible"
                 tools:text="累计打卡3天"/>
             <LinearLayout
                 android:id="@+id/study_today_goal_ll"

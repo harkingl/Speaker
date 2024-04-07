@@ -17,6 +17,7 @@ import com.android.speaker.base.component.BaseActivity;
 import com.android.speaker.home.HomeActivity;
 import com.android.speaker.server.okhttp.RequestListener;
 import com.android.speaker.util.LogUtil;
+import com.android.speaker.util.LoginUtil;
 import com.android.speaker.util.ThreadUtils;
 import com.android.speaker.util.ToastUtil;
 import com.android.speaker.web.WebActivity;
@@ -107,6 +108,12 @@ public class LoginCaptchaActivity extends BaseActivity implements View.OnClickLi
                 break;
             case R.id.login_captcha_private_protocol_tv:
                 gotoPrivateProtocol();
+                break;
+            case R.id.login_captcha_onekey_iv:
+                LoginUtil.getInstance(this).oneKeyLogin(this);
+                break;
+            case R.id.login_captcha_wx_iv:
+                LoginUtil.getInstance(this).wxAuthLogin();
                 break;
         }
     }

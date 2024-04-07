@@ -70,7 +70,7 @@ public class LoginUtil {
                         if (code == 6000) {
                             doLogin(token, "666666", "", "mobile");
                             LogUtil.d(TAG, "onResult: loginSuccess");
-                        } else {
+                        } else if(code != 6002) {// dismissLoginAuthActivity会触发取消回调
                             LogUtil.d(TAG, "onResult: loginError");
                             gotoCaptchaLoginPage();
                         }
@@ -101,11 +101,12 @@ public class LoginUtil {
 
     private void gotoHomePage() {
         Intent i = new Intent(mContext, HomeActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         mContext.startActivity(i);
     }
 
     private void gotoCaptchaLoginPage() {
+        JVerificationInterface.dismissLoginAuthActivity();
         mContext.startActivity(new Intent(mContext, LoginCaptchaActivity.class));
     }
 
@@ -173,7 +174,7 @@ public class LoginUtil {
         btnCaptcha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.startActivity(new Intent(context, LoginCaptchaActivity.class));
+                gotoCaptchaLoginPage();
             }
         });
 

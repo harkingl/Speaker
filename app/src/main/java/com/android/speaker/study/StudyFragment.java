@@ -267,15 +267,15 @@ public class StudyFragment extends BaseFragment implements View.OnClickListener 
         if(flag) {
             mUserTv.setVisibility(View.INVISIBLE);
             mAiLabelTv.setVisibility(View.INVISIBLE);
-            mClockTimesTv.setVisibility(View.INVISIBLE);
-            mCalendarIv.setVisibility(View.INVISIBLE);
+//            mClockTimesTv.setVisibility(View.INVISIBLE);
+//            mCalendarIv.setVisibility(View.INVISIBLE);
             mTitleLayout2.setVisibility(View.VISIBLE);
             mCallback.callback(IHomeCallBack.TAB_STUDY, "status_bar", "up");
         } else {
             mUserTv.setVisibility(View.VISIBLE);
             mAiLabelTv.setVisibility(View.VISIBLE);
-            mClockTimesTv.setVisibility(View.VISIBLE);
-            mCalendarIv.setVisibility(View.VISIBLE);
+//            mClockTimesTv.setVisibility(View.VISIBLE);
+//            mCalendarIv.setVisibility(View.VISIBLE);
             mTitleLayout2.setVisibility(View.GONE);
             mCallback.callback(IHomeCallBack.TAB_STUDY, "status_bar", "down");
         }
