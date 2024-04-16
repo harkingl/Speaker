@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">开口说</string>
+
+    <string name="repeat_login_tip">您的帐号已在其它终端登录</string>
+    <string name="expired_login_tip">帐号已过期，请重新登录</string>
+
+    <string name="get_captcha">获取验证码</string>
+    <string name="captcha_count_down">%1$s秒后重新发送</string>
+
+    <!-- home -->
+    <string name="tab_text_study">学习</string>
+    <string name="tab_text_course">课程</string>
+    <string name="tab_text_listener">听听</string>
+    <string name="tab_text_me">我的</string>
+
+    <string name="welcome_user">Hello! %1$s</string>
+    <string name="total_clock_times">累计打卡 %1$d 天</string>
+    <string name="blog_item_time">%1$s · %2$d分钟</string>
+    <string name="scene_play_count">共%1$d节</string>
+    <string name="sample"><![CDATA[你叫<font color="#00B49B">James</font>，因为堵车，今早的会议你可能要迟到了，你准备现在打电话给同事<font color="#00B49B">Monica</font>说明情况。“开口说AI”将全程扮演同事<font color="#00B49B">Monica</font>和你对话。]]></string>
+
+    <string name="privacy_content">欢迎使用开口说APP。\n\n我们非常重视您的个人信息和隐私保护，为了更好地保障您的个人权益，在您使用我们的产品前，请务必审慎阅读《用户协议》与《隐私政策》内的所有条款。\n\n如您同意以上协议内容，请点击"同意并继续”开始使用我们的产品和服务。</string>
+
+    <string name="vip_open_agree_text">同意协议并立即开通 ￥%1$d</string>
+    <string name="copy_right">杭州抱米胖网络科技有限公司 版权所有\nCopyright @ 2023 - 2024 Riceboom.All Rights Reserved.</string>
+
+    <string name="log_off_text1">注销开口说帐号是不可恢复的操作，注销账号后，您将无法登录、使用该账号（即使您使用相同的手机号或微信账号注册并使用开口说）。</string>
+    <string name="log_off_text2">该账号的资产、权益、记录等一切内容，将视作您自愿放弃。</string>
+</resources>
